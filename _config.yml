@@ -14,11 +14,10 @@ author: Adelmo Filho · Rodrigo Ekstein
 # --- List of links in the navigation bar --- #
 
 navbar-links:
-  About Me: "aboutme"
-  Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+  About: "aboutme"
+  Authors:
+    - Adelmo Filho: "https://beautifuljekyll.com"
+    - Rodrigo Ekstein: "https://www.markdowntutorial.com/"
 
 # --- Logo --- #
 
