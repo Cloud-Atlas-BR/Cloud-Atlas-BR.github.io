@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Implantando um pipeline de MLOps na AWS
-subtitle: Parte 0 - Desenho da arquitetura  
+title: Um pipeline de MLOps na AWS - Parte 0
+subtitle: Desenho de arquitetura  
 tags: [aws, mlops, machine, learning]
 comments: true
 ---
