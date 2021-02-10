@@ -42,6 +42,9 @@ Os artefatos de modelagem (.pkl, .RData, .joblib) podem ingressar ou serem criad
 - Provisionamento dos componentes de *observability* do modelo
 
     - Monitoração e Alarmes
+
+    Durante esta etapa o principal objetivo é entender o comportamento do nosso Modelo de ***Machine Learning*** nao apenas nos atentamos a metricas transacionais, mas também levamos em consideração metricas especificas dos modelos, e tais metricas podem ser utilizadas nas etapas subsequentes e assim servindo de ***trigger** , como por exemplo, a recalibração do modelo, atualização de coleta de metricas, disponibilização de novos testes A/B. 
+
     - Coleta de métricas
     - Testes A/B
     - Recalibração do modelo
