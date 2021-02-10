@@ -20,6 +20,8 @@ Combinando *skills* de ciência de dados com engenharia de software, o engenheir
 
 As particularidades impostas pela dinâmica entre os dados, e o modelo a ser implantado, resultou na criação de uma disciplina filha da DevOps, conhecida como **MLOps** (*machine learning operations*).
 
+É claro que **Devops** e **MLOps** são da mesma familia como mencionado acima, porem e importante entender que e possivel aplicar conceitos ja pre existentes no cenário **Devops**, entretanto, nao é Ctrl+C Ctrl+v. Abaixo explicamos as principais diferenças. 
+
 ## O que pode compor um pipeline de MLOps?
 
 Do ponto de vista do cientista de dados, um pipeline de MLOps integra alterações de código realizadas em uma ferramenta de controle de versão (git), a chamada integração contínua (CI), etapa típica dos pipelines de DevOps. Os pipelines de MLOps, ainda podem se beneficiar de outras etapas tradicionais das esteiras de CI/CD de DevOps, tais como:
@@ -45,8 +47,8 @@ Por outro lado, as esteiras de MLOps, em razão da natureza única dos modelos d
 
 ## Criando um pipeline de MLOps na AWS
 
-
-
+Bom, a partir daqui já podemos apresentar uma arquitetura base com todos os componentes que entendemos como essencias para um pipeline **MLOps**.
+para essa jornada que estamos iniciando utilizaremos como provider a Amazon, nossa querida AWS. O motivo é a familiaridade, vivencia e facilidade de implantação da arquitetura base, bem como todos os componentes e serviços envolvidos neste pipeline de MLOps.
 
 ### Arquitetura proposta
 
