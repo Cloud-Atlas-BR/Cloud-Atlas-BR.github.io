@@ -37,13 +37,13 @@ Por outro lado, as esteiras de MLOps, em razão da natureza única dos modelos d
 
 Os artefatos de modelagem (.pkl, .RData, .joblib) podem ingressar ou serem criados em tempo de execução da esteira. No primeiro caso, os artefatos foram enviados pelo cientista de dados para algum *object storage* (S3, Google Drive, MinIO), e a esteira realiza a cópia deles para o container, o cluster, ou a VM a ser provisionada. Apesar de prática, está abordagem pode sofrer de problemas de reprodutibilidade, uma vez que o treinamento do modelo não está associada a nenhum processo sistêmico e parametrizável.
 
-No caso do modelo ser treinado durante a execução da esteira, temos um maior controle do artefato sendo criado, pois todas as configurações de como treinar o modelo devem estar expostas nos arquivos do repositório git do cientista de dados. 
+No caso do modelo ser treinado durante a execução da esteira, temos um maior controle do artefato sendo criado, pois todas as configurações de como treinar o modelo devem estar expostas nos arquivos do repositório git do cientista de dados. Desta forma, 
 
 - Provisionamento dos componentes de *observability* do modelo
 
     - Monitoração e Alarmes
 
-    Durante esta etapa o principal objetivo é entender o comportamento do nosso Modelo de ***Machine Learning*** nao apenas nos atentamos a metricas transacionais, mas também levamos em consideração metricas especificas dos modelos, e tais metricas podem ser utilizadas nas etapas subsequentes e assim servindo de ***trigger** , como por exemplo, a recalibração do modelo, atualização de coleta de metricas, disponibilização de novos testes A/B. 
+Durante esta etapa o principal objetivo é entender o comportamento do nosso Modelo de Machine Learning nao apenas nos atentamos a metricas transacionais, mas também levamos em consideração metricas especificas dos modelos, e tais metricas podem ser utilizadas nas etapas subsequentes e assim servindo de *trigger , como por exemplo, a recalibração do modelo, atualização de coleta de metricas, disponibilização de novos testes A/B.
 
     - Coleta de métricas
     - Testes A/B
