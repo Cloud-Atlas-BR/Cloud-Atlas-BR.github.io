@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Criando um pipeline de MLOps na AWS - Parte 0
+title: Criando um pipeline de MLOps na AWS - S01E01
 subtitle: Desenho de arquitetura  
 tags: [aws, mlops, machine, learning]
 comments: true
@@ -35,9 +35,9 @@ Por outro lado, as esteiras de MLOps, em razão da natureza única dos modelos d
 
 - Treinamento do modelo
 
-Os artefatos de modelagem (.pkl, .RData, .joblib) podem ingressar ou serem criados em tempo de execução da esteira. No primeiro caso, os artefatos foram enviados pelo cientista de dados para algum *object storage* (S3, Google Drive, MinIO), e a esteira realiza a cópia deles para o container, o cluster, ou a VM a ser provisioniada. Apesar de prática, está abordagem pode sofrer de problemas de reprodutibilidade, uma vez que a 
+Os artefatos de modelagem (.pkl, .RData, .joblib) podem ingressar ou serem criados em tempo de execução da esteira. No primeiro caso, os artefatos foram enviados pelo cientista de dados para algum *object storage* (S3, Google Drive, MinIO), e a esteira realiza a cópia deles para o container, o cluster, ou a VM a ser provisionada. Apesar de prática, está abordagem pode sofrer de problemas de reprodutibilidade, uma vez que o treinamento do modelo não está associada a nenhum processo sistêmico e parametrizável.
 
-
+No caso do modelo ser treinado durante a execução da esteira, temos um maior controle do artefato sendo criado, pois todas as configurações de como treinar o modelo devem estar expostas nos arquivos do repositório git do cientista de dados. 
 
 - Provisionamento dos componentes de *observability* do modelo
 
