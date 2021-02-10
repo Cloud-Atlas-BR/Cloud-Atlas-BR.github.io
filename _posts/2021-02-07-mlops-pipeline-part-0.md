@@ -20,11 +20,25 @@ Combinando *skills* de ciência de dados com engenharia de software, o engenheir
 
 As particularidades impostas pela dinâmica entre os dados, e o modelo a ser implantado, resultou na criação de uma disciplina filha da DevOps, conhecida como **MLOps** (*machine learning operations*).
 
+## O que pode compor um pipeline de MLOps?
+
+Do ponto de vista do cientista de dados, um pipeline de MLOps integra alterações de código realizadas em uma ferramenta de controle de versão (git), garantindo a integração contínua (CI), etapa típica dos pipelines de DevOps. Os pipelines de MLOps, ainda podem se beneficiar de outras etapas típicas das esteiras tradicionais de CI/CD de DevOps, tais como:
+
+- Testes unitários de código
+- Testes de integração
+- Validações de segurança
+- Provisionamento de infraestrutura (CD)
 
 
-## O que compõe um pipeline de MLOps?
 
-- 
+- Treinamento do modelo
+- Monitoração
+- Coleta de métricas
+- Teste A/B
+- Recalibração do modelo
+- Alarmes
+
+
 
 ## Arquitetura proposta
 
