@@ -33,6 +33,8 @@ Por outro lado, as esteiras de MLOps, em razão da natureza única dos modelos d
 
 - Treinamento do modelo
 
+Os artefatos de modelagem (.pkl, .RData, .joblib) podem ingressar ou serem criados em tempo de execução da esteira. No primeiro caso, os artefatos foram enviados pelo cientista de dados para algum *object storage* (S3, Google Drive, MinIO), e a esteira realiza a cópia deles para o container, o cluster, ou a VM a ser provisioniada. Apesar de prática, está abordagem pode sofrer de problemas de reprodutibilidade, uma vez que a 
+
 
 
 - Provisionamento dos componentes de *observability* do modelo
