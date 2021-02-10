@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Um pipeline de MLOps na AWS - Parte 0
+title: Criando um pipeline de MLOps na AWS - Parte 0
 subtitle: Desenho de arquitetura  
 tags: [aws, mlops, machine, learning]
 comments: true
@@ -12,7 +12,9 @@ De um ponto de vista prático, implantar um modelo de *machine learning* pode en
 
 Nenhum dos pontos mencionados acima é novo, inclusive, fazem parte da cultura DevOps. O que torna essa disciplina um novo desafio para a área de *machine learning* são os **dados**.
 
-Dados são entidades vivas. Ao longo do tempo, aumentam de volume, podem sofrer mudanças em sua distribuição estatística e disponibilização, 
+Dados são entidades vivas. Ao longo do tempo, variam de volume, podem sofrer mudanças em sua distribuição estatística e disponibilidade, e, inevitavelmente, são manipulados por humanos, podendo sofrer de enviesamentos, erros, e da qualidade do código e análise desenvolvida. Todas essas questões, se não consideradas, resultam na perda da qualidade do modelo, lentidão de processamento, erros de processamento
+
+
 
 Apesar de plural e de trabalhar diretamente com linguagens de programação, no seu dia-a-dia, o cientista de dados não (necessariamente) atua em ferramentas associadas à cultura DevOps: 
 
