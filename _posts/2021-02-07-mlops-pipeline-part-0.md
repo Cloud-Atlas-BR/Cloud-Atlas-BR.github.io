@@ -22,23 +22,32 @@ As particularidades impostas pela dinâmica entre os dados, e o modelo a ser imp
 
 ## O que pode compor um pipeline de MLOps?
 
-Do ponto de vista do cientista de dados, um pipeline de MLOps integra alterações de código realizadas em uma ferramenta de controle de versão (git), garantindo a integração contínua (CI), etapa típica dos pipelines de DevOps. Os pipelines de MLOps, ainda podem se beneficiar de outras etapas tradicionais das esteiras de CI/CD de DevOps, tais como:
+Do ponto de vista do cientista de dados, um pipeline de MLOps integra alterações de código realizadas em uma ferramenta de controle de versão (git), a chamada integração contínua (CI), etapa típica dos pipelines de DevOps. Os pipelines de MLOps, ainda podem se beneficiar de outras etapas tradicionais das esteiras de CI/CD de DevOps, tais como:
 
 - Testes unitários de código
 - Testes de integração
 - Validações de segurança
-- Provisionamento de infraestrutura
+- Provisionamento de infraestrutura do modelo
 
-Por outro lado, as esteiras de MLOps necessitam da criação de etapas customizadas em razão da natureza única dos modelos de *machine learning*, a citar:
+Por outro lado, as esteiras de MLOps, em razão da natureza única dos modelos de *machine learning*, necessitam da criação de etapas customizadas, a citar:
 
 - Treinamento do modelo
-- Monitoração e Alarmes
-- Coleta de métricas
-- Testes A/B
-- Recalibração do modelo
 
 
 
-## Arquitetura proposta
+- Provisionamento dos componentes de *observability* do modelo
+
+    - Monitoração e Alarmes
+    - Coleta de métricas
+    - Testes A/B
+    - Recalibração do modelo
+
+
+## Criando um pipeline de MLOps na AWS
+
+
+
+
+### Arquitetura proposta
 
 
