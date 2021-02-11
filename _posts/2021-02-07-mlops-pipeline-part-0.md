@@ -53,6 +53,14 @@ Por outro lado, o treinamento de um modelo de machine learning (mesmo com os hip
 Durante esta etapa o principal objetivo é entender o comportamento do nosso Modelo de Machine Learning nao apenas nos atentamos a metricas transacionais, mas também levamos em consideração metricas especificas dos modelos, e tais metricas podem ser utilizadas nas etapas subsequentes e assim servindo de *trigger , como por exemplo, a recalibração do modelo, atualização de coleta de metricas, disponibilização de novos testes A/B.
 
     - Coleta de métricas
+
+Aqui ja começamos adentrar em questoes relacionadas a personalização da etapa **Monitoração e Alarmes**. Independente de qual metrica o modelo esta utilizando(gini,mse,rmse,acurácia), cabe ao pipeline o provisionamento e execução desta etapa.
+
+Algumas estrategias podem ser utilizadas, como por exemplo, coletarmos metricas de forma assincrona a fim de realizar uma comparação de resultados com uma baseline previamente criado. Outra estrategia que também poderiamos utilizar seria medir o **Desvio Padrão**, e caso o mesmo sofresse um aumento e X %, um alarme/monitoração poderia ser ativado.
+
+Aqui a principal mensagem é que esta etapa do pipeline não é efemera, a mesma mantem-se de forma simbiótica com o Modelo de ***Machine Learning** entregue pela pipeline.
+
+
     - Testes A/B
     - Recalibração do modelo
 
