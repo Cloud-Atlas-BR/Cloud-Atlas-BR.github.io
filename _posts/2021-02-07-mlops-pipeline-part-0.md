@@ -59,9 +59,15 @@ Durante esta etapa o principal objetivo é entender o comportamento do nosso Mod
 
 ## Criando um pipeline de MLOps na AWS
 
-Bom, a partir daqui, já podemos apresentar uma arquitetura base com todos os componentes que entendemos como essencias para um pipeline **MLOps**.
+Todos na mesma página?
 
-Para essa jornada que estamos iniciando, utilizaremos como provider a Amazon, nossa querida AWS. O motivo é a familiaridade, vivência e facilidade de implantação da arquitetura base, bem como de todos os componentes e serviços envolvidos neste pipeline de MLOps.
+A partir daqui, queremos propor um exercício: iremos desenhar arquitetura de uma esteira de MLOps e, nos próximos posts desse blog, iremos apresentar a sua implantação.
+
+
+
+
+
+Para essa jornada que estamos iniciando, utilizaremos a AWS como nosso provedor de computação em nuvem. Por trás desta decisão estão os [benefícios de usar computação em nuvem](https://aws.amazon.com/what-is-cloud-computing/) e familiaridade no uso dos serviços de *machine learning* na AWS.
 
 ### Arquitetura proposta
 
