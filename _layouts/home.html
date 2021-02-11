@@ -8,8 +8,8 @@ layout: page
 
 <div class="posts-list">
   {% for post in posts %}
-  {% unless post.draft %}
-  <article class="post-preview">
+    {% unless post.draft %}
+    <article class="post-preview">
 
     {%- capture thumbnail -%}
       {% if post.thumbnail-img %}
