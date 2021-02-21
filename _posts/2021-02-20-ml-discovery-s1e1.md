@@ -245,12 +245,18 @@ Em seguida, abra sua conta AWS, e no serviço lambda, crie uma nova função. Se
 
 <p style="text-align: center"><img src="https://i.imgur.com/vU99jGm.png"></p>
 
-Uma vez criada, a função podemos fazer o teste da função lambda pelo console. Crie um novo teste e o execute-o.
+Uma vez criada, a função podemos fazer o teste da função lambda pelo console. Crie um novo teste e execute-o.
 
+<p style="text-align: center"><img src="https://i.imgur.com/7jWtjYF.png"></p>
 
+A primeira execução de um container lambda pode ser bastante lenta. No caso da nossa imagem, foram aproximadamente 9 segundos, o que gerou a necessidade de aumentar o *timeout* da função (*default* de 3 segundos). Contudo, a partir da segunda execução, o tempo de processamento reduziu para 0,5 segundos. Este é um padrão conhecido como [cold-start](https://aws.amazon.com/blogs/compute/new-for-aws-lambda-predictable-start-up-times-with-provisioned-concurrency/), típico das funções lambda.
 
+<p style="text-align: center"><img src="https://i.imgur.com/xtiB8H9.png"></p>
 
+## Pensamentos finais
 
-{: .box-note}
-**Note:** This is a notification box.
-asdad
+Lambda *containers* surgem como uma interessante alternativa para trabalhar com aplicações conteinerizadas associado com o modelo de *pricing* das funções lambdas. A redução de custos em comparação com soluções como ECS ou EC2 é expressiva, mas o cold-start desses *containers* deve ser levado em conta para sistemas em que baixa latência é um requisito.
+
+Nos vemos no próximo episódio!
+
+<p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
