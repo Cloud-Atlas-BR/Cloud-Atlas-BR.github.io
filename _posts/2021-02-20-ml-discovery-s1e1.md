@@ -4,7 +4,7 @@ title: Machine Learning Discovery - S01E01
 subtitle: AWS Lambda Containers + Machine Learning
 tags: [aws, mlops, machine, learning, lambda, container, docker]
 comments: true
-draft: true
+draft: false
 ---
 
 Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda desponta como o [segundo serviço de computação mais popular](https://www.techrepublic.com/article/the-top-30-amazon-products-and-services-tech-pros-used-this-year/), e o 13° entre todos os serviços. Através das AWS Lambda *functions*, é possível executar códigos de [diferentes linguagens de programação](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) (python, go, node, java) com toda infraestrutura sendo gerenciada pela AWS.
