@@ -22,15 +22,15 @@ Pequenos, pois as limitações das funções lambdas estão na execução da sua
 
 Existem, por outro lado, limitações menos comentadas.
 
-O fato de trabalharmos apenas no nível da aplicação, nos impede (gambiarra free) de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo no mesmo ambiente em que a função lambda é executada.
+O fato de trabalharmos apenas no nível da aplicação, nos impede de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo no mesmo ambiente em que a função lambda é executada.
 
 <p style="text-align: center"><img src="https://i.imgur.com/CZ6TqF5.jpg"></p>
 
-Docker! [Assim como para metade de todos os problemas de desenvolvimento](https://i.redd.it/iv0oiaz7aqe41.jpg), o uso de *containers* docker é uma solução adequada para as limitações de reprodutibilidade: desenvolver no mesmo ambiente que o código será executado.
+Docker! [Assim como para metade de todos os problemas de desenvolvimento](https://i.redd.it/iv0oiaz7aqe41.jpg), o uso de *containers* docker é uma solução adequada para as limitações de reprodutibilidade: desenvolver no mesmo ambiente em que o código será implantado.
 
-O projeto lambCI disponibiliza [imagens Docker](https://hub.docker.com/r/lambci/lambda/) para esse proposito. Inclusive sendo a [solução recomendada pela AWS para criação de Lambda Layers](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-layer-simulated-docker/) - o equivalente de virtualenvs do python para as funções lambda.
+O projeto lambCI disponibiliza [imagens Docker](https://hub.docker.com/r/lambci/lambda/) para esse propósito. Inclusive sendo a [solução recomendada pela AWS para criação de Lambda Layers](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-layer-simulated-docker/) - o equivalente de virtualenvs do python para as funções lambda.
 
-Mas, covenhamos... o uso de imagens que mimetizam o ambiente Lambda não resolve integralmente as questões levantadas. Ainda não conseguimos customizar o container docker no qual o código da função Lambda é executado, ou migrar este container para uma infraestrutura *on-premisse*. Não temos controle sobre esse container.
+Mas, covenhamos..., o uso de imagens que mimetizam o ambiente Lambda não resolve integralmente as questões levantadas. Ainda não conseguimos customizar o container docker no qual o código da função Lambda é executado, ou migrar este container para uma infraestrutura *on-premisse*. Não temos controle sobre esse container.
 
 Ou melhor, não tínhamos!
 
@@ -211,7 +211,7 @@ Você verá um *output* semelhante ao final da execução.
 
 Com isso, temos nosso container lambda esperando requisições no endereço: http://localhost:9000/2015-03-31/functions/function/invocations.
 
-Experimente enviar uma requisições com o seguinte comando (em outro terminal).
+Experimente enviar uma requisição com o seguinte comando (em um outro terminal).
 
 ```sh
 curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"data": [0,0,0,0]}'
