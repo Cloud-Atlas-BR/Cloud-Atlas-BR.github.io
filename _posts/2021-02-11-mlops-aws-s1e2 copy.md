@@ -1,11 +1,14 @@
 ---
 layout: post
-title: Criando um pipeline de MLOps na AWS - S01E01
-subtitle: Desenho de arquitetura  
+title: Criando um pipeline de MLOps na AWS - S01E02
+subtitle: Automatizando a coleta de dados
 tags: [aws, mlops, machine, learning]
 comments: true
 draft: true
 ---
+
+No [último episodio](), desenhamos a arquitura de um produto de machine learning, na forma de uma skill Alexa, capaz de retornar ao usuário o sentimento (positivo ou negativo) associado às hashtags de cada um dos estados brasileiros.
+
 
 
 
