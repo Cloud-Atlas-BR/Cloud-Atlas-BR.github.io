@@ -7,8 +7,6 @@ comments: true
 draft: true
 ---
 
-asdad
+asd
 
-{: .box-note} Note: This is a notification box. asdasdadasdadasdadadadadad
-adasdasdasdasdasdasd
-adasdasdad
+{: .box-note} Note: This is a notification box.
