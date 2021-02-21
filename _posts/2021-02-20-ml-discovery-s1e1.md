@@ -18,7 +18,7 @@ Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no c�
 - Precificação do uso em incrementos de milissegundo
 
 Lambda é uma escolha ideal para pequenos *workloads* agendados ou orientados a eventos. 
-Pequenos, pois as limitações das funções lambdas estão na execução da sua aplicação em CPUs, consumindo até 10 GB de memória em no máximo 15 minutos.
+Pequenos, pois as limitações das funções lambdas estão na execução da sua aplicação em até 6 CPUs, consumindo até 10 GB de memória em no máximo 15 minutos.
 
 Existem, por outro lado, limitações menos comentadas.
 
