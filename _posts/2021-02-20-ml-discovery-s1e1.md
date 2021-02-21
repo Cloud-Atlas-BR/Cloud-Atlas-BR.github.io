@@ -7,11 +7,11 @@ comments: true
 draft: false
 ---
 
-Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda desponta como o [segundo serviço de computação mais popular](https://www.techrepublic.com/article/the-top-30-amazon-products-and-services-tech-pros-used-this-year/), e o 13° entre todos os serviços. Através das AWS Lambda *functions*, é possível executar códigos de [diferentes linguagens de programação](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) (python, go, node, java) com toda infraestrutura sendo gerenciada pela AWS.
+Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda desponta como o [segundo serviço de computação mais popular](https://www.techrepublic.com/article/the-top-30-amazon-products-and-services-tech-pros-used-this-year/), e o 13° entre todos os serviços da AWS. Através das funções lambda, é possível executar códigos de [diferentes linguagens de programação](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) (python, go, node, java) com toda infraestrutura sendo gerenciada pela AWS.
 
 <p style="text-align: center"><img src="https://i.imgur.com/d9Bnnqq.png"></p>
 
-Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação, ao mesmo tempo que entrega features como:
+Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação, ao mesmo tempo que tem em suas mãos features como:
 
 - Integração nativa com dezenas de serviços (S3, SQS, SNS, Kinesis, Api Gateway)
 - [Gratuidade de até 1 milhão de requisições por mês](https://aws.amazon.com/lambda/pricing/)
