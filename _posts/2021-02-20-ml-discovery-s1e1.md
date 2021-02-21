@@ -256,7 +256,7 @@ A primeira execução de um container lambda pode ser bastante lenta. No caso da
 
 ## Pensamentos finais
 
-Lambda *containers* surgem como uma interessante alternativa para trabalhar com aplicações conteinerizadas associado com o modelo de *pricing* das funções lambdas. A redução de custos em comparação com soluções como ECS ou EC2 é expressiva, mas o cold-start desses *containers* deve ser levado em conta para sistemas em que baixa latência é um requisito.
+Lambda *containers* surgem como uma interessante alternativa para trabalhar com aplicações conteinerizadas por conta do modelo de *pricing* das funções lambdas. A redução de custos em comparação com soluções como ECS ou EC2 é expressiva, mas o cold-start desses *containers* deve ser levado em conta para sistemas em que a baixa latência é um requisito.
 
 Nos vemos no próximo episódio!
 
