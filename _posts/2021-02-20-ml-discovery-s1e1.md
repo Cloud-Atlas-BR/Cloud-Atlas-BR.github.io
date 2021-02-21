@@ -7,7 +7,10 @@ comments: true
 draft: true
 ---
 
-asd
+Em dezembro de 2020, a [AWS anuncia o suporte a containers às funções Lambda](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/)
+
+
 
 {: .box-note}
 **Note:** This is a notification box.
+asdad
