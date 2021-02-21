@@ -9,4 +9,5 @@ draft: true
 
 asd
 
-{: .box-note} Note: This is a notification box.
+{: .box-note}
+**Note:** This is a notification box.
