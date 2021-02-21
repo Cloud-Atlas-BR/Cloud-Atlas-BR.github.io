@@ -127,9 +127,9 @@ import json
 
 def handler(event, context):
 
-    dados = event["data"]
+    dados = list(event["data"])
     modelo = joblib.load("modelo.joblib")
-    resposta = list(modelo.predict([dados]))
+    resposta = int(modelo.predict([dados]))
 
     return {
 
@@ -208,6 +208,24 @@ docker run -p 9000:8080 deploy:latest
 Você verá um *output* semelhante ao final da execução.
 
 <p style="text-align: center"><img src="https://i.imgur.com/Iz7dTmG.png"></p>
+
+Com isso, temos nosso container lambda esperando requisições no endereço: http://localhost:9000/2015-03-31/functions/function/invocations.
+
+Experimente enviar uma requisições com o seguinte comando (em outro terminal).
+
+```sh
+curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"data": [0,0,0,0]}'
+```
+
+A resposta da chamada terá output equivalente a este.
+
+<p style="text-align: center"><img src="https://i.imgur.com/ydI6oj7.png"></p>
+
+Já os *logs* do container retornarão uma saída semelhante a esta.
+
+<p style="text-align: center"><img src="https://i.imgur.com/ViUGPGb.png"></p>
+
+<p style="text-align: center"><img src="https://i.imgur.com/e1coPXt.jpg"></p>
 
 
 {: .box-note}

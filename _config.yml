@@ -14,10 +14,9 @@ author: Adelmo Filho · Rodrigo Ekstein
 # --- List of links in the navigation bar --- #
 
 navbar-links:
-  About: "aboutme"
   Authors:
-    - Adelmo Filho: "https://beautifuljekyll.com"
-    - Rodrigo Ekstein: "https://www.markdowntutorial.com/"
+    - Adelmo Filho: "https://www.linkedin.com/in/adelmoaguiarfilho/"
+    - Rodrigo Ekstein: "https://www.linkedin.com/in/rodrigo-jardim-ekstein-972bb732/"
 
 # --- Logo --- #
 
