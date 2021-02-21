@@ -11,7 +11,7 @@ Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda despo
 
 <p style="text-align: center"><img src="https://i.imgur.com/d9Bnnqq.png"></p>
 
-Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação, ao mesmo tempo que tem em suas mãos features como:
+Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação. Além disso, oferece features como:
 
 - Integração nativa com dezenas de serviços (S3, SQS, SNS, Kinesis, Api Gateway)
 - [Gratuidade de até 1 milhão de requisições por mês](https://aws.amazon.com/lambda/pricing/)
