@@ -81,7 +81,7 @@ threadpoolctl==2.1.0
 ```
 <p style="text-align: center; margin-top: 0px">requirements.txt</p>
 
-Em posse desses dos arquivos *train.py* e *requirements.txt* podemos começar a escrever nossa imagem Docker.
+Em posse dos arquivos *train.py* e *requirements.txt* podemos começar a escrever nossa imagem Docker.
 
 
 ```Dockerfile
@@ -118,7 +118,7 @@ Para que um container possa ser executado pelo AWS Lambda é necessário que o m
 
 Ao executarmos, por exemplo, o comando `python3 -m awslambdaric app.handler` como *entrypoint* da nossa imagem, o serviço Lambda passa a entender que qualquer requisição deve ser processada pela função `handler` contida no arquivo `app.py`.
 
-Para fins desse tutorial, nosso arquivo `app.py` terá a seguinte estrutura, na qual o modelo é carregado em tempo de execução e retorna para o usuário sua predição na forma de uma lista.
+Para fins desse tutorial, nosso arquivo `app.py` terá a seguinte estrutura, na qual o modelo é carregado em tempo de execução e retorna para o usuário sua predição com base nos dados enviados.
 
 ```python
 import joblib
@@ -137,10 +137,11 @@ def handler(event, context):
         'body': resposta
     }
 ```
+<p style="text-align: center; margin-top: 0px">app.py</p>
 
 Neste ponto, já poderíamos escrever a imagem Docker para deploy na AWS. Mas, por quê não testar o funcionamento desse Lambda localmente?
 
-Isso pode ser feito com a adição, na imagem, de um [emulador de interface](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-images.html#runtimes-api-client) - `aws-lambda-rie`. Para isso, escreveremos um arquivo `entry.sh` que será executado como *entrypoint* de nossa imagem com o seguinte conteúdo.
+Isso pode ser feito com a adição, na imagem, de um [emulador de interface](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-images.html#runtimes-api-client) (`aws-lambda-rie`). Para isso, escreveremos um arquivo `entry.sh` que será executado como *entrypoint* de nossa imagem com o seguinte conteúdo.
 
 ```sh
 #!/bin/sh
@@ -227,7 +228,7 @@ Já os *logs* do container retornarão uma saída semelhante a esta.
 
 <p style="text-align: center"><img src="https://i.imgur.com/e1coPXt.jpg"></p>
 
-### Implantando meu container na Cloud
+### Implantando seu container na Cloud
 
 Para fecharmos esse tutorial, vamos subir nosso container para o AWS Lambda. Inicialmente, criamos um *registry* na AWS e subimos nossa imagem para ele. No código abaixo, substitua a variável `<ACCOUNT ID>` pelos 12 dígitos do Id da sua conta AWS.
 
