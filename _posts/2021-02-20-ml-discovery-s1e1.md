@@ -52,7 +52,7 @@ Nosso modelo será uma *random forest* capaz de predizer uma classe binária pro
 
 Nossa imagem personalizada será baseada na imagem [`python:3.8.8-slim-buster`](https://hub.docker.com/_/python). Treinaremos o modelo no *build* da imagem Docker com o [seguinte *script* Python](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
 
-```Python
+```python
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
@@ -71,7 +71,7 @@ joblib.dump(clf, "modelo.joblib")
 
 As seguintes bibliotecas python devem ser instaladas para a correta execução do *script* de treinamento.
 
-```txt
+```python
 joblib==1.0.1
 numpy==1.20.1
 scikit-learn==0.24.1
@@ -226,6 +226,29 @@ Já os *logs* do container retornarão uma saída semelhante a esta.
 <p style="text-align: center"><img src="https://i.imgur.com/ViUGPGb.png"></p>
 
 <p style="text-align: center"><img src="https://i.imgur.com/e1coPXt.jpg"></p>
+
+### Implantando meu container na Cloud
+
+Para fecharmos esse tutorial, vamos subir nosso container para o AWS Lambda. Inicialmente, criamos um *registry* na AWS e subimos nossa imagem para ele. No código abaixo, substitua a variável `<ACCOUNT ID>` pelos 12 dígitos do Id da sua conta AWS.
+
+```sh
+aws ecr create-repository --repository-name deploy
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com
+
+docker tag deploy:latest <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com/deploy:latest
+
+docker push <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com/deploy:latest
+```
+
+Em seguida, abra sua conta AWS, e no serviço lambda, crie uma nova função. Selecione a opção `Container Image`, insira um nome para a função, e selecione a imagem Docker que você acabou de dar *push*.
+
+<p style="text-align: center"><img src="https://i.imgur.com/vU99jGm.png"></p>
+
+Uma vez criada, a função podemos fazer o teste da função lambda pelo console. Crie um novo teste e o execute-o.
+
+
+
 
 
 {: .box-note}
