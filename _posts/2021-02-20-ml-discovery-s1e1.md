@@ -22,7 +22,9 @@ Pequenos, pois as limitações das funções lambdas estão na execução da sua
 
 Existem, por outro lado, outras "limitações" pouco comentadas.
 
-O fato de trabalharmos apenas no nível da aplicação, nos impede (gambiarra free) de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo 
+O fato de trabalharmos apenas no nível da aplicação, nos impede (gambiarra free) de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo no mesmo ambiente em que a função lambda é executada. Essa última caracteristica, 
+
+
 
 
 Em dezembro de 2020, a [AWS anuncia o suporte a containers às funções Lambda](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/). A popularidade do AWS Lambda pode ser explicada pela 
