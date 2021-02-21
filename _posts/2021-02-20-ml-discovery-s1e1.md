@@ -9,7 +9,7 @@ draft: true
 
 Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda desponta como o [segundo serviço de computação mais popular](https://www.techrepublic.com/article/the-top-30-amazon-products-and-services-tech-pros-used-this-year/), e o 13° entre todos os serviços. Através das AWS Lambda *functions*, é possível executar códigos de [diferentes linguagens de programação](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) (python, go, node, java) com toda infraestrutura sendo gerenciada pela AWS.
 
-<p style="text-align: center"><img src="./_img/lambda.png"></p>
+<p style="text-align: center"><img src="_img/lambda.png"></p>
 
 Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação, ao mesmo tempo que entrega features como:
 
@@ -23,6 +23,7 @@ Pequenos, pois as limitações das funções lambdas estão na execução da sua
 Existem, por outro lado, outras "limitações" pouco comentadas.
 
 O fato de trabalharmos apenas no nível da aplicação, nos impede (gambiarra free) de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo no mesmo ambiente em que a função lambda é executada.
+
 
 
 
