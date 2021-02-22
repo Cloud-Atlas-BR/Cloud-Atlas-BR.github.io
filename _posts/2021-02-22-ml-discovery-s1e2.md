@@ -7,9 +7,9 @@ comments: true
 draft: false
 ---
 
-Em um levantamento da [2nd Watch](https://www.2ndwatch.com/), o AWS Lambda desponta como o [segundo serviço de computação mais popular](https://www.techrepublic.com/article/the-top-30-amazon-products-and-services-tech-pros-used-this-year/), e o 13° entre todos os serviços da AWS. Através das funções lambda, é possível executar códigos de [diferentes linguagens de programação](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) (python, go, node, java) com toda infraestrutura sendo gerenciada pela AWS.
+Quando iniciamos a discussão referente ao provisionamento de infraestrutura, popularmente chamado de IAC (Infraestrcture as a Code) clichês começam a aparecer em nossa conversa. Na comunidade existe uma grande discussão, entre, prós e contras de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
 
-<p style="text-align: center"><img src="https://i.imgur.com/d9Bnnqq.png"></p>
+## Um pouco de história e contextualização
 
 Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação. Além disso, oferece features como:
 
