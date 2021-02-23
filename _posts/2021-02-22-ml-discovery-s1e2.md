@@ -27,6 +27,30 @@ Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais f
 
 ## CDK, Why Not ?
 
+Como dito anteriormente, o CDK quer ser visto como ***"Infra as Real Code"***, essa mensagem carrega uma carga de autonomia designada diretamente ao desenvolvedor que tem como objetivo entregar sua aplicação/projeto. Linguagens como TypeScript, JavaScript, NodeJs e Python. Aqui estamos lhe dando com um conceito chamado **Transpiler** que nada mais é que obter o código em uma linguagem específica como JavaScript e traduzir para um outro código correspondente.
+
+Entao toda aquela verbosidade do Cloudformation é substituida por uma sintaxe familiar ao desenvolvedor ao passo que o seu desenvolvimento fica extramente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferencia do desenvolvedor que executa um transpiler cujo output sera um script de Cloudformation.
+
+E claro, um dos beneficios é que nao precisamos dedicar tempo no aprendizado de uma DSL especifica como por exemplo o **Terraform**.
+
+## Gerenciamento de Estados 
+
+Como ja utilizado por outras ferramentas de IAC, o CDK também utiliza-se de um gerenciador de estados para a stack de Cloudformation, e tais estados sao armazenados em um bucket S3, bem como informações sobre os recursos de infra provisionados.
+
+Bom, introdução e contextualização concluidas com sucesso !
+
+## Proposta
+
+Agora vamos pensar de forma conjunta, e se utilizassemos o nosso primeiro episódio de ML discovery e implementarmos o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python como padrão.
+
+## Talk is cheap, show me the code
+
+
+
+
+
+
+
 
 
 
