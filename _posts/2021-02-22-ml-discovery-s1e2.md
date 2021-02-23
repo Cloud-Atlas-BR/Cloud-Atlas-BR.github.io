@@ -81,7 +81,12 @@ vamos entao conhecer o que temos dentro do diretorio da aplicação.
 |_ source.bat
 ```
 
+Agora vamos entender qual a função de cada elemento acima, os mesmos fazem parte do diretorio em que inicializamos o projeto **CDK**.
 
+* README.md - arquivo README para o projeto
+* app.py - script "main" para o projeto CDK.
+* cdk.json - arquivo de condiguração que lista quais componentes devem ser executados durante o deploy da stack.
+* mldiscovery_app - 
 
 
 
