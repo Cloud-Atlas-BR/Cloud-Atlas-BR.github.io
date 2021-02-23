@@ -86,7 +86,10 @@ Agora vamos entender qual a função de cada elemento acima, os mesmos fazem par
 * README.md - arquivo README para o projeto
 * app.py - script "main" para o projeto CDK.
 * cdk.json - arquivo de condiguração que lista quais componentes devem ser executados durante o deploy da stack.
-* mldiscovery_app - 
+* mldiscovery_app - Diretorio com o codigo Python
+  * mldiscovery_app_stack.py - script Python com o codigo responsavel pelo provisionamento da infraestrutura
+* requirements.txt - Arquivo com as dependencias Python a serem utilizadas no projeto
+*  
 
 
 
