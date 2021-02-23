@@ -27,254 +27,67 @@ Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais f
 
 ## CDK, Why Not ?
 
+Como dito anteriormente, o CDK quer ser visto como ***"Infra as Real Code"***, essa mensagem carrega uma carga de autonomia designada diretamente ao desenvolvedor que tem como objetivo entregar sua aplicação/projeto. Linguagens como TypeScript, JavaScript, NodeJs e Python. Aqui estamos lhe dando com um conceito chamado **Transpiler** que nada mais é que obter o código em uma linguagem específica como JavaScript e traduzir para um outro código correspondente.
 
+Entao toda aquela verbosidade do Cloudformation é substituida por uma sintaxe familiar ao desenvolvedor ao passo que o seu desenvolvimento fica extramente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferencia do desenvolvedor que executa um transpiler cujo output sera um script de Cloudformation.
 
+E claro, um dos beneficios é que nao precisamos dedicar tempo no aprendizado de uma DSL especifica como por exemplo o **Terraform**.
 
-- Integração nativa com dezenas de serviços (S3, SQS, SNS, Kinesis, Api Gateway)
-- [Gratuidade de até 1 milhão de requisições por mês](https://aws.amazon.com/lambda/pricing/)
-- Precificação do uso em incrementos de milissegundo
+## Gerenciamento de Estados 
 
-Lambda é uma escolha ideal para pequenos *workloads* agendados ou orientados a eventos. 
-Pequenos, pois as limitações das funções lambdas estão na execução da sua aplicação em até 6 CPUs, consumindo até 10 GB de memória em no máximo 15 minutos.
+Como ja utilizado por outras ferramentas de IAC, o CDK também utiliza-se de um gerenciador de estados para a stack de Cloudformation, e tais estados sao armazenados em um bucket S3, bem como informações sobre os recursos de infra provisionados.
 
-Existem, por outro lado, limitações menos comentadas.
+Bom, introdução e contextualização concluidas com sucesso !
 
-O fato de trabalharmos apenas no nível da aplicação, nos impede de (1) instalar bibliotecas de sistema operacional e (2) garantir a reprodutibilidade dos resultados, pois não estaremos desenvolvendo no mesmo ambiente em que a função lambda é executada.
+## Proposta
 
-<p style="text-align: center"><img src="https://i.imgur.com/CZ6TqF5.jpg"></p>
+Agora vamos pensar de forma conjunta, e se utilizassemos o nosso primeiro episódio de ML discovery e implementarmos o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python como padrão.
 
-Docker! [Assim como para metade de todos os problemas de desenvolvimento](https://i.redd.it/iv0oiaz7aqe41.jpg), o uso de *containers* docker é uma solução adequada para as limitações de reprodutibilidade: desenvolver no mesmo ambiente em que o código será implantado.
+## Talk is cheap, show me the code
 
-O projeto lambCI disponibiliza [imagens Docker](https://hub.docker.com/r/lambci/lambda/) para esse propósito. Inclusive sendo a [solução recomendada pela AWS para criação de Lambda Layers](https://aws.amazon.com/premiumsupport/knowledge-center/lambda-layer-simulated-docker/) - o equivalente de virtualenvs do python para as funções lambda.
+Bom, entao vamos começar.
 
-Mas, covenhamos..., o uso de imagens que mimetizam o ambiente Lambda não resolve integralmente as questões levantadas. Ainda não conseguimos customizar o container docker no qual o código da função Lambda é executado, ou migrar este container para uma infraestrutura *on-premisse*. Não temos controle sobre esse container.
+Primeiro, vamos instalar o CDK.
 
-Ou melhor, não tínhamos!
-
-## Lambda Containers
-
-Em dezembro de 2020, a [AWS anuncia o suporte a containers às funções Lambda](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/).
-
-Isso significa que o serviço AWS Lambda passa a ser capaz de executar containers definidos pelo desenvolvedor. Passando de um [*function-as-a-service*](https://en.wikipedia.org/wiki/Function_as_a_service) para algo como um *entrypoint-as-a-service*.
-
-As limitações de tempo (15 minutos) e memória (10 GB) se mantém, mas, diferente dos 250 MB de espaço disponíveis para a execução das funções, é possível executar imagens docker de até 10 GB.
-
-## Implantando um Lambda Container
-
-Nesse tutorial, vamos explorar o deploy de um modelo de **machine learning** em Python utilizando *lambda containers*.
-
-Nosso modelo será uma *random forest* capaz de predizer uma classe binária proveniente de uma base de dados artificial. Como comentamos, para garantir a reprodutibilidade do modelo, iremos treiná-lo dentro da imagem docker que será executada pelo Lambda.
-
-### Treinando o modelo
-
-Nossa imagem personalizada será baseada na imagem [`python:3.8.8-slim-buster`](https://hub.docker.com/_/python). Treinaremos o modelo no *build* da imagem Docker com o [seguinte *script* Python](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
-
-```python
-import joblib
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import make_classification
-
-X, y = make_classification(n_samples=1000, n_features=4,
-                           n_informative=2, n_redundant=0,   
-                           random_state=0, shuffle=False)
-
-clf = RandomForestClassifier(max_depth=2, random_state=0)
-
-clf.fit(X, y)
-
-joblib.dump(clf, "modelo.joblib")
+```console
+rjekstein@instance~$ pip install aws-cdk.core, aws-cdk.aws-lambda
 ```
-<p style="text-align: center; margin-top: 0px">train.py</p>
+Como podemos ver, o CDK parte de uma instalação **core**, junto com essa instalação precisamos informar com quais módulos do CDK iremos trabalhar, que para esta caso utilizaremos o **lambda**.
 
-As seguintes bibliotecas python devem ser instaladas para a correta execução do *script* de treinamento.
+Com os pacotes instalados precisamos inicializar o projeto com a seguinte diretiva.
 
-```python
-joblib==1.0.1
-numpy==1.20.1
-scikit-learn==0.24.1
-scipy==1.6.1
-sklearn==0.0
-threadpoolctl==2.1.0
+```console
+rjekstein@instance~$ cdk init mldiscovery-app --language python
 ```
-<p style="text-align: center; margin-top: 0px">requirements.txt</p>
+com o comando executado acima o CDK irá criar uma estrutura de diretorios e arquivos contendo toda as peças necessárias para realizar o provisionamento da infraestrutura.
+vamos entao conhecer o que temos dentro do diretorio da aplicação.
 
-Em posse dos arquivos *train.py* e *requirements.txt* podemos começar a escrever nossa imagem Docker.
-
-
-```Dockerfile
-# Imagem Base
-FROM python:3.8.8-slim-buster
-
-# Criação do diretório padrão do lambda container
-ARG FUNCTION_DIR="/function/"
-WORKDIR ${FUNCTION_DIR}
-
-# Treinamento do modelo
-
-COPY requirements.txt ${FUNCTION_DIR}/requirements.txt
-COPY train.py ${FUNCTION_DIR}/train.py
-
-RUN pip3 install \
-        --target ${FUNCTION_DIR} \
-        -r requirements.txt
-
-RUN python3 train.py
+```console
+(.env) $ tree
+.
+├── README.md
+├── app.py
+├── cdk.json
+├── mldiscovrey_app
+│   ├── __init__.py│   
+│   └── mldiscovrey_app_stack.py
+├── requirements.txt
+├── setup.py
+└── tests
+    ├── __init__.py
+    └── unit
+        ├── __init__.py
+        └── test_hello_construct.py
+|_ source.bat
 ```
 
-<p style="text-align: center; margin-top: 0px">Dockerfile para treinamento do modelo</p>
 
-Em seguida, vamos executar e salvar a imagem Docker em nossa máquina com o comando.
 
-```sh
-docker build -t modelo .
-```
 
-### Criando o container lambda
 
-Para que um container possa ser executado pelo AWS Lambda é necessário que o mesmo possua uma interface capaz de se comunicar com o serviço Lambda. No caso do Python, essa interface é provida pela biblioteca `awslambdaric`.
 
-Ao executarmos, por exemplo, o comando `python3 -m awslambdaric app.handler` como *entrypoint* da nossa imagem, o serviço Lambda passa a entender que qualquer requisição deve ser processada pela função `handler` contida no arquivo `app.py`.
 
-Para fins desse tutorial, nosso arquivo `app.py` terá a seguinte estrutura, na qual o modelo é carregado em tempo de execução e retorna para o usuário sua predição com base nos dados enviados.
 
-```python
-import joblib
-import sklearn
-import json
 
-def handler(event, context):
 
-    dados = list(event["data"])
-    modelo = joblib.load("modelo.joblib")
-    resposta = int(modelo.predict([dados]))
 
-    return {
-
-        'statusCode': 200,
-        'body': resposta
-    }
-```
-<p style="text-align: center; margin-top: 0px">app.py</p>
-
-Neste ponto, já poderíamos escrever a imagem Docker para deploy na AWS. Mas, por quê não testar o funcionamento desse Lambda localmente?
-
-Isso pode ser feito com a adição, na imagem, de um [emulador de interface](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-images.html#runtimes-api-client) (`aws-lambda-rie`). Para isso, escreveremos um arquivo `entry.sh` que será executado como *entrypoint* de nossa imagem com o seguinte conteúdo.
-
-```sh
-#!/bin/sh
-if [ -z "${AWS_LAMBDA_RUNTIME_API}" ]; then
-  exec /usr/local/bin/aws-lambda-rie /usr/local/bin/python -m awslambdaric $1
-else
-  exec /usr/local/bin/python -m awslambdaric $1
-
-fi
-```
-
-<p style="text-align: center; margin-top: 0px">entry.sh</p>
-
-A variável de ambiente `AWS_LAMBDA_RUNTIME_API` permite identificar se estamos executando o container localmente, ou através do AWS Lambda. Em ambos os casos estaremos executando o comando comentado mais acima, mas no caso da execução ser local, encapsulamos a chamada dele através do `aws-lambda-rie`.
-
-Com todas as cartas agora na mesa, chegamos na seguinte imagem Docker.
-
-```Dockerfile
-# Imagem Base
-FROM modelo:latest
-
-ARG FUNCTION_DIR="/function/"
-
-# Instalação do awslambdaric
-RUN apt-get update && \
-  apt-get install -y \
-  g++ \
-  make \
-  cmake \
-  unzip \
-  wget \
-  libcurl4-openssl-dev
-
-RUN pip3 install --target ${FUNCTION_DIR} awslambdaric
-
-# Obtenção do aws-lambda-rie
-RUN wget https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie -P /usr/local/bin/
-RUN chmod +x /usr/local/bin/aws-lambda-rie
-
-# Cópia dos arquivos de execução
-COPY app.py app.py
-RUN chmod +x app.py
-
-COPY entry.sh entry.sh
-RUN chmod +x entry.sh
-
-ENTRYPOINT [ "./entry.sh" ]
-CMD [ "app.handler" ]
-```
-
-<p style="text-align: center; margin-top: 0px">Dockerfile para implantação do modelo</p>
-
-Observe que na última instrução do Dockerfile, informamos para o arquivo `entry.sh` o valor do argumento `$1`, que deve corresponder à função a ser executada pelo lambda.
-
-### Testando seu container lambda localmente
-
-Em posse do Dockerfile anterior, execute os seguintes comando para montar e executar seu container:
-
-```sh
-docker build -t deploy .
-
-docker run -p 9000:8080 deploy:latest
-```
-
-Você verá um *output* semelhante ao final da execução.
-
-<p style="text-align: center"><img src="https://i.imgur.com/Iz7dTmG.png"></p>
-
-Com isso, temos nosso container lambda esperando requisições no endereço: http://localhost:9000/2015-03-31/functions/function/invocations.
-
-Experimente enviar uma requisição com o seguinte comando (em um outro terminal).
-
-```sh
-curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"data": [0,0,0,0]}'
-```
-
-A resposta da chamada terá output equivalente a este.
-
-<p style="text-align: center"><img src="https://i.imgur.com/ydI6oj7.png"></p>
-
-Já os *logs* do container retornarão uma saída semelhante a esta.
-
-<p style="text-align: center"><img src="https://i.imgur.com/ViUGPGb.png"></p>
-
-<p style="text-align: center"><img src="https://i.imgur.com/e1coPXt.jpg"></p>
-
-### Implantando seu container na Cloud
-
-Para fecharmos esse tutorial, vamos subir nosso container para o AWS Lambda. Inicialmente, criamos um *registry* na AWS e subimos nossa imagem para ele. No código abaixo, substitua a variável `<ACCOUNT ID>` pelos 12 dígitos do Id da sua conta AWS.
-
-```sh
-aws ecr create-repository --repository-name deploy
-
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com
-
-docker tag deploy:latest <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com/deploy:latest
-
-docker push <ACCOUNT ID>.dkr.ecr.us-east-1.amazonaws.com/deploy:latest
-```
-
-Em seguida, abra sua conta AWS, e no serviço lambda, crie uma nova função. Selecione a opção `Container Image`, insira um nome para a função, e selecione a imagem Docker que você acabou de dar *push*.
-
-<p style="text-align: center"><img src="https://i.imgur.com/vU99jGm.png"></p>
-
-Uma vez criada, a função podemos fazer o teste da função lambda pelo console. Crie um novo teste e execute-o.
-
-<p style="text-align: center"><img src="https://i.imgur.com/7jWtjYF.png"></p>
-
-A primeira execução de um container lambda pode ser bastante lenta. No caso da nossa imagem, foram aproximadamente 9 segundos, o que gerou a necessidade de aumentar o *timeout* da função (*default* de 3 segundos). Contudo, a partir da segunda execução, o tempo de processamento reduziu para 0,5 segundos. Este é um padrão conhecido como [cold-start](https://aws.amazon.com/blogs/compute/new-for-aws-lambda-predictable-start-up-times-with-provisioned-concurrency/), típico das funções lambda.
-
-<p style="text-align: center"><img src="https://i.imgur.com/xtiB8H9.png"></p>
-
-## Pensamentos finais
-
-Lambda *containers* surgem como uma interessante alternativa para trabalhar com aplicações conteinerizadas por conta do modelo de *pricing* das funções lambdas. A redução de custos em comparação com soluções como ECS ou EC2 é expressiva, mas o cold-start desses *containers* deve ser levado em conta para sistemas em que a baixa latência é um requisito.
-
-Nos vemos no próximo episódio!
-
-<p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
