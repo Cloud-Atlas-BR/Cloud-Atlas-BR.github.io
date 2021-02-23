@@ -59,6 +59,27 @@ Com os pacotes instalados precisamos inicializar o projeto com a seguinte direti
 ```console
 rjekstein@instance~$ cdk init mldiscovery-app --language python
 ```
+com o comando executado acima o CDK irá criar uma estrutura de diretorios e arquivos contendo toda as peças necessárias para realizar o provisionamento da infraestrutura.
+vamos entao conhecer o que temos dentro do diretorio da aplicação.
+
+```console
+(.env) $ tree
+.
+├── README.md
+├── app.py
+├── cdk.json
+├── mldiscovrey_app
+│   ├── __init__.py│   
+│   └── mldiscovrey_app_stack.py
+├── requirements.txt
+├── setup.py
+└── tests
+    ├── __init__.py
+    └── unit
+        ├── __init__.py
+        └── test_hello_construct.py
+|_ source.bat
+```
 
 
 
