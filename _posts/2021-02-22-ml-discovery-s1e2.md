@@ -4,7 +4,7 @@ title: Machine Learning Discovery - S01E02
 subtitle: IAC (Infraestructure as a Code ), Não ! Infraestrutra é Código.
 tags: [aws, mlops, machine, learning, lambda, container, docker, cdk]
 comments: true
-draft: false
+draft: true
 ---
 
 Quando iniciamos a discussão referente ao provisionamento de infraestrutura, popularmente chamado de IAC (Infraestrcture as a Code) clichês começam a aparecer em nossa conversa. Na comunidade existe uma grande discussão, entre, prós e contras de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
