@@ -9,9 +9,26 @@ draft: true
 
 Quando iniciamos a discussão referente ao provisionamento de infraestrutura, popularmente chamado de IAC (Infraestrcture as a Code) clichês começam a aparecer em nossa conversa. Na comunidade existe uma grande discussão, entre, prós e contras de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
 
+Inclusive, sera que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável ? Ou, será que o provisionamento de nossa infraestrutura nao precisar ser ***as a code*** e sim escrita em forma código de ponta a ponta ?
+
+Antes de falarmos mais sobre o objetivo deste post que é propriamente o **CDK - Cloud Development Kit**, vamos falar um pouco sobre a historia do nosso querido e guerreiro Cloudformation e como chegamos até o CDK.
+
+Let's Bora !
+
 ## Um pouco de história e contextualização
 
-Essa poderosa simplicidade permite que a atenção do desenvolvedor esteja no código da aplicação. Além disso, oferece features como:
+o ano é 2011, e aqui nasce o Cloudformation e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. A oferta deste serviço para a epoca ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrtura dessa aplicação estivesse abstraida por um padrao unico e utilizando sintaxes e padroes já conhecidos como Json e YAML.
+
+É claro que com o padrão declarativo a visualização e o entendimento do que estamos provisionando facilita o entendimento do que realmente esta acontecendo e como. Porém, com o decorrer dos anos as milhares/centenas de linhas que são utilizadas nos extensos arquivos YAML's começaram a causar dificuldades e manutenções recorrentes apereciam como possiveis dores de cabeça interminaveis.
+
+E entao, um cenario explicitamente de copy/paste começa a ocorrer. Os desenvolvedores tem a necessidade de recorrente reutilização de código bem como a sua generalização. Agora começamos a ter problemas com nosso fiel e guerreiro Cloudformation. 
+
+Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes( e conhecidas ) chamada Terraform, adotando sua própria **DSL**, tais soluções nao interagem com o Cloudformation, em vez disso, utilizam a API diretamente.
+
+## CDK, Why Not ?
+
+
+
 
 - Integração nativa com dezenas de serviços (S3, SQS, SNS, Kinesis, Api Gateway)
 - [Gratuidade de até 1 milhão de requisições por mês](https://aws.amazon.com/lambda/pricing/)
