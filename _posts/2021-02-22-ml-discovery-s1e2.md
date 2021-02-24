@@ -247,7 +247,7 @@ Nos vemos no próximo episódio!
 
 
 ## Referencias
-* CDK Developer Guide - https://docs.aws.amazon.com/cdk/latest/guide/home.html
-* CDK API Documentation - https://docs.aws.amazon.com/cdk/api/latest
-* CDK Python Documentation - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
-* CDK Document Gateway - https://docs.aws.amazon.com/pt_br/cdk/?id=docs_gateway
+* `CDK Developer Guide` - https://docs.aws.amazon.com/cdk/latest/guide/home.html
+* `CDK API Documentation` - https://docs.aws.amazon.com/cdk/api/latest
+* `CDK Python Documentation` - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
+* `CDK Document Gateway` - https://docs.aws.amazon.com/pt_br/cdk/?id=docs_gateway
