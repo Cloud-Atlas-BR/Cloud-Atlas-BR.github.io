@@ -121,7 +121,7 @@ class MldiscoveryAppStack(core.Stack):
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        #Definindo uma função Lambda com Container
+        # Definindo uma função Lambda com Container
         model_folder = os.path.dirname(os.path.realpath(__file__)) + "/../model"
         predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery',
                                                         code=_lambda.DockerImageCode.from_image_asset(model_folder),
@@ -135,5 +135,9 @@ class MldiscoveryAppStack(core.Stack):
 
 ```
 
+O código acima inicia-se com o import de todos os [Constructs](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) necessários para o provisionamento. Para esta aplicação estamos utilizando :
+* Lambda
+* Api Gateway
+* Integrações Api Gateway
 
 
