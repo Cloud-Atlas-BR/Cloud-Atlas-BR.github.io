@@ -141,7 +141,7 @@ No último estágio da nossa esteira, executamos, emfim, o *script* que criará 
   run: | 
     aws cloudformation deploy \
      --stack-name discovery-lambda-stack \
-     --template-file infra/lambda.yml
+     --template-file lambda.yml
      --capabilities CAPABILITY_NAMED_IAM
 ```
 
@@ -208,6 +208,15 @@ Resources:
 ```
 <p style="text-align: center">lambda.yml</p>
 
+Com todos os arquivos prontos, podemos *commitar* e fazer o *push* das nossas alterações. Lembre-se de fazê-las na branch *main* para que a esteira seja executada.
+
+```sh
+git add -A
+git commit -m "add files"
+git push origin main
+```
+
+## Acompanhando a esteira
 
 
 
