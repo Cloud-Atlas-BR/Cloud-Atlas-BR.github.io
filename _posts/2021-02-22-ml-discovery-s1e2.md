@@ -95,12 +95,45 @@ Agora vamos entender qual a função de cada elemento acima, os mesmos fazem par
 
 Agora que sabemos exatamente o que cada arquivo/diretorio faz, vamos entao começar a desenvolver o provisionamento do nosso modelo, o mesmo tem como arquitetura base a utilização de lambda junto com containers Docker.
 
-Criaremos a partir daqui um diretório chamado `model`, com nosso Dockerfile, script **app.py** e também nosso arquivo **requirements.txt** 
+Criaremos a partir daqui um diretório chamado `model`, com nosso **Dockerfile**, script **app.py** e também nosso arquivo **requirements.txt** 
+
+Dentro desse diretório também incluiremos o arquivo **entry.sh**, que é responsavel por expor o container através de uma porta especifica.
+
+Bom galera, a partir daqui o foco será no deploy de nossa stack utilizando o tão esperado **CDK**. Todos os arquivos de nosso projeto **lambda container** estao descritos detalhadamento em [nosso primeiro episódio da série](https://cloud-atlas-br.github.io/2021-02-20-ml-discovery-s1e1/).
 
 
+## Deploy CDK - Infra as Real Code
 
+Bom pessoal, entao chegamos na fase em que necessitamos fazer com que nosso código Python responsavel pelo provisionamento do modelo em um [Lambda Container](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/) ganhe corpo e nos mostre a que veio.
 
+primeiro vamos analisar o arquivo `mldiscovery_app_stack.py` responsavel por realizar o provisionamento da infraestrutura do nosso modelo através do codigo python 
+```python
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_apigatewayv2 as api_gw,
+    aws_apigatewayv2_integrations as integrations,
+    core
+)
+import os
 
+class MldiscoveryAppStack(core.Stack):
+
+    def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+
+        #Definindo uma função Lambda com Container
+        model_folder = os.path.dirname(os.path.realpath(__file__)) + "/../model"
+        predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery',
+                                                        code=_lambda.DockerImageCode.from_image_asset(model_folder),
+                                                        memory_size=4096,
+                                                        timeout=core.Duration.seconds(15))
+        # Configurando API Gateway que recebera os requests e direcionara para a lambda
+        api = api_gw.HttpApi(self, 'MldiscoveryEndpoint',
+                             default_integration=integrations.LambdaProxyIntegration(handler=predictive_lambda));
+
+        core.CfnOutput(self, 'HTTP API Url', value=api.url);
+
+```
 
 
 
