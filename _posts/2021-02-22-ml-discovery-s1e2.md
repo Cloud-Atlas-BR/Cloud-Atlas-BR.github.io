@@ -9,7 +9,7 @@ draft: true
 
 Quando iniciamos a discussão referente ao provisionamento de infraestrutura, popularmente chamado de IAC (Infraestrcture as a Code) clichês começam a aparecer em nossa conversa. Na comunidade existe uma grande discussão, entre, prós e contras de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
 
-Inclusive, sera que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável ? Ou, será que o provisionamento de nossa infraestrutura nao precisar ser ***as a code*** e sim escrita em forma código de ponta a ponta ?
+Inclusive, será que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável ? Ou, será que o provisionamento de nossa infraestrutura não precisar ser ***as a code*** e sim escrita em forma código de ponta a ponta ?
 
 Antes de falarmos mais sobre o objetivo deste post que é propriamente o **CDK - Cloud Development Kit**, vamos falar um pouco sobre a historia do nosso querido e guerreiro Cloudformation e como chegamos até o CDK.
 
@@ -17,7 +17,7 @@ Let's Bora !
 
 ## Um pouco de história e contextualização
 
-o ano é 2011, e aqui nasce o Cloudformation e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. A oferta deste serviço para a epoca ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrtura dessa aplicação estivesse abstraida por um padrao unico e utilizando sintaxes e padroes já conhecidos como Json e YAML.
+o ano é 2011, e aqui nasce o Cloudformation e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. A oferta deste serviço para a época ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrutura dessa aplicação estivesse abstraida por um padrão único e utilizando sintaxes e padrões já conhecidos como Json e YAML.
 
 É claro que com o padrão declarativo a visualização e o entendimento do que estamos provisionando facilita o entendimento do que realmente esta acontecendo e como. Porém, com o decorrer dos anos as milhares/centenas de linhas que são utilizadas nos extensos arquivos YAML's começaram a causar dificuldades e manutenções recorrentes apareciam como possíveis dores de cabeça intermináveis.
 
@@ -41,7 +41,7 @@ Bom, introdução e contextualização concluídas com sucesso !
 
 ## Proposta
 
-Agora vamos pensar de forma conjunta, e se utilizássemos o nosso primeiro episódio de ML discovery e implementarmos o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python como padrão.
+Agora vamos pensar de forma conjunta, e se utilizássemos o nosso primeiro episódio de ML Discovery e implementarmos o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python como padrão.
 
 ## Talk is cheap, show me the code
 
@@ -104,9 +104,9 @@ Bom galera, a partir daqui o foco será no deploy de nossa stack utilizando o t�
 
 ## Deploy CDK - Infra as Real Code
 
-Bom pessoal, entao chegamos na fase em que necessitamos fazer com que nosso código Python responsável pelo provisionamento do modelo em um [Lambda Container](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/) ganhe corpo e nos mostre a que veio.
+Bom pessoal, então chegamos na fase em que necessitamos fazer com que nosso código Python responsável pelo provisionamento do modelo em um [Lambda Container](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/) ganhe corpo e nos mostre a que veio.
 
-primeiro vamos analisar o arquivo `mldiscovery_app_stack.py` responsável por realizar o provisionamento da infraestrutura do nosso modelo através do código python 
+primeiro vamos analisar o arquivo `mldiscovery_app_stack.py` responsável por realizar o provisionamento da infraestrutura do nosso modelo através do código Python 
 ```python
 from aws_cdk import (
     aws_lambda as _lambda,
@@ -135,11 +135,100 @@ class MldiscoveryAppStack(core.Stack):
 
 ```
 
-O código acima inicia-se com o import de todos os [Constructs](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) necessários para o provisionamento. Para esta aplicação estamos utilizando :
+O código acima inicia-se com o `import` de todos os [Constructs](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) necessários para o provisionamento. Para esta aplicação estamos utilizando :
 * Lambda
 * Api Gateway
 * Integrações Api Gateway
 
-Então temos nosso **__init__**, pessoal não irei entrar detalhadamente nos parâmetros do método, o CDK por si só já seria conteúdo para uma série inteira.
+Então temos nosso **__init__**, pessoal não irei entrar detalhadamente nos parâmetros do método, o CDK por si só já seria conteúdo para uma série inteira. 
 
-Dentro deste método **__init__** escrevemos nosso código de provisionamento. 
+Dentro deste método **__init__** escrevemos nosso código de provisionamento. Iniciamos com a atribuição do diretório `model` a variável `model_folder`, o mesmo possui todos os arquivos referente ao modelo, Dockerfile e dependências.
+
+Após essa atribuição, efetivamente criamos um recurso `lambda` indicando que a mesma terá como base uma imagem `Docker`, através da classe [Construct](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html)  `DockerImageFunction`, tal classe encarrega-se de criar um função lambda e informar que o handler da mesma trata-se de uma imagem Docker.
+
+Agora, precisamos informar a esta função que acabara de ser criada qual é o caminho dos arquivos/scripts responsáveis pelo handler Docker, estes arquivos estão localizados em nosso diretório `model`.
+
+Utilizamos então a classe `DockerImageCode`, esta classe pode ser utilizada passando como localização da imagem um Registry [ECR](https://aws.amazon.com/pt/ecr/), ou então, diretamente de um diretório contendo  obrigatoriamente um Dockerfile, dessa forma, utilizamos `from_image_asset` indicando o supracitado diretório `model`
+
+Além destas informações, também dimensionamos a quantidade de memoria RAM utilizada pela função Lambda, bem como o seu timeout de execução.
+
+Sobram os dois primeiros parâmetros, que são `self`, que é o próprio `Construct` e o Id de nossa função Lambda, que nomeamos de  `Mldiscovery`.
+
+Após o provisionamento de nosso Lambda Container, criamos também um [Api Gateway](https://aws.amazon.com/pt/api-gateway/) que fara o papel de camada para consumo do nosso modelo presente na função Lambda.
+
+Novamente passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e por ultimo qual integração será realizada, que para o nosso caso o tipo de integração que utilizaremos será [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html) passando a função lambda que criamos anteriormente como target de nossa integração.
+
+E por ultimo porem não menos importante devolvemos o output da URL do API Gateway para facilitar o nosso consumo no fim do nosso provisionamento.
+
+o nosso diretório `model` ficou com a seguinte estrutura.
+
+```bash
+.
+├── Dockerfile
+├── app.py
+├── entry.sh
+├── requirements.txt
+└── train.py
+```
+
+## CDK Bootstrap
+
+Pessoal antes de iniciarmos o deploy de nossa aplicação via CDK CLI precisamos rodar o comando 
+
+``` console
+rjekstein@desk$ cdk bootstrap
+```
+
+A iteração acima se faz necessária pois as Stacks provisionadas pelo CDK precisam que seu estado seja guardado em algum lugar, este lugar que o CDK julga como mantenedor destes dados é o S3. Então, ao rodarmos o comando acima uma Stack de CloudFormation será criada na `Region` que o CDK efetuará o deploy.
+
+a `Stack` que será criada chama-se CDKToolkit, conforme imagem abaixo.
+
+<p style="text-align: center"><img src="https://i.imgur.com/0Ex4zj2.jpg"></p>
+
+Podemos observar também que uma Bcuket Policy e também um Bucket de staging foi criado para guardar o estado das `Stacks` provisionadas pelo CDK.
+
+Realizado o `Bootstrap` podemos então partir para o tão aguardado deploy. Antes disso, podemos rodar um comando para entender qual será o Cloudformation de saída, dessa forma, podemos ver o `transpiler` na prática.
+
+```console
+rjekste@desk$ cdk synth
+```
+Agora vamos efetivamente realizar o deploy de nossa `stack`.
+
+```console
+rjekste@desk$ cdk deploy
+```
+
+Antes de efetivamente realizarmos o deploy, nos será mostrado todos recursos e componentes que serão criados e também o que não pedimos para criar mas que são `obrigatórios` para termos sucesso em nossa stack CDK.
+
+<p style="text-align: center"><img src="https://i.imgur.com/5KveoKb.jpg"></p>
+
+A partir do momento que aceitamos o provisionamento destes recursos, imediatamente será criado um stack de Cloudformation com o nome do nosso projeto CDK.
+
+<p style="text-align: center"><img src="https://i.imgur.com/J0m0XHi.jpg"></p>
+
+Após a  `stack` obter o status de **COMPLETED** vamos então conferir quais recursos foram criados.
+
+<p style="text-align: center"><img src="https://i.imgur.com/3ZeJpnT.jpg"></p>
+
+
+Por ultimo, porem,(novamente)nao menos importante temos o **Output** com o a URL do nosso API Gateway.
+
+Output
+<p style="text-align: center"><img src="https://i.imgur.com/JuYB98H.jpg"></p>
+
+
+API Gateway com a integração junto ao Lambda
+<p style="text-align: center"><img src="https://i.imgur.com/9FDAHFA.jpg"></p>
+
+
+Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega o prometido, justamente **a infraestrutura é codigo**.
+
+Apenas um curl opcional para chamarmos a API 
+```console
+rjekstein@desk$ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"data": [0,0,0,0]}'
+```
+## Pensamentos finais
+
+Nos vemos no próximo episódio!
+
+<p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
