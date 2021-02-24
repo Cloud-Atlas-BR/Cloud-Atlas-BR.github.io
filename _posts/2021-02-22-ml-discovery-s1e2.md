@@ -83,14 +83,19 @@ vamos entao conhecer o que temos dentro do diretorio da aplicação.
 
 Agora vamos entender qual a função de cada elemento acima, os mesmos fazem parte do diretorio em que inicializamos o projeto **CDK**.
 
-* README.md - arquivo README para o projeto
-* app.py - script "main" para o projeto CDK.
-* cdk.json - arquivo de condiguração que lista quais componentes devem ser executados durante o deploy da stack.
-* mldiscovery_app - Diretorio com o codigo Python
-  * mldiscovery_app_stack.py - script Python com o codigo responsavel pelo provisionamento da infraestrutura
-* requirements.txt - Arquivo com as dependencias Python a serem utilizadas no projeto
-*  
+* `README.md` - arquivo README para o projeto
+* `app.py` - script "main" para o projeto CDK.
+* `cdk.json` - arquivo de condiguração que lista quais componentes devem ser executados durante o deploy da stack.
+* `mldiscovery_app` - Diretorio com o codigo Python
+  * `mldiscovery_app_stack.py` - script Python com o codigo responsavel pelo provisionamento da infraestrutura
+* `requirements.txt` - Arquivo com as dependencias Python a serem utilizadas no projeto
+* `tests e unit` - Código referente ao conjunto de testes da aplicação. Comumente utilizado 
+* `setup.py` -  Define como o pacote python realizara o build, sua descrição e quais dependencias são necessárias.
+* `source.bat` - arquivo gerado para estações Windows, contendo a ativação da maquina virtual.
 
+Agora que sabemos exatamente o que cada arquivo/diretorio faz, vamos entao começar a desenvolver o provisionamento do nosso modelo, o mesmo tem como arquitetura base a utilização de lambda junto com containers Docker.
+
+Criaremos a partir daqui um diretório chamado `model`, com nosso Dockerfile, script **app.py** e também nosso arquivo **requirements.txt** 
 
 
 
