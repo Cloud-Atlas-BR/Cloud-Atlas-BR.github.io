@@ -229,6 +229,25 @@ rjekstein@desk$ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws
 ```
 ## Pensamentos finais
 
+Então chegamos ao fim deste episódio.
+
+Pessoal, espero que tenhamos conseguido transmitir uma opção alternativa em meio a tantas discussões binárias entre Terraform e Cloudformation.
+
+Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o ` código` e é a partir dele(e somente dele) que provisionamos a nossa infraestrutura sem toda aquela verbosidade padrão ou então tendo que aprender alguma DSL específica.
+
+
 Nos vemos no próximo episódio!
 
 <p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
+
+## Repositório Github
+
+[Repositório Github](https://github.com/Cloud-Atlas-BR/CDK-ML-Discovery-S01E02) com source code deste artigo
+
+
+
+## Referencias
+* CDK Developer Guide - https://docs.aws.amazon.com/cdk/latest/guide/home.html
+* CDK API Documentation - https://docs.aws.amazon.com/cdk/api/latest
+* CDK Python Documentation - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
+* CDK Document Gateway - https://docs.aws.amazon.com/pt_br/cdk/?id=docs_gateway
