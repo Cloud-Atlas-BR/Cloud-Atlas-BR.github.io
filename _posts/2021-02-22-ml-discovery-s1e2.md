@@ -53,23 +53,21 @@ Agora, vamos pensar de forma conjunta.
 
 E se utilizássemos o nosso [primeiro episódio de ML Discovery](https://cloud-atlas-br.github.io/2021-02-20-ml-discovery-s1e1/) e implementarmos o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python como padrão.
 
-## Talk is cheap, show me the code
-
-Bom, então vamos começar.
+## Talk is cheap, Show me the code
 
 Primeiro, vamos instalar o CDK.
 
 ```console
 $ pip install aws-cdk.core aws-cdk.aws-lambda
 ```
-Como podemos ver, o CDK parte de uma instalação **core**, junto com essa instalação precisamos informar com quais módulos do CDK iremos trabalhar, que para esta caso utilizaremos o **lambda**.
+Como podemos ver, o CDK parte de uma instalação **core**, junto com essa instalação precisamos informar com quais módulos do CDK iremos trabalhar, que para esta caso será o **AWS Lambda**.
 
-Com os pacotes instalados precisamos inicializar o projeto com a seguinte diretiva.
+Com os pacotes instalados, precisamos inicializar o projeto com a seguinte diretiva.
 
 ```console
 $ cdk init mldiscovery-app --language python
 ```
-com o comando executado acima, o CDK irá criar uma estrutura de diretórios e arquivos contendo toda as peças necessárias para realizar o provisionamento da infraestrutura.
+com o comando executado acima, o CDK irá criar uma estrutura de diretórios e arquivos contendo todaS as peças necessárias para realizar o provisionamento da infraestrutura.
 vamos então conhecer o que temos dentro do diretório da aplicação.
 
 ```console
