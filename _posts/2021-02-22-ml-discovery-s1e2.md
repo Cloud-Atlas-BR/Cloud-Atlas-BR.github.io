@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Machine Learning Discovery - S01E02
-subtitle: IAC (Infraestructure as a Code ), Não ! Infraestrutura é Código.
+subtitle: Infraestrutura como Codigo? Não! Infraestrutura é Código.
 tags: [aws, mlops, machine, learning, lambda, container, docker, cdk]
 comments: true
 draft: true
