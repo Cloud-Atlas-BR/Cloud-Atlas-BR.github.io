@@ -9,7 +9,7 @@ draft: true
 
 Quando iniciamos a discussão referente ao provisionamento de infraestrutura, popularmente chamado de [IAC (Infraestructure as a Code)](https://pt.wikipedia.org/wiki/Infraestrutura_como_C%C3%B3digo), clichês começam a aparecer em nossa conversa. 
 
-Na comunidade existe uma grande discussão, sobre os prós e contras, de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post, o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
+Na comunidade, existe uma grande discussão, sobre os prós e contras, de se utilizar, ora Cloudformation, ora Terraform. Aqui nesse post, o objetivo é darmos uma visão paralela e alternativa quando o assunto tange Infraestrutura como Código.
 
 Inclusive, será que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável? Ou, será que o provisionamento de nossa infraestrutura não precisar ser ***as a code*** e sim escrita em forma código de ponta a ponta ?
 
@@ -19,11 +19,15 @@ Let's Bora!
 
 ## Um pouco de história e contextualização
 
-O ano é 2011, e aqui nasce o Cloudformation e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. A oferta deste serviço para a época ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrutura dessa aplicação estivesse abstraída por um padrão único e utilizando sintaxes e padrões já conhecidos como Json e YAML.
+O ano é 2011, e aqui nasce o [AWS Cloudformation](https://aws.amazon.com/cloudformation/), e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. 
 
-É claro que com o padrão declarativo, a visualização e o entendimento do que estamos provisionando facilita o entendimento do que realmente está acontecendo e como. Porém, com o decorrer dos anos as milhares/centenas de linhas que são utilizadas nos extensos arquivos YAML's começaram a causar dificuldades e manutenções recorrentes apareciam como possíveis dores de cabeça intermináveis.
+A oferta deste serviço para a época ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrutura dessa aplicação estivesse abstraída por um padrão único e utilizando sintaxes e padrões já conhecidos como Json e YAML.
 
-E, então, um cenário explicitamente de copy/paste começa a ocorrer. Os desenvolvedores tem a necessidade de recorrente reutilização de código bem como a sua generalização. Agora começamos a ter problemas com nosso fiel e guerreiro Cloudformation. 
+É claro que com o padrão declarativo, a visualização e o entendimento do que estamos provisionando facilita o entendimento do que realmente está acontecendo. 
+
+Porém, com o decorrer dos anos as centenas de linhas que são utilizadas nos extensos arquivos YAML começaram a causar dificuldades, e manutenções recorrentes apareciam como possíveis dores de cabeça intermináveis.
+
+Um cenário explicitamente de copy/paste começa a ocorrer. Os desenvolvedores tem a necessidade de recorrente reutilização de código bem como a sua generalização. Agora começamos a ter problemas com nosso fiel e guerreiro Cloudformation. 
 
 Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes (e conhecidas) chamada Terraform, adotando sua própria [**DSL**](https://en.wikipedia.org/wiki/Domain-specific_language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API diretamente.
 
@@ -180,13 +184,13 @@ o nosso diretório `model` ficou com a seguinte estrutura.
 
 ## CDK Bootstrap
 
-Pessoal antes de iniciarmos o deploy de nossa aplicação via CDK CLI precisamos rodar o comando 
+Pessoal, antes de iniciarmos o deploy de nossa aplicação via CDK CLI precisamos executar o comando.
 
 ``` console
-rjekstein@desk$ cdk bootstrap
+$ cdk bootstrap
 ```
 
-A iteração acima se faz necessária pois as Stacks provisionadas pelo CDK precisam que seu estado seja guardado em algum lugar, este lugar que o CDK julga como mantenedor destes dados é o S3. Então, ao rodarmos o comando acima uma Stack de CloudFormation será criada na `Region` que o CDK efetuará o deploy.
+A iteração acima se faz necessária, pois as *Stacks* provisionadas pelo CDK precisam que seu estado seja guardado em algum lugar, este lugar que o CDK julga como mantenedor destes dados é o S3. Então, ao rodarmos o comando acima uma Stack de CloudFormation será criada na `Region` que o CDK efetuará o deploy.
 
 a `Stack` que será criada chama-se CDKToolkit, conforme imagem abaixo.
 
@@ -194,7 +198,7 @@ a `Stack` que será criada chama-se CDKToolkit, conforme imagem abaixo.
 
 Podemos observar também que uma Bcuket Policy e também um Bucket de staging foi criado para guardar o estado das `Stacks` provisionadas pelo CDK.
 
-Realizado o `Bootstrap` podemos então partir para o tão aguardado deploy. Antes disso, podemos rodar um comando para entender qual será o Cloudformation de saída, dessa forma, podemos ver o `transpiler` na prática.
+Realizado o `Bootstrap`, podemos partir para o tão aguardado deploy. Antes disso, podemos rodar um comando para entender qual será o Cloudformation de saída, dessa forma, podemos ver o `transpiler` na prática.
 
 ```console
 rjekste@desk$ cdk synth
@@ -236,12 +240,11 @@ rjekstein@desk$ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws
 ```
 ## Pensamentos finais
 
-Então chegamos ao fim deste episódio.
+Então, chegamos ao fim deste episódio.
 
-Pessoal, espero que tenhamos conseguido transmitir uma opção alternativa em meio a tantas discussões binárias entre Terraform e Cloudformation.
+Espero que tenhamos conseguido transmitir uma opção alternativa em meio à tantas discussões binárias entre Terraform e Cloudformation.
 
-Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o ` código` e é a partir dele(e somente dele) que provisionamos a nossa infraestrutura sem toda aquela verbosidade padrão ou então tendo que aprender alguma DSL específica.
-
+Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o ` código`, e é a partir dele (e somente dele) que provisionamos a nossa infraestrutura reduzindo a verbosidade, e a necessidade de aprender uma DSL específica.
 
 Nos vemos no próximo episódio!
 
@@ -251,9 +254,8 @@ Nos vemos no próximo episódio!
 
 [Repositório Github](https://github.com/Cloud-Atlas-BR/CDK-ML-Discovery-S01E02) com source code deste artigo
 
+## Referências
 
-
-## Referencias
 * `CDK Developer Guide` - https://docs.aws.amazon.com/cdk/latest/guide/home.html
 * `CDK API Documentation` - https://docs.aws.amazon.com/cdk/api/latest
 * `CDK Python Documentation` - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
