@@ -25,16 +25,16 @@ Neste episódio, vamos criar uma esteira de CI/CD utilizando [Github Actions](ht
 
 Primeiro, criamos um [repositório no Github](https://github.com/Cloud-Atlas-BR/ML-Discovery-S01E01) com os arquivos e códigos da implementação do nosso Lambda Container para Machine Learning do primeiro episódio. A criação de uma `Action` pode ser feita via interface do Github, ou escrevendo diretamente os arquivos da esteira no repositório.
 
-Seguindo a última opção, vamos clonar o repositório e criar o diretório `.github/workflow` para adicionar nosso script de esteira. Qualquer arquivo da extensão `.yml` configurado corretamente será executado pelo Github Actions quando um *push* for realizado.
+Seguindo a última opção, vamos clonar o repositório e criar o diretório `.github/workflows` para adicionar nosso script de esteira. Qualquer arquivo da extensão `.yml` configurado corretamente será executado pelo Github Actions quando um *push* for realizado.
 
 ```sh
 git clone git@github.com:Cloud-Atlas-BR/ML-Discovery-S01E01.git
 
 cd ML-Discovery-S01E01
 
-mkdir -p .github/workflow
+mkdir -p .github/workflows
 
-touch .github/workflow/deploy.yml
+touch .github/workflows/deploy.yml
 
 ```
 
@@ -138,7 +138,7 @@ No último estágio da nossa esteira, executamos, emfim, o *script* que criará 
 
 ```yaml
 - name: Create or update lambda function
-  run: | 
+  run: |
     aws cloudformation deploy \
      --stack-name discovery-lambda-stack \
      --template-file lambda.yml
