@@ -242,7 +242,7 @@ Então, chegamos ao fim deste episódio.
 
 Espero que tenhamos conseguido transmitir uma opção alternativa em meio à tantas discussões binárias entre Terraform e Cloudformation.
 
-Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o ` código`, e é a partir dele (e somente dele) que provisionamos a nossa infraestrutura, reduzindo a verbosidade e a necessidade de aprender uma DSL específica.
+Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o `código`, e é a partir dele (e somente dele) que provisionamos a nossa infraestrutura, reduzindo a verbosidade e a necessidade de aprender uma DSL específica.
 
 Nos vemos no próximo episódio!
 
