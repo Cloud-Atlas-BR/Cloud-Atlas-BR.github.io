@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Machine Learning Discovery - S01E03
-subtitle: Github Actions - Sua esteira de CI/CD no Github
+title: Sua esteira de deploy de Machine Learning no Github
+subtitle: Machine Learning Discovery - S01E03
 tags: [aws, mlops, machine, learning, lambda, container, github-actions, github]
 comments: true
 draft: true
