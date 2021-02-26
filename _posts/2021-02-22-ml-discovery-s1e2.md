@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Infraestrutura como Codigo? Não! Infraestrutura é Código
+title: Infraestrutura como Código? Não! Infraestrutura é Código
 subtitle: Machine Learning Discovery - S01E02
 tags: [aws, mlops, machine, learning, lambda, container, docker, cdk]
 comments: true
