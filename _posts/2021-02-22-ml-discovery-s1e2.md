@@ -198,12 +198,12 @@ Podemos observar também que uma Bucket Policy e um Bucket de *staging* foi cria
 Realizado o `Bootstrap`, podemos partir para o tão aguardado deploy. Comecemos com um comando para entender qual será o Cloudformation de saída, dessa forma, podemos ver o `transpiler` na prática.
 
 ```console
-rjekste@desk$ cdk synth
+$ cdk synth
 ```
 Agora, vamos efetivamente realizar o deploy de nossa `stack`.
 
 ```console
-rjekste@desk$ cdk deploy
+$ cdk deploy
 ```
 
 Antes de efetivamente realizarmos o deploy, nos será mostrado todos recursos e componentes que serão criados e também o que não pedimos para criar, mas que são **obrigatórios** para termos sucesso em nossa stack CDK.
