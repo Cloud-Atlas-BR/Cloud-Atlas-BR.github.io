@@ -1,6 +1,9 @@
 <!-- TODO this file has become a mess, refactor it -->
 
+
 {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
+
+{% if site.google_ad_client %}{% include google_analytics.html %}{% endif %} 
 
 {% if page.cover-img or page.title %}
 
