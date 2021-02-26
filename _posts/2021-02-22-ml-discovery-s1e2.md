@@ -221,10 +221,10 @@ Após a `stack` obter o status de **COMPLETED** podemos conferir quais recursos 
 Por último, porém (novamente), não menos importante temos o **Output** com o a URL do nosso API Gateway.
 
 <p style="text-align: center"><img src="https://i.imgur.com/JuYB98H.jpg"></p>
-<p style="text-align: center; margin:0">Output</p>
+<p style="text-align: center; margin-top:0">Output</p>
 
 <p style="text-align: center"><img src="https://i.imgur.com/9FDAHFA.jpg"></p>
-<p style="text-align: center; margin:0">API Gateway com a integração junto ao Lambda</p>
+<p style="text-align: center; margin-top:0">API Gateway com a integração junto ao Lambda</p>
 
 Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido a ideia de que **a infraestrutura é codigo**.
 
