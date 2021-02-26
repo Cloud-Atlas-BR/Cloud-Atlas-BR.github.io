@@ -135,9 +135,6 @@ google_ad_client: "ca-pub-9751240073074685"
 # Google Tag Manager ID
 #gtm: ""
 
-
-<script data-ad-client="ca-pub-9751240073074685" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
 # Matomo (aka Piwik) Web statistics
 # Uncomment the following section to enable Matomo. The opt-out parameter controls
 # whether or not you want to allow users to opt out of tracking.
