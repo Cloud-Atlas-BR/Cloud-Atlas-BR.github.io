@@ -231,7 +231,9 @@ Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido 
 Apenas um curl opcional para chamarmos a API.
 
 ```console
-rjekstein@desk$ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"data": [0,0,0,0]}'
+$ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"data": [0,0,0,0]}'
+
+[1]
 ```
 
 ## Pensamentos finais
@@ -252,7 +254,7 @@ Nos vemos no próximo episódio!
 
 ## Referências
 
-* `CDK Developer Guide` - https://docs.aws.amazon.com/cdk/latest/guide/home.html
-* `CDK API Documentation` - https://docs.aws.amazon.com/cdk/api/latest
-* `CDK Python Documentation` - https://docs.aws.amazon.com/cdk/api/latest/python/index.html
-* `CDK Document Gateway` - https://docs.aws.amazon.com/pt_br/cdk/?id=docs_gateway
+* [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
+* [CDK API Documentation](https://docs.aws.amazon.com/cdk/api/latest)
+* [CDK Python Documentation](https://docs.aws.amazon.com/cdk/api/latest/python/index.html)
+* [CDK Document Gateway](https://docs.aws.amazon.com/pt_br/cdk/?id=docs_gateway)
