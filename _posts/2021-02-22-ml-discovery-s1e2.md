@@ -228,7 +228,7 @@ Por último, porém (novamente), não menos importante temos o **Output** com o 
 
 Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido a ideia de que **a infraestrutura é codigo**.
 
-Apenas um curl opcional para chamarmos a API.
+Podemos chamar nossa API através de um *curl* como apresentado abaixo.
 
 ```console
 $ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"data": [0,0,0,0]}'
