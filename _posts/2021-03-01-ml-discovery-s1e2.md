@@ -246,7 +246,7 @@ core.CfnOutput(self, 'HTTP API Url', value=api.url)
 
 ## CDK Bootstrap
 
-Pessoal, antes de iniciarmos o deploy de nossa aplicação, precisamos executar o comando.
+Pessoal, antes de iniciarmos o deploy de nossa aplicação, precisamos executar o comando:
 
 ``` console
 $ cdk bootstrap
@@ -386,7 +386,7 @@ Outputs:
           - /
 ```
 
-Agora, vamos efetivamente realizar o deploy de nossa `stack` com o comando.
+Agora, vamos efetivamente realizar o deploy de nossa `stack` com o comando:
 
 ```console
 $ cdk deploy
@@ -396,7 +396,7 @@ Nesse momento, serão mostrados todos os recursos e componentes que serão criad
 
 <p style="text-align: center"><img src="https://i.imgur.com/5KveoKb.jpg"></p>
 
-A partir do momento que aceitamos o provisionamento destes recursos, será criado imediatamente uma stack de Cloudformation com o nome do nosso projeto CDK.
+A partir do momento que aceitamos o provisionamento destes recursos, será criado uma stack de Cloudformation com o nome do nosso projeto CDK.
 
 <p style="text-align: center"><img src="https://i.imgur.com/J0m0XHi.jpg"></p>
 
@@ -412,7 +412,7 @@ Por último, porém (novamente), não menos importante, temos a URL do nosso API
 <p style="text-align: center;margin-bottom:0"><img src="https://i.imgur.com/9FDAHFA.jpg"></p>
 <p style="text-align: center; margin-top:0">Integração do API Gateway com a função Lambda</p>
 
-Podemos chamar nossa API através de um *curl* como apresentado abaixo.
+Assim, podemos chamar nossa API através de um *curl* como apresentado abaixo.
 
 ```console
 $ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"data": [0,0,0,0]}'
