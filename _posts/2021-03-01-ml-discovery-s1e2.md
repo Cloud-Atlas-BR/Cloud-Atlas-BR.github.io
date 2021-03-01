@@ -23,7 +23,7 @@ Let's Bora!
 
 O ano é 2011, e aqui nasce o [AWS Cloudformation](https://aws.amazon.com/cloudformation/), e junto com ele o movimento de IAC começa a emergir e ganhar adeptos. 
 
-A oferta deste serviço, para a época, ajudou muito os desenvolvedores a se preocuparem muito mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrutura dessa aplicação estaria abstraída por um padrão único e utilizando sintaxes já conhecidas como Json e Yaml.
+A oferta deste serviço, para a época, ajudou muito os desenvolvedores a se preocuparem mais com a qualidade do serviço/projeto que estavam desenvolvendo, uma vez que toda a infraestrutura dessa aplicação estaria abstraída por um padrão único e utilizando sintaxes já conhecidas como Json e Yaml.
 
 Com o padrão declarativo do Clouformation, a visualização do que estamos provisionando facilita o entendimento do que realmente está acontecendo. 
 
@@ -196,7 +196,7 @@ Dentro do método **__init__** escrevemos nosso código de provisionamento. Inic
 model_folder = os.path.dirname(os.path.realpath(__file__)) + "/../model"
 ```
 
-Após essa atribuição, efetivamente criamos um recurso `lambda`. Neste, indicamos que a função Lambda terá como *handler uma imagem `Docker` através da classe [Construct](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) `DockerImageFunction`.
+Após essa atribuição, efetivamente criamos um recurso `lambda`. Neste, indicamos que a função Lambda terá como *handler* uma imagem `Docker` através da classe [Construct](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) `DockerImageFunction`.
 
 Os dois primeiros parâmetro desta classe são: o `self` (o próprio `Construct`) e o nome de nossa função Lambda, que nomeamos de `Mldiscovery`.
 
