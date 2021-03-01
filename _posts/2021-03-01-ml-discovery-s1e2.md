@@ -222,13 +222,14 @@ Além destas informações, também dimensionamos a quantidade de memoria RAM ut
 ```python
 predictive_lambda = \
     _lambda.DockerImageFunction(self, 'Mldiscovery',
-        code=_lambda.DockerImageCode.from_image_asset(model_folder),           memory_size=4096,
+        code=_lambda.DockerImageCode.from_image_asset(model_folder),
+        memory_size=4096,
         timeout=core.Duration.seconds(15))
 ```
 
 Após o provisionamento de nosso Lambda Container, criamos também um [Api Gateway](https://aws.amazon.com/pt/api-gateway/) que fará o papel de camada para consumo do nosso modelo presente na função Lambda.
 
-Novamente, passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e, por último, qual tipo integração será realizada, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Para esta integração, informamos como target, a função lambda definida anteriormente.
+Novamente, passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e o tipo de integração, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Para esta integração, informamos a função lambda definida anteriormente como target.
 
 ```python
 api = \
