@@ -203,7 +203,8 @@ Após essa atribuição, efetivamente criamos um recurso `lambda`. Neste, indica
 Os dois primeiros parâmetro desta classe são: o `self` (o próprio `Construct`) e o nome de nossa função Lambda, que nomeamos de `Mldiscovery`.
 
 ```python
-predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery', ...)
+predictive_lambda = \
+    _lambda.DockerImageFunction(self, 'Mldiscovery', ...)
 ```
 
 Em seguida, precisamos informar a esta função, qual é o caminho dos arquivos/scripts responsáveis pelo *handler* Docker, que são os arquivos localizados em nosso diretório `model`.
@@ -211,18 +212,18 @@ Em seguida, precisamos informar a esta função, qual é o caminho dos arquivos/
 Utilizamos, então, a classe `DockerImageCode`. Nela, passamos a localização da imagem em um Registry [ECR](https://aws.amazon.com/pt/ecr/), ou, então, o caminho de um diretório contendo, obrigatoriamente, um Dockerfile. Dessa forma, utilizamos `from_image_asset` indicando o supracitado diretório `model`
 
 ```python
-predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery',
-                            code=_lambda.DockerImageCode.from_image_asset(model_folder),
-                            ...)
+predictive_lambda = \
+    _lambda.DockerImageFunction(self, 'Mldiscovery',
+        code=_lambda.DockerImageCode.from_image_asset(model_folder), ...)
 ```
 
 Além destas informações, também dimensionamos a quantidade de memoria RAM utilizada pela função Lambda, bem como o seu timeout de execução.
 
 ```python
-predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery',
-                            code=_lambda.DockerImageCode.from_image_asset(model_folder),
-                            memory_size=4096,
-                            timeout=core.Duration.seconds(15))
+predictive_lambda = \
+    _lambda.DockerImageFunction(self, 'Mldiscovery',
+        code=_lambda.DockerImageCode.from_image_asset(model_folder),           memory_size=4096,
+        timeout=core.Duration.seconds(15))
 ```
 
 Após o provisionamento de nosso Lambda Container, criamos também um [Api Gateway](https://aws.amazon.com/pt/api-gateway/) que fará o papel de camada para consumo do nosso modelo presente na função Lambda.
@@ -230,9 +231,10 @@ Após o provisionamento de nosso Lambda Container, criamos também um [Api Gatew
 Novamente, passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e, por último, qual tipó integração será realizada, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html), para a qual informamos a função lambda que criamos anteriormente como target de nossa integração.
 
 ```python
-api = api_gw.HttpApi(self, 
-                    'MldiscoveryEndpoint',
-                    default_integration=integrations.LambdaProxyIntegration(handler=predictive_lambda))
+api = \
+    api_gw.HttpApi(self, 
+        'MldiscoveryEndpoint',
+        default_integration=integrations.LambdaProxyIntegration(handler=predictive_lambda))
 ```
 
 Por último, porém não menos importante, devolvemos o output da URL do API Gateway para facilitar o nosso consumo no fim do nosso provisionamento.
