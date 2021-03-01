@@ -98,8 +98,6 @@ $ cdk init mldiscovery-app --language python
 
 Com o comando executado acima, o CDK irá criar uma estrutura de diretórios e arquivos contendo todas as peças necessárias para realizar o provisionamento da infraestrutura.
 
-Vamos então conhecer o que temos dentro do diretório da aplicação.
-
 ```console
 (.env) $ tree
 .
@@ -119,7 +117,7 @@ Vamos então conhecer o que temos dentro do diretório da aplicação.
 |_ source.bat
 ```
 
-Abaixo, descrevemos a função de cada arquivo listado, os quais fazem parte do diretório em que inicializamos o projeto usando o **AWS CDK**.
+Abaixo, descrevemos a função de cada arquivo criado.
 
 * `README.md` - Arquivo README para o projeto.
 * `app.py` - Script "main" para o projeto CDK.
