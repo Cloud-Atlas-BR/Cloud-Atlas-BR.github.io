@@ -403,13 +403,13 @@ Após a stack obter o status de **COMPLETED**, podemos conferir quais recursos f
 
 <p style="text-align: center"><img src="https://i.imgur.com/3ZeJpnT.jpg"></p>
 
-Por último, porém (novamente), não menos importante temos na seção **Output** do Cloudformation, a URL do nosso API Gateway.
+Por último, porém (novamente), não menos importante, temos a URL do nosso API Gateway na seção **Output** no console do Cloudformation.
 
 <p style="text-align: center;margin-bottom:0"><img src="https://i.imgur.com/JuYB98H.jpg"></p>
 <p style="text-align: center; margin-top:0">Output</p>
 
 <p style="text-align: center;margin-bottom:0"><img src="https://i.imgur.com/9FDAHFA.jpg"></p>
-<p style="text-align: center; margin-top:0">API Gateway com a integração junto ao Lambda</p>
+<p style="text-align: center; margin-top:0">Integração do API Gateway com a função Lambda</p>
 
 Podemos chamar nossa API através de um *curl* como apresentado abaixo.
 
