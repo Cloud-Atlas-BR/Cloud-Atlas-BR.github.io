@@ -11,7 +11,7 @@ Quando iniciamos a discussão referente ao provisionamento de infraestrutura, po
 
 Na comunidade de tecnologia, existe uma grande discussão sobre os prós e contras de se utilizar, ora Cloudformation, ora Terraform. Nesse post, nosso objetivo é dar uma visão alternativa quando o assunto tange Infraestrutura como Código.
 
-Inclusive, será que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável? Ou será que o provisionamento de nossa infraestrutura não precisa ser ***as a code***, e sim ser código de ponta a ponta?
+Inclusive, será que este acrônimo **IAC - Infraestrutura como Código** ainda permanece imutável? Ou será que o provisionamento de nossa infraestrutura não precisa ser ***as a code***, e sim **ser** código de ponta a ponta?
 
 A AWS oferece uma solução para essa questão: o [CDK - Cloud Development Kit](https://aws.amazon.com/cdk/). Um *framework* destinado ao provisionamento de recursos na nuvem a partir de linguagens de programação tradicionais.
 
@@ -27,7 +27,7 @@ A oferta deste serviço, para a época, ajudou muito os desenvolvedores a se pre
 
 Com o padrão declarativo do Clouformation, a visualização do que estamos provisionando facilita o entendimento do que realmente está acontecendo. 
 
-Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes chamada [Terraform](https://www.terraform.io/). Adotando sua própria [**DSL**](https://en.wikipedia.org/wiki/Domain-specific_language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API de outros serviços diretamente.
+Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes chamada [Terraform](https://www.terraform.io/). Adotando sua própria [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)(Domain-specific_language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API de outros serviços diretamente.
 
 Porém, com o decorrer dos anos, a operacionalização das centenas de linhas que são utilizadas nos arquivos de IAC começa a causar dificuldades, e manutenções recorrentes são inevitáveis. Além de ser observar um cenário explícito de *copy/paste* pela necessidade de recorrente reutilização de templates de Cloudformation/Terraform.
 
@@ -37,9 +37,9 @@ Fica evidente a necessidade de um *approach* diferente.
 
 Como dito anteriormente, o CDK quer ser visto como ***"Infra as Real Code"***, essa mensagem carrega uma carga de autonomia designada diretamente ao desenvolvedor que tem como objetivo entregar sua aplicação/projeto em linguagens como TypeScript, JavaScript, Node.Js e Python. 
 
-Aqui, estamos lidando com um conceito chamado **Transpiler**, que nada mais é do que obter o código em uma linguagem específica como JavaScript e traduzir para um outro código correspondente.
+Aqui, estamos lidando com um conceito chamado [Transpiler](https://en.wikipedia.org/wiki/Source-to-source_compiler), que nada mais é do que obter o código em uma linguagem específica como JavaScript e traduzir para um outro código correspondente.
 
-Então, toda aquela verbosidade do Cloudformation é substituída por uma sintaxe familiar ao desenvolvedor, ao passo que o seu desenvolvimento fica extremamente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferência do desenvolvedor que ao executar um transpiler terá como output seu script de Cloudformation.
+Então, toda aquela verbosidade do Cloudformation é substituída por uma sintaxe familiar ao desenvolvedor, ao passo que o seu desenvolvimento fica extremamente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferência do desenvolvedor, o qual **ao executar um transpiler, terá como output seu script de Cloudformation**.
 
 Fica claro que um dos benefícios dessa abordagem é que não precisamos dedicar tempo no aprendizado de uma DSL especifica como, por exemplo, o **Terraform**.
 
