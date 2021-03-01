@@ -81,7 +81,7 @@ Primeiro, vamos instalar o CDK toolkit.
 npm install -g aws-cdk
 ```
 
-Como iremos trabalhar com Python, se faz necessária uma instalação específica nessa linguagem de programação do módulo **core** e dos módulos **AWS Lambda** e **AWS API Gateway**.
+Como iremos trabalhar com Python, se faz necessária uma instalação específica do módulo **core** e dos módulos **AWS Lambda** e **AWS API Gateway**.
 
 ```console
 $ pip install aws-cdk.core \
