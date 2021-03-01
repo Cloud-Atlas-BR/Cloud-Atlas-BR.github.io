@@ -424,11 +424,9 @@ Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido 
 
 ## Pensamentos finais
 
-Então, chegamos ao fim deste episódio.
+Com esse artigo, procuramos transmitir uma opção alternativa sobre IAC em meio à tantas discussões binárias entre Terraform e Cloudformation.
 
-Espero que tenhamos conseguido transmitir uma opção alternativa em meio à tantas discussões binárias entre Terraform e Cloudformation.
-
-Aqui, preservamos o desenvolvedor sempre em contato com seu habitat natural, o `código`, e é a partir dele (e somente dele) que provisionamos a nossa infraestrutura, reduzindo a verbosidade e a necessidade de aprender uma DSL específica.
+Aqui, preservamos o desenvolvedor, mantendo-o em contato com sua linguagem de programação habitual, pela qual (e somente por ela) é provisionada sua infraestrutura, reduzindo a verbosidade típica do IAC e a necessidade de aprender uma DSL específica.
 
 Nos vemos no próximo episódio!
 
