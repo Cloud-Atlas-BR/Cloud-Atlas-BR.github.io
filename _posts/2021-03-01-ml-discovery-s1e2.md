@@ -227,7 +227,7 @@ predictive_lambda = \
 
 Após o provisionamento de nosso Lambda Container, criamos também um [Api Gateway](https://aws.amazon.com/pt/api-gateway/) que fará o papel de camada para consumo do nosso modelo presente na função Lambda.
 
-Passamos o parâmetro `self` novamente, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e o tipo de integração, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Para esta integração, informamos a função lambda definida anteriormente como target.
+Passamos o parâmetro `self` novamente, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e o tipo de integração, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Para esta integração, informamos a função lambda definida como target anteriormente.
 
 ```python
 api = \
