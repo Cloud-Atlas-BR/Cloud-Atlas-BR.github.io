@@ -312,7 +312,7 @@ Nos vemos no próximo episódio!
 
 ## Repositório Github
 
-[Repositório Github](https://github.com/Cloud-Atlas-BR/CDK-ML-Discovery-S01E02) com source code deste artigo
+[Repositório Github](https://github.com/Cloud-Atlas-BR/CDK-ML-Discovery-S01E02) com source code deste artigo.
 
 ## Referências
 
