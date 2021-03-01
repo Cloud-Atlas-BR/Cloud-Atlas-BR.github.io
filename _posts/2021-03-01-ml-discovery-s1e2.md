@@ -228,7 +228,7 @@ predictive_lambda = \
 
 Após o provisionamento de nosso Lambda Container, criamos também um [Api Gateway](https://aws.amazon.com/pt/api-gateway/) que fará o papel de camada para consumo do nosso modelo presente na função Lambda.
 
-Novamente, passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e, por último, qual tipó integração será realizada, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html), para a qual informamos a função lambda que criamos anteriormente como target de nossa integração.
+Novamente, passamos o parâmetro `self`, o nome do nosso [API Gateway](https://aws.amazon.com/pt/api-gateway/) e, por último, qual tipo integração será realizada, que para o nosso caso será a [Lambda Proxy Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Para esta integração, informamos como target, a função lambda definida anteriormente.
 
 ```python
 api = \
@@ -237,21 +237,21 @@ api = \
         default_integration=integrations.LambdaProxyIntegration(handler=predictive_lambda))
 ```
 
-Por último, porém não menos importante, devolvemos o output da URL do API Gateway para facilitar o nosso consumo no fim do nosso provisionamento.
+Por último, porém, não menos importante, retornamos a URL do API Gateway.
 
 ```python
-core.CfnOutput(self, 'HTTP API Url', value=api.url);
+core.CfnOutput(self, 'HTTP API Url', value=api.url)
 ```
 
 ## CDK Bootstrap
 
-Pessoal, antes de iniciarmos o deploy de nossa aplicação via CDK CLI precisamos executar o comando.
+Pessoal, antes de iniciarmos o deploy de nossa aplicação, precisamos executar o comando.
 
 ``` console
 $ cdk bootstrap
 ```
 
-A iteração acima se faz necessária, pois as *Stacks* provisionadas pelo CDK precisam que seu estado seja guardado em algum lugar, este lugar, como comentamos, é o S3. Então, ao rodarmos o comando acima uma Stack de CloudFormation para criação do bucket S3  na região em que o CDK efetuará o deploy.
+A iteração acima se faz necessária, pois as *Stacks* provisionadas pelo CDK precisam que seu estado seja guardado em algum lugar. Este lugar, como comentamos, é o S3. Então, ao rodarmos o comando acima, será iniciada uma Stack de CloudFormation para criação do bucket S3 na região em que o CDK efetuará o deploy.
 
 A Stack que será criada chama-se `CDKToolkit`, conforme imagem abaixo.
 
