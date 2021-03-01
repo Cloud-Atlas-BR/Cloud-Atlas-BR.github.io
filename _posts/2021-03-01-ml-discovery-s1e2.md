@@ -208,7 +208,7 @@ predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery', ...)
 
 Em seguida, precisamos informar a esta função, qual é o caminho dos arquivos/scripts responsáveis pelo *handler* Docker, que são os arquivos localizados em nosso diretório `model`.
 
-Utilizamos, então, a classe `DockerImageCode`. Esta classe pode ser utilizada passando a localização da imagem em um Registry [ECR](https://aws.amazon.com/pt/ecr/), ou, então, diretamente de um diretório contendo, obrigatoriamente, um Dockerfile. Dessa forma, utilizamos `from_image_asset` indicando o supracitado diretório `model`
+Utilizamos, então, a classe `DockerImageCode`. Nela, passamos a localização da imagem em um Registry [ECR](https://aws.amazon.com/pt/ecr/), ou, então, o caminho de um diretório contendo, obrigatoriamente, um Dockerfile. Dessa forma, utilizamos `from_image_asset` indicando o supracitado diretório `model`
 
 ```python
 predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery',
