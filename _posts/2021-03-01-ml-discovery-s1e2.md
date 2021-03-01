@@ -198,9 +198,9 @@ Dentro do método **__init__** escrevemos nosso código de provisionamento. Inic
 model_folder = os.path.dirname(os.path.realpath(__file__)) + "/../model"
 ```
 
-Após essa atribuição, efetivamente criamos um recurso `lambda` indicando que a mesma terá como base uma imagem `Docker`, através da classe [Construct](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) `DockerImageFunction`, tal classe encarrega-se de criar um função lambda e define que o handler da mesma trata-se de uma imagem Docker.
+Após essa atribuição, efetivamente criamos um recurso `lambda`. Neste, indicamos que a função Lambda terá como *handler uma imagem `Docker` através da classe [Construct](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html) `DockerImageFunction`.
 
-Os dois primeiros parâmetro deste método são o `self` (o próprio `Construct`) e o Id de nossa função Lambda, que nomeamos de `Mldiscovery`.
+Os dois primeiros parâmetro desta classe são: o `self` (o próprio `Construct`) e o nome de nossa função Lambda, que nomeamos de `Mldiscovery`.
 
 ```python
 predictive_lambda = _lambda.DockerImageFunction(self, 'Mldiscovery', ...)
