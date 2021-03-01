@@ -15,7 +15,7 @@ Inclusive, será que este acrônimo **IAC - Infraestrutura como Código** ainda 
 
 A AWS oferece uma solução para essa questão: o [CDK - Cloud Development Kit](https://aws.amazon.com/cdk/). Um *framework* destinado ao provisionamento de recursos na nuvem a partir de linguagens de programação tradicionais.
 
-Mas, antes de falarmos mais o CDK, vamos entender um pouco da historia do nosso querido [Cloudformation](https://aws.amazon.com/cloudformation/) e como chegamos dele até o CDK.
+Mas, antes de falarmos mais sobre o CDK, vamos entender um pouco da historia do nosso querido [Cloudformation](https://aws.amazon.com/cloudformation/) e como chegamos dele até o CDK.
 
 Let's Bora!
 
