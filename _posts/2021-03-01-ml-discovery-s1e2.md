@@ -71,14 +71,24 @@ Agora, vamos pensar de forma conjunta.
 
 E se utilizássemos o nosso [primeiro episódio de ML Discovery](https://cloud-atlas-br.github.io/2021-02-20-ml-discovery-s1e1/) para implementar o CDK como camada de abstração de nossa infraestrutura utilizando a linguagem Python?
 
+Para isso, montaremos, via CDK, uma arquitetura conectando nossa função lambda (container) com um API Gateway.
+
 ## Talk is cheap, Show me the code
 
-Primeiro, vamos instalar o CDK.
+Primeiro, vamos instalar o CDK toolkit.
+
+```sh
+npm install -g aws-cdk
+```
+
+Como iremos trabalhar com Python, se faz necessária uma instalação específica nessa linguagem de programação do módulo **core** e dos módulos **AWS Lambda** e **AWS API Gateway**.
 
 ```console
-$ pip install aws-cdk.core aws-cdk.aws-lambda
+$ pip install aws-cdk.core \
+              aws-cdk.aws-lambda \
+              aws-cdk.aws-apigatewayv2 \
+              aws-cdk.aws-apigatewayv2-integrations
 ```
-Como podemos ver, o CDK parte de uma instalação **core**, junto com essa instalação precisamos informar com quais módulos do CDK iremos trabalhar, que para esta caso será o **AWS Lambda**.
 
 Com os pacotes instalados, precisamos inicializar o projeto com a seguinte diretiva.
 
@@ -247,9 +257,132 @@ A Stack que será criada chama-se `CDKToolkit`, conforme imagem abaixo.
 
 Realizado o `Bootstrap`, podemos partir para o tão aguardado deploy. Comecemos com um comando para entender qual será o Cloudformation produzido, dessa forma, podemos ver o `transpiler` na prática.
 
-```console
+```yaml
 $ cdk synth
+
+Resources:
+  MldiscoveryServiceRoleEB31CFF1:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: mldiscovery-app/Mldiscovery/ServiceRole/Resource
+  MldiscoveryB5544805:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ImageUri:
+          Fn::Join:
+            - ""
+            - - Ref: AWS::AccountId
+              - .dkr.ecr.sa-east-1.
+              - Ref: AWS::URLSuffix
+              - /aws-cdk/assets:f132e3fdc6130116a2c7370da7c0199d99a800bb051089b63f209f414514e69b
+      Role:
+        Fn::GetAtt:
+          - MldiscoveryServiceRoleEB31CFF1
+          - Arn
+      MemorySize: 4096
+      PackageType: Image
+      Timeout: 15
+    DependsOn:
+      - MldiscoveryServiceRoleEB31CFF1
+    Metadata:
+      aws:cdk:path: mldiscovery-app/Mldiscovery/Resource
+  MldiscoveryEndpoint9F2FA641:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: MldiscoveryEndpoint
+      ProtocolType: HTTP
+    Metadata:
+      aws:cdk:path: mldiscovery-app/MldiscoveryEndpoint/Resource
+  MldiscoveryEndpointDefaultRoutemldiscoveryappMldiscoveryEndpointDefaultRouteF2DFED1DPermission8F664C0E:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - MldiscoveryB5544805
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+          - ""
+          - - "arn:"
+            - Ref: AWS::Partition
+            - ":execute-api:sa-east-1:"
+            - Ref: AWS::AccountId
+            - ":"
+            - Ref: MldiscoveryEndpoint9F2FA641
+            - /*/*
+    Metadata:
+      aws:cdk:path: mldiscovery-app/MldiscoveryEndpoint/DefaultRoute/mldiscoveryappMldiscoveryEndpointDefaultRouteF2DFED1D-Permission
+  MldiscoveryEndpointDefaultRouteHttpIntegration864130d68e21fc01715be3fdbf587a96B5D493E4:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: MldiscoveryEndpoint9F2FA641
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::GetAtt:
+          - MldiscoveryB5544805
+          - Arn
+      PayloadFormatVersion: "2.0"
+    Metadata:
+      aws:cdk:path: mldiscovery-app/MldiscoveryEndpoint/DefaultRoute/HttpIntegration-864130d68e21fc01715be3fdbf587a96/Resource
+  MldiscoveryEndpointDefaultRoute99D31258:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: MldiscoveryEndpoint9F2FA641
+      RouteKey: $default
+      AuthorizationScopes: []
+      Target:
+        Fn::Join:
+          - ""
+          - - integrations/
+            - Ref: MldiscoveryEndpointDefaultRouteHttpIntegration864130d68e21fc01715be3fdbf587a96B5D493E4
+    Metadata:
+      aws:cdk:path: mldiscovery-app/MldiscoveryEndpoint/DefaultRoute/Resource
+  MldiscoveryEndpointDefaultStage568F1829:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId:
+        Ref: MldiscoveryEndpoint9F2FA641
+      StageName: $default
+      AutoDeploy: true
+    Metadata:
+      aws:cdk:path: mldiscovery-app/MldiscoveryEndpoint/DefaultStage/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Modules: aws-cdk=1.91.0,@aws-cdk/assets=1.91.0,@aws-cdk/aws-apigatewayv2=1.91.0,@aws-cdk/aws-apigatewayv2-integrations=1.91.0,@aws-cdk/aws-applicationautoscaling=1.91.0,@aws-cdk/aws-autoscaling-common=1.91.0,@aws-cdk/aws-certificatemanager=1.91.0,@aws-cdk/aws-cloudformation=1.91.0,@aws-cdk/aws-cloudwatch=1.91.0,@aws-cdk/aws-codeguruprofiler=1.91.0,@aws-cdk/aws-ec2=1.91.0,@aws-cdk/aws-ecr=1.91.0,@aws-cdk/aws-ecr-assets=1.91.0,@aws-cdk/aws-efs=1.91.0,@aws-cdk/aws-elasticloadbalancingv2=1.91.0,@aws-cdk/aws-events=1.91.0,@aws-cdk/aws-iam=1.91.0,@aws-cdk/aws-kms=1.91.0,@aws-cdk/aws-lambda=1.91.0,@aws-cdk/aws-logs=1.91.0,@aws-cdk/aws-route53=1.91.0,@aws-cdk/aws-s3=1.91.0,@aws-cdk/aws-s3-assets=1.91.0,@aws-cdk/aws-servicediscovery=1.91.0,@aws-cdk/aws-sns=1.91.0,@aws-cdk/aws-sqs=1.91.0,@aws-cdk/aws-ssm=1.91.0,@aws-cdk/cloud-assembly-schema=1.91.0,@aws-cdk/core=1.91.0,@aws-cdk/custom-resources=1.91.0,@aws-cdk/cx-api=1.91.0,@aws-cdk/region-info=1.91.0,jsii-runtime=Python/3.8.5
+    Metadata:
+      aws:cdk:path: mldiscovery-app/CDKMetadata/Default
+Outputs:
+  HTTPAPIUrl:
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: MldiscoveryEndpoint9F2FA641
+          - .execute-api.sa-east-1.
+          - Ref: AWS::URLSuffix
+          - /
 ```
+
 Agora, vamos efetivamente realizar o deploy de nossa `stack` com o comando.
 
 ```console
@@ -264,19 +397,17 @@ A partir do momento que aceitamos o provisionamento destes recursos, será criad
 
 <p style="text-align: center"><img src="https://i.imgur.com/J0m0XHi.jpg"></p>
 
-Após a `stack` obter o status de **COMPLETED** podemos conferir quais recursos foram criados.
+Após a stack obter o status de **COMPLETED**, podemos conferir quais recursos foram criados.
 
 <p style="text-align: center"><img src="https://i.imgur.com/3ZeJpnT.jpg"></p>
 
-Por último, porém (novamente), não menos importante temos o **Output** com o a URL do nosso API Gateway.
+Por último, porém (novamente), não menos importante temos na seção **Output** do Cloudformation, a URL do nosso API Gateway.
 
 <p style="text-align: center;margin-bottom:0"><img src="https://i.imgur.com/JuYB98H.jpg"></p>
 <p style="text-align: center; margin-top:0">Output</p>
 
 <p style="text-align: center;margin-bottom:0"><img src="https://i.imgur.com/9FDAHFA.jpg"></p>
 <p style="text-align: center; margin-top:0">API Gateway com a integração junto ao Lambda</p>
-
-Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido a ideia de que **a infraestrutura é codigo**.
 
 Podemos chamar nossa API através de um *curl* como apresentado abaixo.
 
@@ -285,6 +416,8 @@ $ curl -X POST "https://rcd9kh404f.execute-api.sa-east-1.amazonaws.com/" -d '{"d
 
 [1]
 ```
+
+Bom pessoal, o trabalho do CDK acaba por aqui, e o mesmo entrega como prometido a ideia de que **a infraestrutura é codigo**.
 
 ## Pensamentos finais
 
