@@ -27,6 +27,20 @@ A oferta deste serviço, para a época, ajudou muito os desenvolvedores a se pre
 
 Com o padrão declarativo do Clouformation, a visualização do que estamos provisionando facilita o entendimento do que realmente está acontecendo. 
 
+```yaml
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  BucketName:
+    Type: String
+    Description: 'The name of the S3 Bucket'
+Resources:
+  S3BUCKET:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref BucketName
+```
+<p style="text-align: center; margin-top: 0">Exemplo de script Cloudformation para criação de um bucket S3.</p>
+
 Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes chamada [Terraform](https://www.terraform.io/). Adotando sua própria [DSL](https://en.wikipedia.org/wiki/Domain-specific_language)(Domain-specific_language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API de outros serviços diretamente.
 
 Porém, com o decorrer dos anos, a operacionalização das centenas de linhas que são utilizadas nos arquivos de IAC começa a causar dificuldades, e manutenções recorrentes são inevitáveis. Além de ser observar um cenário explícito de *copy/paste* pela necessidade de recorrente reutilização de templates de Cloudformation/Terraform.
@@ -39,7 +53,7 @@ Como dito anteriormente, o CDK quer ser visto como ***"Infra as Real Code"***, e
 
 Aqui, estamos lidando com um conceito chamado [Transpiler](https://en.wikipedia.org/wiki/Source-to-source_compiler), que nada mais é do que obter o código em uma linguagem específica como JavaScript e traduzir para um outro código correspondente.
 
-Então, toda aquela verbosidade do Cloudformation é substituída por uma sintaxe familiar ao desenvolvedor, ao passo que o seu desenvolvimento fica extremamente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferência do desenvolvedor, o qual **ao executar um transpiler, terá como output seu script de Cloudformation**.
+Desta forma, toda aquela verbosidade do Cloudformation é substituída por uma sintaxe familiar ao desenvolvedor, ao passo que o seu desenvolvimento fica extremamente mais direto e prazeroso. Como input, temos código puro em uma linguagem de preferência do desenvolvedor, o qual **ao executar um transpiler, terá como output seu script de Cloudformation**.
 
 Fica claro que um dos benefícios dessa abordagem é que não precisamos dedicar tempo no aprendizado de uma DSL especifica como, por exemplo, o **Terraform**.
 
