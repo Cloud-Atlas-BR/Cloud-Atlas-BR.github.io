@@ -41,9 +41,9 @@ Resources:
 ```
 <p style="text-align: center; margin-top: 0">Exemplo de script Cloudformation para criação de um bucket S3.</p>
 
-Em paralelo, soluções de IAC começam a despontar, dentre elas, uma das mais fortes concorrentes chamada [Terraform](https://www.terraform.io/). Adotando sua própria [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) (Domain-Specific Language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API de outros serviços diretamente.
+Em paralelo, diferente soluções de IAC começam a despontar, como a [Terraform](https://www.terraform.io/), uma das mais fortes concorrentes. Adotando sua própria [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) (Domain-Specific Language), tais soluções não interagem com o Cloudformation, em vez disso, utilizam a API de outros serviços diretamente.
 
-Porém, com o decorrer dos anos, a operacionalização das centenas de linhas que são utilizadas nos arquivos de IAC começa a causar dificuldades, e manutenções recorrentes são inevitáveis. Além de ser observar um cenário explícito de *copy/paste* pela necessidade de recorrente reutilização de templates de Cloudformation/Terraform.
+Porém, com o decorrer dos anos, a operacionalização das centenas de linhas que são utilizadas nos arquivos de IAC começa a causar dificuldades, e manutenções recorrentes são inevitáveis. Além de ser observar um cenário explícito de *copy/paste* pela necessidade de recorrente reutilização de templates de Cloudformation e Terraform.
 
 Fica evidente a necessidade de um *approach* diferente.
 
