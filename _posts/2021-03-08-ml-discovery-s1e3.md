@@ -19,7 +19,7 @@ Hoje, muitas empresas fornecem esteiras de CI/CD como um serviço, bastando a es
 
 <p style="text-align: center"><img src="https://i.imgur.com/Z06j7F3.png"></p>
 
-Neste episódio, vamos criar uma esteira de CI/CD utilizando [Github Actions](https://docs.github.com/en/actions) para dar deploy em nosso modelo de Machine Learning.
+Neste episódio, vamos criar uma esteira de CI/CD utilizando [Github Actions](https://docs.github.com/en/actions) para realizar o deploy de nosso modelo de Machine Learning.
 
 ## Action!
 
