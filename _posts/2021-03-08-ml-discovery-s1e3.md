@@ -136,7 +136,7 @@ No passo `Build and Push image` é que começa a ação! Primeiramente fazemos o
     docker push ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
 ```
 
-Se criada com sucesso, a imagem Docker é *taggeada* seguindo o padrão do ECR e enviada para o repositório. Observe que não criamos o repositório da imagem nesse script, isso foi feito manualmente através do comando.
+Se criada com sucesso, a imagem Docker é *taggeada* seguindo o padrão do ECR e enviada ao Registry. Observe que não criamos o repositório da imagem nesse script, isso foi feito manualmente através do comando.
 
 ```sh
 aws ecr create-repository --repository-name discovery
