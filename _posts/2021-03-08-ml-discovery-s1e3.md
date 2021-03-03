@@ -84,7 +84,7 @@ jobs:
         run: | 
           aws cloudformation deploy \
             --stack-name discovery-lambda-stack \
-            --template-file infra/lambda.yml \
+            --template-file lambda.yml \
             --capabilities CAPABILITY_NAMED_IAM
 ```
 
@@ -215,7 +215,7 @@ Com todos os arquivos prontos, podemos *commitar* e fazer o *push* das nossas al
 
 ```sh
 git add -A
-git commit -m "add files"
+git commit -m "Update deploy.yml"
 git push origin main
 ```
 
