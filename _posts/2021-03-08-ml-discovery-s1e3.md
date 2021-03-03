@@ -239,6 +239,10 @@ Esteiras de CI/CD são parte integrante da cultura DevOps, mas não precisam se 
 
 Intergrá-las no ciclo de vida de um modelo de Machine Learning nos ajuda a garantir a reprodutibilidade dos modelos, [um dos grandes desafios desta área](https://www.wired.com/story/artificial-intelligence-confronts-reproducibility-crisis/).
 
+Nos vemos no próximo episódio!
+
+<p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
+
 ## Código deste post
 
 - [ Cloud-Atlas-BR/ ML-Discovery-S01E01 ](https://github.com/Cloud-Atlas-BR/ML-Discovery-S01E01)
@@ -247,7 +251,3 @@ Intergrá-las no ciclo de vida de um modelo de Machine Learning nos ajuda a gara
 ## Referências
 
 - [GitHub Actions Documentation](https://globoplay.globo.com/agora-na-tv/)
-
-
-
-Nos vemos no próximo episódio!
