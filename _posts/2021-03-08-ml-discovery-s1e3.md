@@ -215,11 +215,38 @@ Com todos os arquivos prontos, podemos *commitar* e fazer o *push* das nossas al
 
 ```sh
 git add -A
-git commit -m "Update deploy.yml"
+git commit -m "Update lambda.yml"
 git push origin main
 ```
 
 ## Acompanhando a esteira
+
+No console do Github, você verá sua esteira da seguinte forma.
+
+<p style="text-align: center; margin-top:0"><img src="https://i.imgur.com/y4wzKNL.png"></p>
+
+Na AWS, podemos ver o status do deploy pelo console do Cloudformation.
+
+<p style="text-align: center; margin-top:0"><img src="https://i.imgur.com/NjngcV3.png"></p>
+
+O deploy de nosso modelo foi um sucesso!
+
+Mas, não só isso! Melhorias no modelo ou adição de componentes em nossa arquitetura, estão todas a um *commit* de distância agora.
+
+## Pensamentos finais
+
+Esteiras de CI/CD são parte integrante da cultura DevOps, mas não precisam se limitar a esse escopo. 
+
+Intergrá-las no ciclo de vida de um modelo de Machine Learning nos ajuda a garantir a reprodutibilidade dos modelos, [um dos grandes desafios desta área](https://www.wired.com/story/artificial-intelligence-confronts-reproducibility-crisis/).
+
+## Código deste post
+
+- [ Cloud-Atlas-BR/ ML-Discovery-S01E01 ](https://github.com/Cloud-Atlas-BR/ML-Discovery-S01E01)
+
+
+## Referências
+
+- [GitHub Actions Documentation](https://globoplay.globo.com/agora-na-tv/)
 
 
 
