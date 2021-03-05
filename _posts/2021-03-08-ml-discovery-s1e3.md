@@ -250,4 +250,4 @@ Nos vemos no próximo episódio!
 
 ## Referências
 
-- [GitHub Actions Documentation](https://globoplay.globo.com/agora-na-tv/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
