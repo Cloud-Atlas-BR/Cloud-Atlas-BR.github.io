@@ -245,7 +245,7 @@ Nos vemos no próximo episódio!
 
 ## Código deste post
 
-- [ Cloud-Atlas-BR/ ML-Discovery-S01E01 ](https://github.com/Cloud-Atlas-BR/ML-Discovery-S01E01)
+- [Cloud-Atlas-BR/ ML-Discovery-S01E01](https://github.com/Cloud-Atlas-BR/ML-Discovery-S01E01)
 
 
 ## Referências
