@@ -237,7 +237,7 @@ Mas, não só isso! Melhorias no modelo ou adição de componentes em nossa arqu
 
 Esteiras de CI/CD são parte integrante da cultura DevOps, mas não precisam se limitar a esse escopo. 
 
-Intergrá-las no ciclo de vida de um modelo de Machine Learning nos ajuda a garantir a reprodutibilidade dos modelos, [um dos grandes desafios desta área](https://www.wired.com/story/artificial-intelligence-confronts-reproducibility-crisis/).
+Intregá-las no ciclo de vida de um modelo de Machine Learning nos ajuda a garantir a reprodutibilidade dos modelos, [um dos grandes desafios desta área](https://www.wired.com/story/artificial-intelligence-confronts-reproducibility-crisis/).
 
 Nos vemos no próximo episódio!
 
