@@ -1,11 +1,14 @@
 ---
 layout: post
 title: MLflow e Sagemaker, juntos somos mais fortes.
-subtitle: ML Drops v3
+subtitle: Machine Learning Discovery - S01E04
 tags: [aws, mlops, cloudformation, iaac, iac]
 comments: true
 draft: true
 ---
+
+{: .box-note} 
+**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
 Fala Galera!
 

@@ -7,6 +7,10 @@ comments: true
 draft: true
 ---
 
+{: .box-note} 
+**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
+
+
 No [primeiro episódio da série ML Discovery](https://cloud-atlas-br.github.io/2021-02-20-ml-discovery-s1e1/), descobrimos como criar um [Lambda container](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/) de forma manual. **Hoje, vamos dar o próximo passo** e desenvolver uma esteira automatizada para implantar nosso container Lambda.
 
 Na cultura DevOps, essas esteiras são conhecidas como *CI/CD Pipelines*. Na prática, elas são um conjunto de instruções que conecta seu código em um repositório git (Gitlab, Github) até a infraestrutura (servidor), onde seu código será executado. No caminho dessas esteiras, podemos ter etapas de testes, compilação, provisionamento de infraestrutura etc.
