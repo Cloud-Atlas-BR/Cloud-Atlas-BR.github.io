@@ -6,6 +6,7 @@ tags: [aws, mlops, machine, learning, lambda, container, github-actions, github]
 comments: true
 draft: true
 cover-img: /assets/img/s1e3.png
+share-img: /assets/img/s1e3.png
 ---
 
 {: .box-note} 
