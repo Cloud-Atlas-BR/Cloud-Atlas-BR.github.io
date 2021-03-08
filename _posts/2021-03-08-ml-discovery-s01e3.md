@@ -79,10 +79,10 @@ jobs:
 
       - name: Build and Push image
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com
           docker build -t discovery .
-          docker tag discovery:latest ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
-          docker push ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
+          docker tag discovery:latest ${ secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
+          docker push ${ secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
 
       - name: Create or update lambda function
         run: | 
@@ -133,7 +133,7 @@ No passo `Build and Push image` é que começa a ação! Primeiramente fazemos o
 ```yaml
 - name: Build and Push image
   run: |
-    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com
     docker build -t discovery .
     docker tag discovery:latest ${secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
     docker push ${ secrets.ACCOUNT_ID }.dkr.ecr.us-east-1.amazonaws.com/discovery:latest
