@@ -145,7 +145,7 @@ Se criada com sucesso, a imagem Docker é *taggeada* seguindo o padrão do ECR e
 aws ecr create-repository --repository-name discovery
 ```
 
-No último estágio da nossa esteira, executamos, emfim, o *script* que criará o lambda container na sua conta da AWS. Para isso, utilizamos o serviço [cloudformation](https://aws.amazon.com/cloudformation/) que permite o provisionamento da [infraestrutura como código](https://en.wikipedia.org/wiki/Infrastructure_as_code).
+No último estágio da nossa esteira, executamos, enfim, o *script* que criará o lambda container na sua conta da AWS. Para isso, utilizamos o serviço [cloudformation](https://aws.amazon.com/cloudformation/) que permite o provisionamento da [infraestrutura como código](https://en.wikipedia.org/wiki/Infrastructure_as_code).
 
 ```yaml
 - name: Create or update lambda function
