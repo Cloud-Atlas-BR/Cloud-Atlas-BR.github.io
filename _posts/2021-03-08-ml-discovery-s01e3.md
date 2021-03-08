@@ -116,7 +116,7 @@ No passo `Checkout`, importamos a action que [permite que sua esteira acesse os 
   uses: actions/checkout@v2
 {% endhighlight %}
 
-Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no próximo passo usamos a action `aws-actions/configure-aws-credentials@v1` para obtenção de credenciais da conta AWS.
+Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no próximo passo usamos a action `aws-actions/configure-aws-credentials@v1` para obtenção de credenciais da sua conta AWS.
 
 {% highlight yaml linenos %}
 - name: Configure AWS credentials from your account
