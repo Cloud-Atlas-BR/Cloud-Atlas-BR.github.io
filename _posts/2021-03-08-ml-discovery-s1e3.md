@@ -5,6 +5,7 @@ subtitle: Machine Learning Discovery - S01E03
 tags: [aws, mlops, machine, learning, lambda, container, github-actions, github]
 comments: true
 draft: true
+cover-img: /assets/img/s1e3.png
 ---
 
 {: .box-note} 
