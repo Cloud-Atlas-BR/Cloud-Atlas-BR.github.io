@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-20.04
 ```
 
-A partir daí definimos os passos desse estágio. 
+A partir daí, definimos os passos desse estágio. 
 
 No passo `Checkout`, importamos a action que [permite que sua esteira acesse os arquivos em seu repositório](https://github.com/actions/checkout).
 
@@ -119,8 +119,8 @@ Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no 
 - name: Configure AWS credentials from your account
   uses: aws-actions/configure-aws-credentials@v1
   with:
-    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+    aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
     aws-region: us-east-1
 ```
 
