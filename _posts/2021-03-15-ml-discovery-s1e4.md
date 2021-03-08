@@ -1,14 +1,11 @@
 ---
 layout: post
 title: MLflow e Sagemaker, juntos somos mais fortes.
-subtitle: Machine Learning Discovery - S01E04
+subtitle: ML Drops v3
 tags: [aws, mlops, cloudformation, iaac, iac]
 comments: true
 draft: true
 ---
-
-{: .box-note} 
-**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
 Fala Galera!
 
@@ -50,7 +47,7 @@ Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/s
 
 Antes de continuarmos pessoal, vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma stack de serviços muito extensa, que por si só teria conteúdo para uma série inteira, todinha pra ele.
 
-De uma forma simples e direta o AWS Sagemaker Endpoint nos disponibiliza uma lista de instâncias genreciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
+De uma forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) nos disponibiliza uma lista de instâncias genreciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
 
 * `/invocation` - Rota que recebe o payload e transmite o mesmo ao modelo.
 * `/ping` - Rota de health check.
@@ -59,10 +56,10 @@ Tais rotas terão como destino um container Docker, sendo que dentro deste conta
 
 ## Arquitetura 
 
-Para termos um registro visual do que explicamos ate agora, apresento-lhes o desenho da arquitetura deste Drops.
+Para termos um registro visual do que explicamos ate agora, apresento-lhes o desenho da arquitetura deste episódio.
 
 
-<p style="text-align: center"><img src="https://i.imgur.com/2hTEFRz.jpg"></p>
+<p style="text-align: center"><img src="https://i.imgur.com/l3iMrUJ.jpg"></p>
 
 O objetivo desta arquitetura é justamente implementar de forma rápida e simples o que foi apresentado até aqui.
 
@@ -112,4 +109,53 @@ A segunda forma de armazenamento de informações do [MLflow](https://https://ml
 
 Para esta segunda forma de armazenamento estamos utilizando em nosso Dockerfile o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/)
 
-## MLflow com Fargate
+## Provisionando com AWS CDK
+
+Para ganharmos produtividade e fluidez nesse artigo, utilizaremos  o AWS CDK como serviço de provisionamento de nossa infraestrutura.
+
+Aqui no blog temos um episódio inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
+
+Agora, vamos listar todos os componentes necessários para nosso projeto :
+
+* `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
+* `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
+* `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
+* `AWS S3` - Bcuker que armazenará a camada .
+* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
+* `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
+
+Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
+
+Iniciamos declarando todas as dependencias/constructs que serão utilizados em nossa infra estrutura.
+
+```python
+from aws_cdk import (
+    aws_ec2 as ec2,
+    aws_s3 as s3,
+    aws_ecs as ecs,
+    aws_rds as rds,
+    aws_iam as iam,
+    aws_secretsmanager as sm,
+    aws_ecs_patterns as ecs_patterns,
+    core
+)
+```
+
+Agora, em nossa classe principal antes de iniciarmos a criação dos recursos, precisamos realizar algumas parametrizações que inclusive, serão utilizadas em nossa imagem Docker, como por exemplo os parâmetros de nosso banco de dados.
+
+```python
+class MLflowStack(core.Stack):
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+        ##
+        ##Parametros gerais utilizados para provisioamento de infra
+        ##
+        project_name_param = core.CfnParameter(scope=self, id='ProjectName', type='String')
+        db_name = 'mlflowdb'
+        port = 3306
+        username = 'master'
+        bucket_name = f'{project_name_param.value_as_string}-artifacts-{core.Aws.ACCOUNT_ID}'
+        container_repo_name = 'mlflow-containers'
+        cluster_name = 'mlflow'
+        service_name = 'mlflow'
+```
