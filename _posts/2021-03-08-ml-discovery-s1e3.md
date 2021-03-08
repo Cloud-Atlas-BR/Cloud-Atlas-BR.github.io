@@ -233,7 +233,7 @@ Na AWS, podemos ver o status do deploy pelo console do Cloudformation.
 
 O deploy de nosso modelo foi um sucesso!
 
-Mas, não só isso! Melhorias no modelo ou adição de componentes em nossa arquitetura, estão todas a um *commit* de distância agora.
+Mas, não só isso! Melhorias no modelo ou adição de componentes em nossa arquitetura estão todas a um *commit* de distância agora.
 
 ## Pensamentos finais
 
