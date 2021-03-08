@@ -4,10 +4,13 @@ title: Sua esteira de deploy de Machine Learning no Github
 subtitle: Machine Learning Discovery - S01E03
 tags: [aws, mlops, machine, learning, lambda, container, github-actions, github]
 comments: true
-draft: false
+draft: true
 cover-img: /assets/img/s1e3.png
 share-img: /assets/img/s1e3square.png
 ---
+
+{: .box-note}
+**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
 No [primeiro episódio da série ML Discovery](https://cloud-atlas-br.github.io/2021-02-20-ml-discovery-s1e1/), descobrimos como criar um [Lambda container](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/) de forma manual. **Hoje, vamos dar o próximo passo** e desenvolver uma esteira automatizada para implantar nosso container Lambda.
 
