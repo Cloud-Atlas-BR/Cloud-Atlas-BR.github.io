@@ -126,7 +126,7 @@ Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no 
     aws-region: us-east-1
 ```
 
-Observe que aqui estamos utilizando uma variável especial: `{secrets.}`. O Github permite a [criação de variáveis de ambiente encriptografadas](https://docs.github.com/en/actions/reference/encrypted-secrets) para evitar a exposição de informações sensíveis. Siga este [tutorial](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) para criar os segredos `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` a partir das [credenciais de usuário da sua conta AWS](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html).
+Observe que aqui estamos utilizando uma variável especial: `{secrets.}`. O Github permite a [criação de variáveis de ambiente encriptografadas](https://docs.github.com/en/actions/reference/encrypted-secrets) para evitar a exposição de informações sensíveis. Siga este [tutorial](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) para criar os segredos `ACCOUNT_ID`, `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` a partir das [credenciais de usuário da sua conta AWS](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html).
 
 No passo `Build and Push image` é que começa a ação! Primeiramente fazemos o login no serviço de registro de containers (ECR) para posterior *push* da imagem que será criada.
 
