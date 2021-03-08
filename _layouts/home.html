@@ -11,7 +11,7 @@ layout: page
     {% unless post.draft %}
     <article class="post-preview">
 
-    {%- capture thumbnail -%}
+    <!-- {%- capture thumbnail -%}
       {% if post.thumbnail-img %}
         {{ post.thumbnail-img }}
       {% elsif post.cover-img %}
@@ -33,7 +33,7 @@ layout: page
       </a>
     </div>
     {% endif %}
-    {% endif %}
+    {% endif %} -->
 
     <a href="{{ post.url | absolute_url }}">
       <h2 class="post-title">{{ post.title }}</h2>
