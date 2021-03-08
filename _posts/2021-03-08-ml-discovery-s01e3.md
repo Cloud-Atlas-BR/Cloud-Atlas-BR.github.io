@@ -57,7 +57,7 @@ Abstrato né! Mas, você verá como é simples.
 
 Em seguida, temos a configuração real da nossa esteira. Dê uma lida e me encontre lá embaixo para detalharmos passo a passo.
 
-```yaml
+{% highlight yaml linenos %}
 name: ML Lambda Container Deploy
 
 on:
@@ -91,7 +91,7 @@ jobs:
             --stack-name discovery-lambda-stack \
             --template-file lambda.yml \
             --capabilities CAPABILITY_NAMED_IAM
-```
+{% endhighlight %}
 
 A chave `name` define o nome da nossa esteira. Fácil!
 
@@ -101,31 +101,31 @@ Em seguida, temos o condicional `on`. Neste configuramos para que a esteira seja
 
 Criamos um único estágio chamado `build` (esse nome não é obrigatório) e informamos que todas etapas desse estágio serão executadas em container Ubuntu 20.04.
 
-```yaml
+{% highlight yaml linenos %}
 jobs:
   build:
     runs-on: ubuntu-20.04
-```
+{% endhighlight %}
 
 A partir daí, definimos os passos desse estágio. 
 
 No passo `Checkout`, importamos a action que [permite que sua esteira acesse os arquivos em seu repositório](https://github.com/actions/checkout).
 
-```yaml
+{% highlight yaml linenos %}
 - name: Checkout
   uses: actions/checkout@v2
-```
+{% endhighlight %}
 
 Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no próximo passo usamos a action `aws-actions/configure-aws-credentials@v1` para obtenção de credenciais da conta AWS.
 
-```yaml
+{% highlight yaml linenos %}
 - name: Configure AWS credentials from your account
   uses: aws-actions/configure-aws-credentials@v1
   with:
     aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
     aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
     aws-region: us-east-1
-```
+{% endhighlight %}
 
 Observe que aqui estamos utilizando uma variável especial: `{{secrets.}}`. O Github permite a [criação de variáveis de ambiente encriptografadas](https://docs.github.com/en/actions/reference/encrypted-secrets) para evitar a exposição de informações sensíveis. Siga este [tutorial](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) para criar os segredos `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` a partir das [credenciais de usuário da sua conta AWS](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html).
 
