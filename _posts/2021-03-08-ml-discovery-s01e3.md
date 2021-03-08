@@ -40,7 +40,6 @@ cd ML-Discovery-S01E01
 mkdir -p .github/workflows
 
 touch .github/workflows/deploy.yml
-
 ```
 
 No arquivo `deploy.yml` escreveremos o código de nossa esteira de CI/CD. O Github Action espera que este arquivo possua uma estrutura similar à seguinte.
@@ -57,7 +56,7 @@ Abstrato né! Mas, você verá como é simples.
 
 Em seguida, temos a configuração real da nossa esteira. Dê uma lida e me encontre lá embaixo para detalharmos passo a passo.
 
-{% highlight yaml linenos %}
+```yaml
 name: ML Lambda Container Deploy
 
 on:
@@ -74,8 +73,8 @@ jobs:
       - name: Configure AWS credentials from your account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${ secrets.AWS_ACCESS_KEY_ID }
+          aws-secret-access-key: ${ secrets.AWS_SECRET_ACCESS_KEY }
           aws-region: us-east-1
 
       - name: Build and Push image
@@ -91,7 +90,7 @@ jobs:
             --stack-name discovery-lambda-stack \
             --template-file lambda.yml \
             --capabilities CAPABILITY_NAMED_IAM
-{% endhighlight %}
+```
 
 A chave `name` define o nome da nossa esteira. Fácil!
 
@@ -101,38 +100,37 @@ Em seguida, temos o condicional `on`. Neste configuramos para que a esteira seja
 
 Criamos um único estágio chamado `build` (esse nome não é obrigatório) e informamos que todas etapas desse estágio serão executadas em container Ubuntu 20.04.
 
-{% highlight yaml linenos %}
+```yaml
 jobs:
   build:
     runs-on: ubuntu-20.04
-{% endhighlight %}
+```
 
 A partir daí, definimos os passos desse estágio. 
 
 No passo `Checkout`, importamos a action que [permite que sua esteira acesse os arquivos em seu repositório](https://github.com/actions/checkout).
 
-{% highlight yaml linenos %}
+```yaml
 - name: Checkout
   uses: actions/checkout@v2
-{% endhighlight %}
+```
 
 Como usaremos essa esteira para realizar o deploy de nosso Lambda Container, no próximo passo usamos a action `aws-actions/configure-aws-credentials@v1` para obtenção de credenciais da sua conta AWS.
 
-{% highlight yaml linenos %}
+```yaml
 - name: Configure AWS credentials from your account
   uses: aws-actions/configure-aws-credentials@v1
   with:
-    aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-    aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    aws-access-key-id: ${secrets.AWS_ACCESS_KEY_ID}
+    aws-secret-access-key: ${secrets.AWS_SECRET_ACCESS_KEY}
     aws-region: us-east-1
-{% endhighlight %}
+```
 
-Observe que aqui estamos utilizando uma variável especial: `{{secrets.}}`. O Github permite a [criação de variáveis de ambiente encriptografadas](https://docs.github.com/en/actions/reference/encrypted-secrets) para evitar a exposição de informações sensíveis. Siga este [tutorial](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) para criar os segredos `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` a partir das [credenciais de usuário da sua conta AWS](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html).
+Observe que aqui estamos utilizando uma variável especial: `{secrets.}`. O Github permite a [criação de variáveis de ambiente encriptografadas](https://docs.github.com/en/actions/reference/encrypted-secrets) para evitar a exposição de informações sensíveis. Siga este [tutorial](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) para criar os segredos `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` a partir das [credenciais de usuário da sua conta AWS](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html).
 
 No passo `Build and Push image` é que começa a ação! Primeiramente fazemos o login no serviço de registro de containers (ECR) para posterior *push* da imagem que será criada.
 
 ```yaml
-
 - name: Build and Push image
   run: |
     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
