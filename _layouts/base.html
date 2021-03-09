@@ -26,6 +26,8 @@ common-js:
 
 <body>
 
+  {% if site.google_ad_client %}{% include google_analytics.html %}{% endif %} 
+
   {% include gtm_body.html %}
 
   {% include nav.html %}
