@@ -163,3 +163,50 @@ class MLflowStack(core.Stack):
         cluster_name = 'mlflow'
         service_name = 'mlflow'
 ```
+
+Iniciaremos então efetivamente o provisionamento de nossa infraestrutura começando pelas `IAM Roles` e Secrets Manager:
+```python
+#Associação das policys gerenciadas a role que sera atribuida a task ECS.
+        role_mlflow = iam.Role(scope=self, id='TASKROLE', assumed_by=iam.       ServicePrincipal(service='ecs-tasks.amazonaws.com'))
+        role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonS3FullAccess'))
+        role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonECS_FullAccess'))
+
+#Secrets Manager responsavel pelo armazenamento do password do nosso RDS MySQL
+db_password_secret = sm.Secret(
+            scope=self,
+            id='DBSECRET',
+            secret_name='dbPassword',
+            generate_secret_string=sm.SecretStringGenerator(password_length=20, exclude_punctuation=True)
+        )
+```
+Agora provisionaremos as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+```python
+        #Criação do Bucket S3
+        artifact_bucket = s3.Bucket(
+            scope=self,
+            id='ARTIFACTBUCKET',
+            bucket_name=bucket_name,
+            public_read_access=False,
+            block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+            removal_policy=core.RemovalPolicy.DESTROY
+        )
+        # Criação de Security Group para acesso ao DB
+        sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc, security_group_name='sg_rds')
+        # Adicionamos aqui efeito de testes 0.0.0.0/0
+        sg_rds.add_ingress_rule(peer=ec2.Peer.ipv4('0.0.0.0/0'), connection=ec2.Port.tcp(port))
+        # Criação da instancia RDS
+        database = rds.DatabaseInstance(
+            scope=self,
+            id='MYSQL',
+            database_name=db_name,
+            port=port,
+            credentials=rds.Credentials.from_username(username=username, password=db_password_secret.secret_value),
+            engine=rds.DatabaseInstanceEngine.mysql(version=rds.MysqlEngineVersion.VER_8_0_19),
+            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
+            security_groups=[sg_rds],
+            vpc_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.ISOLATED),
+            # multi_az=True,
+            removal_policy=core.RemovalPolicy.DESTROY,
+            deletion_protection=False
+        )
+```
