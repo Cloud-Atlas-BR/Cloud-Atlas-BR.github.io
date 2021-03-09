@@ -117,7 +117,7 @@ Para esta segunda forma de armazenamento estamos utilizando em nosso Dockerfile 
 
 Para ganharmos produtividade e fluidez nesse artigo, utilizaremos  o AWS CDK como serviço de provisionamento de nossa infraestrutura.
 
-Aqui no blog temos um episódio inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
+Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
 
 Agora, vamos listar todos os componentes necessários para nosso projeto :
 
@@ -129,6 +129,8 @@ Agora, vamos listar todos os componentes necessários para nosso projeto :
 * `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
 
 Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
+
+Como dito anteriormente, para as etapas de inicialização do projeto e download de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
 
 Iniciamos declarando todas as dependencias/constructs que serão utilizados em nossa infra estrutura.
 
@@ -203,10 +205,78 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
             credentials=rds.Credentials.from_username(username=username, password=db_password_secret.secret_value),
             engine=rds.DatabaseInstanceEngine.mysql(version=rds.MysqlEngineVersion.VER_8_0_19),
             instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
-            security_groups=[sg_rds],
-            vpc_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.ISOLATED),
+            security_groups=[sg_rds],           
             # multi_az=True,
             removal_policy=core.RemovalPolicy.DESTROY,
             deletion_protection=False
         )
 ```
+
+Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no inicio deste artigo
+
+```python
+
+#Criação do Cluster ECS
+cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
+        #Task Definition para Fargate
+        task_definition = ecs.FargateTaskDefinition(
+            scope=self,
+            id='MLflow',
+            task_role=role,
+        )
+        #Criando nosso container com base no Dockerfile do MLflow
+        container = task_definition.add_container(
+            id='Container',
+            image=ecs.ContainerImage.from_asset(
+                directory='../../container',
+                repository_name=container_repo_name
+            ),
+            #Atribuição Variaves ambiente
+            environment={
+                'BUCKET': f's3://{artifact_bucket.bucket_name}',
+                'HOST': database.db_instance_endpoint_address,
+                'PORT': str(port),
+                'DATABASE': db_name,
+                'USERNAME': username
+            },
+            #Secres contendo o password do RDS MySQL
+            secrets={
+                'PASSWORD': ecs.Secret.from_secrets_manager(db_password_secret)
+            }
+        )
+        #Port Mapping para exposição do Container MLflow
+        port_mapping = ecs.PortMapping(container_port=5000, host_port=5000, protocol=ecs.Protocol.TCP)
+        container.add_port_mappings(port_mapping)
+
+        #Atribuição de Load Balancer
+        fargate_service = ecs_patterns.NetworkLoadBalancedFargateService(
+            scope=self,
+            id='MLFLOW',
+            service_name=service_name,
+            cluster=cluster,
+            task_definition=task_definition
+        )
+
+        #S ecurity group para ingress
+        fargate_service.service.connections.security_groups[0].add_ingress_rule(
+            peer=ec2.Peer.ipv4(vpc.vpc_cidr_block),
+            connection=ec2.Port.tcp(5000),
+            description='Allow inbound from VPC for mlflow'
+        )
+
+        # Auto Scaling Policy para nosso balanceador
+        scaling = fargate_service.service.auto_scale_task_count(max_capacity=2)
+        scaling.scale_on_cpu_utilization(
+            id='AUTOSCALING',
+            target_utilization_percent=70,
+            scale_in_cooldown=core.Duration.seconds(60),
+            scale_out_cooldown=core.Duration.seconds(60)
+        )
+ ```
+
+ Apenas para enriquecer nossa stack, vamos adicionar um `output` contendo o DNS Name do balanceador provisionado no código acima :
+
+ ``` python
+  core.CfnOutput(scope=self, id='LoadBalancerDNS', value=fargate_service.load_balancer.load_balancer_dns_name)
+  ```
+
