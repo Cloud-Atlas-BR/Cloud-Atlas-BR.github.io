@@ -192,8 +192,19 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
             block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
             removal_policy=core.RemovalPolicy.DESTROY
         )
+
+        #Obtenção de VPC para atribuição ao RDS
+        dev_vpc = ec2.Vpc.from_vpc_attributes(
+            self, '<VPC_NAME>',
+            vpc_id = "<VPC_ID>",
+            availability_zones = core.Fn.get_azs(),
+            private_subnet_ids = ["PRIVATE_SUBNET_ID_1","PRIVATE_SUBNET_ID_2","PRIVATE_SUBNET_ID_3"]
+       )
+
+        
         # Criação de Security Group para acesso ao DB
-        sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc, security_group_name='sg_rds')
+        sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc_dev, security_group_name='sg_rds')
+        
         # Adicionamos aqui efeito de testes 0.0.0.0/0
         sg_rds.add_ingress_rule(peer=ec2.Peer.ipv4('0.0.0.0/0'), connection=ec2.Port.tcp(port))
         # Criação da instancia RDS
@@ -207,6 +218,7 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
             instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
             security_groups=[sg_rds],           
             # multi_az=True,
+            vpc=vpc_dev,
             removal_policy=core.RemovalPolicy.DESTROY,
             deletion_protection=False
         )
@@ -259,7 +271,7 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
 
         #S ecurity group para ingress
         fargate_service.service.connections.security_groups[0].add_ingress_rule(
-            peer=ec2.Peer.ipv4(vpc.vpc_cidr_block),
+            peer=ec2.Peer.ipv4('0.0.0.0/0'),
             connection=ec2.Port.tcp(5000),
             description='Allow inbound from VPC for mlflow'
         )
