@@ -280,3 +280,17 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
   core.CfnOutput(scope=self, id='LoadBalancerDNS', value=fargate_service.load_balancer.load_balancer_dns_name)
   ```
 
+Finalizamos o código da nossa infraestrutura, vamos acecssar a camada de front-end do [MLflow](https://https://mlflow.org/).
+
+Antes, o deploy de nossa stack [AWS CDK](https://aws.amazon.com/pt/cdk/) :
+
+```bash
+$ cdk deploy
+```
+
+## Apresentando o MLflow
+
+Em nossa stack do [AWS CDK](https://aws.amazon.com/pt/cdk/)   colocamos como parâmetro de output o endereço DNS de nosso balanceador.  
+
+Com este endereço, podemos acessar o [MLflow](https://https://mlflow.org/) via browser:
+
