@@ -328,3 +328,22 @@ Chega de falar, vamos para o código.
 
 ## Talk is Cheap, show me the code !
 
+Para nosso artigo vamos utilizar o comando abaixo:
+``` bash
+$ mlflow sagemaker build-and-push-container
+```
+Este, é responsável por criar um container padrão do MLflow para o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+
+Tal container será transmitido ao `AWS ECR` para ser utilizado posteriormente em nosso deploy.
+
+Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
+
+```python
+import mlflow
+import mlflow.sklearn
+from sklearn.datasets import load_iris
+
+#Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
+mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
+
+```
