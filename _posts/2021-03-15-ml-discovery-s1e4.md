@@ -342,8 +342,24 @@ Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
 import mlflow
 import mlflow.sklearn
 from sklearn.datasets import load_iris
+from sklearn import tree
+
 
 #Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
 mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
 
+#Load do dataset Iris
+dataset_iris = load_iris()
+
+#Fit do dataset com Arvore de Classificação
+iris_model = tree.DecisionTreeClassifier()
+iris_model = iris_model.fit(dataset_iris.data, dataset_iris.target)
+
+#Chamando o metodo log_model para salvar um MLflow Model
+mlflow.sklearn.log_model(iris_model,"sk_models")
+
 ```
+Com o nosso modelo já presente no registry do MLflow, vamos efetivamente realizar o deploy do mesmo.
+
+
+
