@@ -37,8 +37,8 @@ round-avatar: true
 # Select the social network links that you want to show in the footer.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-#  email: "someone@example.com"
-#  facebook: deanattali
+  email: cloud.atlas.br@gmail.com
+  facebook: cloudatlasbr
   github: Cloud-Atlas-BR
 #  twitter: daattali
 #  patreon: DeanAttali
@@ -75,7 +75,7 @@ share-links-active:
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
-#url-pretty: "MyWebsite.com"
+url-pretty: "cloudatlas.tech/"
 
 # Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
 excerpt_length: 50
@@ -87,7 +87,7 @@ feed_show_excerpt: false
 feed_show_tags: true
 
 # The keywords to associate with your website, for SEO purposes
-#keywords: "my,list,of,keywords"
+keywords: "cloud,aws,machine,learning"
 
 # --- Colours / background image --- #
 
