@@ -146,7 +146,7 @@ google_ad_client: "ca-pub-7224733474159333"
 # --- Comments --- #
 
 # To use Disqus comments, sign up to https://disqus.com and fill in your Disqus shortname (NOT the userid)
-disqus: "cloudatlasbr"
+# disqus: "cloudatlasbr"
 
 # To use Facebook Comments, create a Facebook app and fill in the Facebook App ID
 #fb_comment_id: ""
