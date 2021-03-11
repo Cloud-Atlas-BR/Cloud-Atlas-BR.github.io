@@ -302,7 +302,29 @@ $ cdk deploy
 
 ## Apresentando o MLflow
 
-Em nossa stack do [AWS CDK](https://aws.amazon.com/pt/cdk/)   colocamos como parâmetro de output o endereço DNS de nosso balanceador.  
+Em nossa stack do [AWS CDK](https://aws.amazon.com/pt/cdk/) colocamos como parâmetro de output o endereço DNS de nosso balanceador.  
 
-Com este endereço, podemos acessar o [MLflow](https://https://mlflow.org/) via browser:
+<p style="text-align: center"><img src="https://i.imgur.com/co9HjjV.jpg"></p>
+
+
+
+Com este endereço, podemos acessar o [MLflow](https://https://mlflow.org/) via browser :
+<p style="text-align: center"><img src="https://i.imgur.com/ovFX54h.jpg"></p>
+
+Agora, partimos para o upload do nosso container em nosso repositório do [MLflow](https://https://mlflow.org/).
+
+Durante os proximos passos utilizaremos dois registries diferentes :
+
+* [`AWS ECR`](https://aws.amazon.com/pt/ecr/)
+* `MLflow Registry`
+
+O primeiro será responsável por armazenar a imagem do nosso modelo, enquanto que o segundo armazenará o código do nosso modelo de Machine Learning.
+
+Por debaixo dos panos, no momento em que realizamos o deploy do nosso modelo, a imagem em nosso repositório `AWS ECR` junto com o código fonte do nosso modelo transformam-se em uma nova imagem.
+
+Tal imagem será entregue em um `AWS Sagemaker Endpoint` expondo as rotas `/invocations` e `/ping`, conforme explicado no início do artigo.
+
+Chega de falar, vamos para o código.
+
+## Talk is Cheap, show me the code !
 
