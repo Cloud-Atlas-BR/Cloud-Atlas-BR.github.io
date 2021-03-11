@@ -1,4 +1,4 @@
-[![](https://i.imgur.com/zNBkzj1.png)](https://beautifuljekyll.com/plans/)
+![](https://github.com/Cloud-Atlas-BR/Cloud-Atlas-BR.github.io/blob/master/assets/img/Banner_Home.jpg)
 
 # Beautiful Jekyll
 
