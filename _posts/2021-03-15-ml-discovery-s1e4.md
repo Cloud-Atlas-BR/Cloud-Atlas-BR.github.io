@@ -67,14 +67,6 @@ Para termos um registro visual do que explicamos ate agora, apresento-lhes o des
 
 O objetivo desta arquitetura é justamente implementar de forma rápida e simples o que foi apresentado até aqui.
 
-Para atingirmos este objetivo, utilizaremos os seguintes recurso:
-
- * `AWS ECR` - Registry que ficará a nossa imagem Docker
- * `AWS Fargate` - Serviço AWS que disponibiliza o AWS ECS de forma serverless.
- * `AWS Sagemaker Endpoint` - serviço AWS responsável por expor o endpoint com nosso modelo de Machine Learning.
-
-Bom, agora chega de blablablá e vamos para a ação.
-
 ## Let's Get Started
 
 Iniciaremos configurando nosso servidor serverless do MLflow.
@@ -124,7 +116,7 @@ Agora, vamos listar todos os componentes necessários para nosso projeto :
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
 * `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
 * `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
-* `AWS S3` - Bcuker que armazenará a camada .
+* `AWS S3` - Bucket que armazenará a camada de  .
 * `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
 * `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
 
@@ -340,6 +332,8 @@ Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
 
 ```python
 import mlflow
+import boto3
+import mlflow.sagemaker
 import mlflow.sklearn
 from sklearn.datasets import load_iris
 from sklearn import tree
@@ -351,15 +345,108 @@ mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
 #Load do dataset Iris
 dataset_iris = load_iris()
 
+#Region que nosso modelo será entregue
+region = sagemaker.Session().boto_region_name
+
+#obtendo role de execução
+role = sagemaker.get_execution_role() 
+
 #Fit do dataset com Arvore de Classificação
 iris_model = tree.DecisionTreeClassifier()
 iris_model = iris_model.fit(dataset_iris.data, dataset_iris.target)
 
 #Chamando o metodo log_model para salvar um MLflow Model
-mlflow.sklearn.log_model(iris_model,"sk_models")
-
+mlflow.sklearn.log_model(iris_model,"sk_models")  
 ```
 Com o nosso modelo já presente no registry do MLflow, vamos efetivamente realizar o deploy do mesmo.
 
+```python
+role = sagemaker.get_execution_role() 
+image_uri = '<Endereço Imagem ECR mlflow-pyfunc>'
+endpoint_name = 'iris-endpoint'
+mlflow_model_uri = 'models:/<NOME_MODELO>/<VERSAOMODELO>'
 
+mlflow.sagemaker.deploy(
+    mode='create',
+    app_name=endpoint_name,
+    model_uri=mlflow_model_uri,
+    image_url=image_uri,
+    execution_role_arn=role,
+    instance_type='ml.m5.xlarge',
+    instance_count=1,
+    region_name=region
+)
+```
+Como o nosso [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html) entregue pela api do  [MLflow server](https://https://mlflow.org/), bora então para o nosso amado predict.
 
+## Predict
+
+```python
+#Runtime do Sagemaker
+runtime= boto3.client('runtime.sagemaker')
+
+#Obtendo dados para o predico
+raw_data =  "data:[[0,0,0,0]]"
+payload  = json.dumps(raw_data)
+
+#Enviando Requisição ao nosso Endpoint
+runtime_response = runtime.invoke_endpoint(EndpointName=endpoint_name, ContentType='application/json', Body=payload)
+
+#Convertendo resultado para json
+result = json.loads(runtime_response['Body'].read().decode())
+
+#Obtendo Predição e Payload enviado no request
+print(f'Payload: {payload}')
+print(f'Predicao: {result}')
+```
+
+Agora, temos o resultado
+
+```bash
+Payload: "data:[[0,0,0,0]]"
+Predicao: "[Iris-setosa]
+```
+
+Bom pessoal, foi uma longa jornada até aqui, porém muito enriquecedora.
+
+Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning, utilizando o [MLflow](https://https://mlflow.org/) e o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
+
+## Não esqueça do Cleanup
+
+Por ultimo, porém nao menos importante, vamos deletar o Endpoint que criamos e logo em seguida a stack do CDK, respectivamente.
+
+Deleção do [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
+
+```bash
+cdk destroy
+```
+
+Deleção do Endpoint
+```
+mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
+```
+
+## Pensamentos Finais
+
+Neste episódio lhe damos apenas com uma etapa do ciclo de vida de um Modelo de Machine Learning. 
+
+Etapa essa, que assim como as outras tem importância vital em toda a jornada do nosso modelo, desde a modelagem até o deploy em ambiente produtivo.
+
+Com este artigo conseguimos demonstrar que diferentes serviços/frameworks podem se integrar e prover uma experiência fluída para o cliente final, nao importando especificamente qual provedor de Nuvem que estamos utilizando.
+
+Até o próximo episódio !
+
+<p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
+
+## Repositório Github
+
+[Github Repo](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E03)
+
+## Referências
+* [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
+
+* [MLflow](https://https://mlflow.org/)
+
+* [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
+
+* [AWS Fargate](https://aws.amazon.com/pt/fargate)
