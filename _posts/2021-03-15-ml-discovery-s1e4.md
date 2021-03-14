@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MLflow e Sagemaker, juntos somos mais fortes.
-subtitle: ML Drops v3
+subtitle:  Machine Learning Discovery - S01E04
 tags: [aws, mlops, cloudformation, iaac, iac]
 comments: true
 draft: true
@@ -310,15 +310,15 @@ Chega de falar, vamos para o código.
 
 ## Talk is Cheap, show me the code!
 
-Comecemos executando o comando responsável por criar um [container padrão do MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.sagemaker.html#mlflow.sagemaker.push_image_to_ecr) para o Sagemaker Endpoint.
+Comecemos executando o comando responsável por criar um [container padrão do MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.sagemaker.html#mlflow.sagemaker.push_image_to_ecr) para uso pelo Sagemaker Endpoint.
 
 ``` bash
 $ mlflow sagemaker build-and-push-container
 ```
 
-Este container será armazenado no `AWS ECR` para ser utilizado em nosso deploy posteriormente.
+Este container será armazenado no `AWS ECR`.
 
-Em seguida criarremos um modelo *dummy* de Machine Learning usando o MLflow com o seguinte *script*.
+Em seguida, criaremos um modelo *dummy* de Machine Learning, usando o MLflow, com o seguinte *script*.
 
 ```python
 import mlflow
@@ -367,7 +367,7 @@ mlflow.sagemaker.deploy(
     region_name=region
 )
 ```
-Como o Sagemaker Endpoint entregue pela api do MLflow server, podemos realizar uma chamada ao modelo (*predict*).
+Como o Sagemaker Endpoint entregue pela api do MLflow server, podemos realizar uma chamada ao modelo.
 
 ```python
 # Runtime do Sagemaker
@@ -382,7 +382,7 @@ response = runtime.invoke_endpoint(EndpointName=endpoint_name,
                         ContentType='application/json',
                         Body=payload)
 
-#Convertendo resultado para json
+# Convertendo resultado para json
 result = json.loads(response['Body'].read().decode())
 
 print(result) # [Iris-setosa]
