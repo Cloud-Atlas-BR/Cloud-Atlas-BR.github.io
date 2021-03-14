@@ -60,11 +60,9 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Iniciaremos configurando o servidor que executará o MLflow server através do [AWS Fargate](https://aws.amazon.com/pt/fargate). 
+Iniciaremos configurando o servidor que executará o MLflow server através do [AWS Fargate](https://aws.amazon.com/pt/fargate). Neste, o [MLflow](https://https://mlflow.org/) será instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
 
-Neste, o [MLflow](https://https://mlflow.org/) será instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
-
-Abaixo, temos o Dockerfile referente ao [MLflow]() server:
+Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
 ```Dockerfile
 FROM python:3.8.0
@@ -86,9 +84,7 @@ CMD mlflow server \
     --backend-store-uri mysql+pymysql://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}
 ```
 
-Por padrão, o [MLflow](https://https://mlflow.org/) utiliza a porta `5000` para comunicação. Instalamos também algumas dependências como `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o [MLflow](https://https://mlflow.org/), [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
-
-Para este exemplo, também configuramos um bucket S3 e uma string de conexão para o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) em nosso Dockerfile.
+Por padrão, o [MLflow](https://https://mlflow.org/) utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o [MLflow](https://https://mlflow.org/), [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
 O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, de forma nativa, ele já suporta o [AWS S3](https://aws.amazon.com/pt/s3/). 
 
