@@ -417,9 +417,6 @@ Até o próximo episódio!
 
 ## Referências
 * [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
-
 * [MLflow](https://https://mlflow.org/)
-
 * [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
-
 * [AWS Fargate](https://aws.amazon.com/pt/fargate)
