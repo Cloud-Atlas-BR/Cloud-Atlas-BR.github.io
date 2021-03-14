@@ -10,16 +10,13 @@ draft: true
 {: .box-note}
 **Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
-
 Fala Galera!
 
-No Drops de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar em conjunto o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e ***Deploy*** dos nossos Modelos de Machine Learning.
+No Drops de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e *Deploy* dos nossos modelos de Machine Learning.
 
-Aqui, o protagonismo fica a cargo do [MLflow](https://mlflow.org/) cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) ficará responsável por expor um Endpoint de consumo para o modelo. Este serviço é conhecido como [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+Aqui, o protagonismo fica a cargo do [MLflow](https://mlflow.org/) cuja a responsabilidade é servir como *registry* de nossos modelos, armazenando e catalogando-os. O [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) ficará responsável por gerenciar a infraestrutura do endpoint de consumo do modelo através do serviço [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
-
-O objetivo aqui é apresentar de forma didática e simples a parceria entre  [MLflow](https://mlflow.org/) e [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/). Mostraremos também os frutos dessa parceria através de uma implementação real de um modelo de Machine Learning utilizando esses dois serviços.
-
+Para isso, vamos realizar a implementação real de um modelo de Machine Learning utilizando esses dois serviços.
 
 Let's Bora !
 
@@ -27,67 +24,63 @@ Let's Bora !
 
 O [MLflow](https://mlflow.org/) é definido como uma plataforma open source para gerenciamento do ciclo de vida de um Modelo de Machine Learning.
 
-<p style="text-align: center"><img src="https://i.imgur.com/aosrKdj.png?1"></p>
+<p style="text-align: center"><img src="https://i.imgur.com/uzFL2bN.png"></p>
 
-
-Partindo da questão Ciclo de Vida de um Modelo, o [MLflow](https://mlflow.org/) concentra suas funcionalidades em quatro principais componentes
+O [MLflow](https://mlflow.org/) concentra suas funcionalidades em quatro principais componentes para englobar as etapas deste ciclo.
 
 * [MLflow Tracking](https://mlflow.org/docs/latest/tracking.html) - Monitoração de Modelos
-* [MLflow Projects](https://mlflow.org/docs/latest/projects.html) - Garantia de reprodutibilidade e idempotencia do Modelo
+* [MLflow Projects](https://mlflow.org/docs/latest/projects.html) - Garantia de reprodutibilidade e idempotência do Modelo
 * [MLflow Models](https://mlflow.org/docs/latest/models.html) - Produtização e Deploy
-* [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html)  - Repositório/Catalogo centralizado dos Modelos
+* [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório/Catalogo centralizado dos Modelos
 
-Para o Drops de hoje iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
+Para o Drops de hoje, iremos demonstrar a funcionalidade do quarto componente: o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
-A partir deste componente será possível centralizarmos nosso registry/catalogo de modelos, bem como gerencia-los através de API's, UI, etc.
+A partir deste componente, será possível centralizarmos nosso catalogo de modelos, bem como gerenciá-los através de APIs, interfaces gráficas etc.
 
-Com nosso catalog/registry disponibilizado pelo [MLflow](https://mlflow.org/), partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/)
+Com nosso *registry* disponibilizado pelo [MLflow](https://mlflow.org/), partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/)
 
 ## Conhecendo o AWS Sagemaker Endpoint
 
-Com o nosso modelo devidamente catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo.
+Com o nosso modelo podendo ser catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo.
 
 Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html). 
 
-Antes de continuarmos pessoal, vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma stack de serviços muito extensa, que por si só teria conteúdo para uma série inteira, todinha pra ele.
+Vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma *stack* de serviços muito extensa, que por si só teria conteúdo para uma série inteira pra ele.
 
-De uma forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) nos disponibiliza uma lista de instâncias genreciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
+De uma forma simples e direta, o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) disponibiliza máquinas virtuais gerenciadas, com o propósito de expor um endpoint com rotas de API especificas para consumo de modelos de Machine Learning:
 
-* `/invocation` - Rota que recebe o payload e transmite o mesmo ao modelo.
-* `/ping` - Rota de health check.
+* `/invocation` - Rota em que enviamos dados para processamento pelo modelo.
+* `/ping` - Rota de *health check*.
 
-Tais rotas terão como destino um container Docker, sendo que dentro deste container Docker o código do nosso modelo estará presente.
+Tais rotas terão como destino um container Docker, no qual encapsulamos o código de predição e artefatos do nosso modelo.
 
 ## Arquitetura 
 
-Para termos um registro visual do que explicamos ate agora, apresento-lhes o desenho da arquitetura deste episódio.
-
+Para termos um registro visual do que explicamos até agora, apresento-lhes o desenho da arquitetura deste episódio.
 
 <p style="text-align: center"><img src="https://i.imgur.com/l3iMrUJ.jpg"></p>
 
-O objetivo desta arquitetura é justamente implementar de forma rápida e simples o que foi apresentado até aqui.
-
 ## Let's Get Started
 
-Iniciaremos configurando nosso servidor serverless do MLflow.
+Iniciaremos configurando o servidor que executará o MLflow server através do [AWS Fargate](https://aws.amazon.com/pt/fargate). 
 
-Como explicado anteriormente utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/)  instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente serverless.
+Neste, o [MLflow](https://https://mlflow.org/) será instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
 
-
- Abaixo temos o nosso Dockerfile referente ao [MLflow](https://https://mlflow.org/) :
+Abaixo, temos o Dockerfile referente ao [MLflow]() server:
 
 ```Dockerfile
-ROM python:3.8.0
+FROM python:3.8.0
 
 RUN pip install \
     mlflow \
     pymysql \
-    boto3 & \
-    mkdir /mlflow/
+    boto3
+
+WORKDIR /mlflow
 
 EXPOSE 5000
 
-## As variaveis de ambiente serão preenchidas em nossa task definition
+## As variaveis de ambiente serão preenchidas pelo fargate
 CMD mlflow server \
     --host 0.0.0.0 \
     --port 5000 \
@@ -97,34 +90,34 @@ CMD mlflow server \
 
 Por padrão, o [MLflow](https://https://mlflow.org/) utiliza a porta `5000` para comunicação. Instalamos também algumas dependências como `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o [MLflow](https://https://mlflow.org/), [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
-Para este exemplo também configuramos um bucket S3 e uma string de conexão para o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) em nosso Dockerfile.
+Para este exemplo, também configuramos um bucket S3 e uma string de conexão para o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) em nosso Dockerfile.
 
-O objetivo do bucket S3 é guardar possiveis artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store* e de forma nativa já suporta o [AWS S3](https://aws.amazon.com/pt/s3/). 
+O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, de forma nativa, ele já suporta o [AWS S3](https://aws.amazon.com/pt/s3/). 
 
-A segunda forma de armazenamento de informações do [MLflow](https://https://mlflow.org/) chama-se *database-backed* e é utilizado para guardar informações de metadados, parametros gerais, métricas, tag's e experimentos.
+A segunda forma de armazenamento de informações do [MLflow](https://https://mlflow.org/) chama-se *database-backed*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos.
 
-Para esta segunda forma de armazenamento estamos utilizando em nosso Dockerfile o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/)
+Para esta segunda forma de armazenamento, estamos adicionando uma conexão com o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/)  em nosso Dockerfile.
 
 ## Provisionando com AWS CDK
 
-Para ganharmos produtividade e fluidez nesse artigo, utilizaremos  o AWS CDK como serviço de provisionamento de nossa infraestrutura.
+Para ganharmos produtividade e fluidez nesse artigo, utilizaremos o AWS CDK como serviço de provisionamento de nossa infraestrutura.
 
 Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
 
-Agora, vamos listar todos os componentes necessários para nosso projeto :
+Agora, vamos listar todos os componentes necessários para este projeto :
 
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
 * `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
 * `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
-* `AWS S3` - Bucket que armazenará a camada de  .
-* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
-* `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
+* `AWS S3` - Bucket que armazenará a camada de  *file-store*.
+* `AWS Secrets Manager` - Armazenamento das credenciais do banco de dados RDS MySQL.
+* `Roles e Parâmetros` - Associação de Roles para execução do ECS Fargate e parametrização de variáveis de ambiente.
 
-Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
+Vamos ao código CDK. O arquivo Explicarei parte por parte do código utilizado para o provisionamento.
 
 Como dito anteriormente, para as etapas de inicialização do projeto e download de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
 
-Iniciamos declarando todas as dependencias/constructs que serão utilizados em nossa infra estrutura.
+Iniciamos declarando todas as dependencias (constructs) que serão utilizados em nossa infra estrutura.
 
 ```python
 from aws_cdk import (
@@ -139,15 +132,13 @@ from aws_cdk import (
 )
 ```
 
-Agora, em nossa classe principal antes de iniciarmos a criação dos recursos, precisamos realizar algumas parametrizações que inclusive, serão utilizadas em nossa imagem Docker, como por exemplo os parâmetros de nosso banco de dados.
+Em nossa classe principal, antes de iniciarmos a criação dos recursos, precisamos realizar algumas parametrizações que serão utilizadas em nossa imagem Docker, como, por exemplo, os parâmetros de nosso banco de dados.
 
 ```python
 class MLflowStack(core.Stack):
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
-        ##
-        ##Parametros gerais utilizados para provisioamento de infra
-        ##
+        # Parâmetros utilizados para provisioamento de infra
         project_name_param = core.CfnParameter(scope=self, id='ProjectName', type='String')
         db_name = 'mlflowdb'
         port = 3306
@@ -158,7 +149,7 @@ class MLflowStack(core.Stack):
         service_name = 'mlflow'
 ```
 
-Iniciaremos então efetivamente o provisionamento de nossa infraestrutura começando pelas `IAM Roles` e Secrets Manager:
+Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo `IAM Roles` e segredos no AWS Secrets Manager:
 ```python
 #Associação das policys gerenciadas a role que sera atribuida a task ECS.
         role_mlflow = iam.Role(scope=self, id='TASKROLE', assumed_by=iam.       ServicePrincipal(service='ecs-tasks.amazonaws.com'))
@@ -173,7 +164,9 @@ db_password_secret = sm.Secret(
             generate_secret_string=sm.SecretStringGenerator(password_length=20, exclude_punctuation=True)
         )
 ```
-Agora provisionaremos as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+
+Provisionamos, então, as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+
 ```python
         #Criação do Bucket S3
         artifact_bucket = s3.Bucket(
@@ -216,10 +209,9 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
         )
 ```
 
-Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no inicio deste artigo
+Como último componente de nossa arquitetura, vamos provisionar o servidor `MLflow` tendo como base a imagem `Docker` apresentada no início deste artigo
 
 ```python
-
 #Criação do Cluster ECS
 cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
         #Task Definition para Fargate
@@ -261,7 +253,7 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
             task_definition=task_definition
         )
 
-        #S ecurity group para ingress
+        # Security group para ingress
         fargate_service.service.connections.security_groups[0].add_ingress_rule(
             peer=ec2.Peer.ipv4('0.0.0.0/0'),
             connection=ec2.Port.tcp(5000),
@@ -278,29 +270,27 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
         )
  ```
 
- Apenas para enriquecer nossa stack, vamos adicionar um `output` contendo o DNS Name do balanceador provisionado no código acima :
+ Apenas para enriquecer nossa *stack*, vamos adicionar um `output` contendo o *DNS Name* do balanceador provisionado no código acima:
 
  ``` python
   core.CfnOutput(scope=self, id='LoadBalancerDNS', value=fargate_service.load_balancer.load_balancer_dns_name)
-  ```
+```
 
-Finalizamos o código da nossa infraestrutura, vamos acecssar a camada de front-end do [MLflow](https://https://mlflow.org/).
-
-Antes, o deploy de nossa stack [AWS CDK](https://aws.amazon.com/pt/cdk/) :
+Enfim, realizar o  deploy de nossa stack via [AWS CDK](https://aws.amazon.com/pt/cdk/):
 
 ```bash
 $ cdk deploy
 ```
 
+Finalizado o provisionamento de nossa infraestrutura, podemos acecssar o front-end do [MLflow](https://https://mlflow.org/) server.
+
 ## Apresentando o MLflow
 
-Em nossa stack do [AWS CDK](https://aws.amazon.com/pt/cdk/) colocamos como parâmetro de output o endereço DNS de nosso balanceador.  
+Na stack criada pelo [AWS CDK](https://aws.amazon.com/pt/cdk/), colocamos como parâmetro de output o endereço DNS de nosso balanceador.  
 
 <p style="text-align: center"><img src="https://i.imgur.com/co9HjjV.jpg"></p>
 
-
-
-Com este endereço, podemos acessar o [MLflow](https://https://mlflow.org/) via browser :
+Com este endereço, podemos acessar o [MLflow](https://https://mlflow.org/) server via navegador:
 <p style="text-align: center"><img src="https://i.imgur.com/ovFX54h.jpg"></p>
 
 Agora, partimos para o upload do nosso container em nosso repositório do [MLflow](https://https://mlflow.org/).
@@ -318,17 +308,17 @@ Tal imagem será entregue em um `AWS Sagemaker Endpoint` expondo as rotas `/invo
 
 Chega de falar, vamos para o código.
 
-## Talk is Cheap, show me the code !
+## Talk is Cheap, show me the code!
 
-Para nosso artigo vamos utilizar o comando abaixo:
+Comecemos executando o comando responsável por criar um [container padrão do MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.sagemaker.html#mlflow.sagemaker.push_image_to_ecr) para o Sagemaker Endpoint.
+
 ``` bash
 $ mlflow sagemaker build-and-push-container
 ```
-Este, é responsável por criar um container padrão do MLflow para o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
-Tal container será transmitido ao `AWS ECR` para ser utilizado posteriormente em nosso deploy.
+Este container será armazenado no `AWS ECR` para ser utilizado em nosso deploy posteriormente.
 
-Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
+Em seguida criarremos um modelo *dummy* de Machine Learning usando o MLflow com o seguinte *script*.
 
 ```python
 import mlflow
@@ -338,27 +328,27 @@ import mlflow.sklearn
 from sklearn.datasets import load_iris
 from sklearn import tree
 
-
-#Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
+# Definição da URL do MLflow server (output da stack CDK)
 mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
 
-#Load do dataset Iris
+# Load da base de dados Iris
 dataset_iris = load_iris()
 
-#Region que nosso modelo será entregue
+# Região que nosso modelo será implantado
 region = sagemaker.Session().boto_region_name
 
-#obtendo role de execução
+# Obtenção da role de execução das API do Sagemaker
 role = sagemaker.get_execution_role() 
 
-#Fit do dataset com Arvore de Classificação
+# Ajuste de um modelo de árvore
 iris_model = tree.DecisionTreeClassifier()
 iris_model = iris_model.fit(dataset_iris.data, dataset_iris.target)
 
-#Chamando o metodo log_model para salvar um MLflow Model
+# Com o método 'log_model' salvamos o objeto 'iris_model' como um MLflow Model
 mlflow.sklearn.log_model(iris_model,"sk_models")  
 ```
-Com o nosso modelo já presente no registry do MLflow, vamos efetivamente realizar o deploy do mesmo.
+
+Com o nosso modelo já presente no registry do MLflow, podemos realizar o deploy do mesmo.
 
 ```python
 role = sagemaker.get_execution_role() 
@@ -377,64 +367,52 @@ mlflow.sagemaker.deploy(
     region_name=region
 )
 ```
-Como o nosso [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html) entregue pela api do  [MLflow server](https://https://mlflow.org/), bora então para o nosso amado predict.
-
-## Predict
+Como o Sagemaker Endpoint entregue pela api do MLflow server, podemos realizar uma chamada ao modelo (*predict*).
 
 ```python
-#Runtime do Sagemaker
+# Runtime do Sagemaker
 runtime= boto3.client('runtime.sagemaker')
 
-#Obtendo dados para o predico
-raw_data =  "data:[[0,0,0,0]]"
+# Ajuste dos dados para predição
+raw_data =  {data:[[0,0,0,0]]}
 payload  = json.dumps(raw_data)
 
-#Enviando Requisição ao nosso Endpoint
-runtime_response = runtime.invoke_endpoint(EndpointName=endpoint_name, ContentType='application/json', Body=payload)
+# Envio da Requisição ao Sagemaker Endpoint
+response = runtime.invoke_endpoint(EndpointName=endpoint_name, 
+                        ContentType='application/json',
+                        Body=payload)
 
 #Convertendo resultado para json
-result = json.loads(runtime_response['Body'].read().decode())
+result = json.loads(response['Body'].read().decode())
 
-#Obtendo Predição e Payload enviado no request
-print(f'Payload: {payload}')
-print(f'Predicao: {result}')
+print(result) # [Iris-setosa]
 ```
 
-Agora, temos o resultado
+## Não esqueça do *Cleanup*
 
-```bash
-Payload: "data:[[0,0,0,0]]"
-Predicao: "[Iris-setosa]
+Por fim, podemos limpar todos os recursos instânciados por nós.
+
+Deletamos o Sagemaker Endpoint pelo próprio *client* do MLflow.
+
+```
+mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
 ```
 
-Bom pessoal, foi uma longa jornada até aqui, porém muito enriquecedora.
-
-Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning, utilizando o [MLflow](https://https://mlflow.org/) e o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
-
-## Não esqueça do Cleanup
-
-Por ultimo, porém nao menos importante, vamos deletar o Endpoint que criamos e logo em seguida a stack do CDK, respectivamente.
-
-Deleção do [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html)
+Em seguida, deletamos os demais recursos criados via CDK.
 
 ```bash
 cdk destroy
 ```
 
-Deleção do Endpoint
-```
-mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
-```
-
 ## Pensamentos Finais
 
-Neste episódio lhe damos apenas com uma etapa do ciclo de vida de um Modelo de Machine Learning. 
+Bom pessoal, foi uma longa jornada até aqui, porém muito enriquecedora.
 
-Etapa essa, que assim como as outras tem importância vital em toda a jornada do nosso modelo, desde a modelagem até o deploy em ambiente produtivo.
+Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning, utilizando o MLflow e o Sagemaker Endpoint.
 
-Com este artigo conseguimos demonstrar que diferentes serviços/frameworks podem se integrar e prover uma experiência fluída para o cliente final, nao importando especificamente qual provedor de Nuvem que estamos utilizando.
+ Por utilizarmos serviços também disponíveis em outras *clouds* (Azure, GCP), esta mesma arquitetura pode ser replicada em abordagens *multi-cloud*.
 
-Até o próximo episódio !
+Até o próximo episódio!
 
 <p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
 
