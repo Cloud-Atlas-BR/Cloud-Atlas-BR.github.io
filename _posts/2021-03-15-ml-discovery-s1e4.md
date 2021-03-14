@@ -12,11 +12,12 @@ draft: true
 
 Fala Galera!
 
-No Drops de hoje, vamos falar sobre um assunto interessantíssimo: aprenderemos como utilizar o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e *Deploy* dos nossos modelos de Machine Learning.
+No episódio de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar em conjunto o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e ***Deploy*** dos nossos Modelos de Machine Learning.
 
-Aqui, o protagonismo fica a cargo do **MLflow**, cuja  responsabilidade é servir como *registry* de nossos modelos, armazenando e catalogando-os. O **AWS Sagemaker** ficará responsável por gerenciar a infraestrutura do endpoint de consumo do modelo através do serviço [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+Aqui, o protagonismo fica a cargo do [MLflow](https://mlflow.org/) cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) ficará responsável por expor um Endpoint de consumo para o modelo. Este serviço é conhecido como [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
-Para isso, vamos realizar a implementação real de um modelo de Machine Learning utilizando esses dois serviços.
+
+O objetivo aqui é apresentar de forma didática e simples a parceria entre  [MLflow](https://mlflow.org/) e [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/). Mostraremos também os frutos dessa parceria através de uma implementação real de um modelo de Machine Learning utilizando esses dois serviços.
 
 Let's Bora !
 
@@ -33,24 +34,26 @@ O **MLflow** concentra suas funcionalidades em quatro principais componentes par
 * [MLflow Models](https://mlflow.org/docs/latest/models.html) - Produtização e Deploy
 * [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório e Catálogo centralizado dos Modelos
 
-Todos esses componentes pode ser acessados via APIs ou através do **MLflow server**, servidor web instanciado pelo **MLflow Tracking**.
+Para o Episódio de hoje iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
-Para o Drops de hoje, iremos demonstrar a funcionalidade do quarto componente: o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
+A partir deste componente será possível centralizarmos nosso registry/catalogo de modelos, bem como gerencia-los através de API's, UI, etc.
 
-A partir deste componente, será possível centralizarmos nosso catálogo de modelos, bem como gerenciá-los através de APIs e  pela interface gráfica do MLflow server.
+Com nosso catalog/registry disponibilizado pelo [MLflow](https://mlflow.org/), partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/)
 
 ## Conhecendo o AWS Sagemaker Endpoint
 
-Com o nosso modelo podendo ser catalogado e armazenado pelo **MLflow**, iniciamos a caminhada de disponibilizar o modelo para consumo. Para isso, utilizaremos o Sagemaker Endpoint. 
+Com o nosso modelo devidamente catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo.
 
-Vale ressaltarmos que o **AWS Sagemaker** possui uma *stack* de serviços muito extensa, que por si só seria conteúdo de uma série inteira.
+Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html). 
 
-De uma forma simples, o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) disponibiliza máquinas virtuais gerenciadas, com o propósito de expor um endpoint com rotas de API especificas para consumo de modelos de Machine Learning:
+Antes de continuarmos pessoal, vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma stack de serviços muito extensa, que por si só teria conteúdo para uma série inteira, todinha pra ele.
 
-* `/invocation` - Rota em que enviamos dados para processamento pelo modelo.
-* `/ping` - Rota de *health check*.
+De uma forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) nos disponibiliza uma lista de instâncias genreciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
 
-Tais rotas terão como destino um container Docker executado nessa máquina virtual, no qual encapsulamos o código de predição e artefatos do nosso modelo.
+* `/invocation` - Rota que recebe o payload e transmite o mesmo ao modelo.
+* `/ping` - Rota de health check.
+
+Tais rotas terão como destino um container Docker, sendo que dentro deste container Docker o código do nosso modelo estará presente.
 
 ## Arquitetura 
 
@@ -60,7 +63,7 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Iniciaremos configurando o servidor que executará o MLflow server através do [AWS Fargate](https://aws.amazon.com/pt/fargate). Neste, o [MLflow](https://https://mlflow.org/) será instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
+Como explicado anteriormente utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/)  instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente serverless.
 
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
@@ -94,22 +97,24 @@ Para esta segunda forma de armazenamento, que adicionamos uma conexão com o [AW
 
 ## Provisionando com AWS CDK
 
-Para ganharmos produtividade e fluidez nesse artigo, utilizaremos o AWS CDK como serviço de provisionamento da nossa infraestrutura. Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado a esta ferramenta.
+Para ganharmos produtividade e fluidez nesse artigo, utilizaremos  o AWS CDK como serviço de provisionamento de nossa infraestrutura.
 
-Teremos que definir os seguintes componentes em nosso código de infraestrutura:
+Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
+
+Agora, vamos listar todos os componentes necessários para nosso projeto :
 
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
 * `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
 * `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
-* `AWS S3` - Bucket que armazenará a camada de  *file-store*.
-* `AWS Secrets Manager` - Armazenamento das credenciais do banco de dados RDS MySQL.
-* `Roles e Parâmetros` - Associação de Roles para execução do ECS Fargate e parametrização de variáveis de ambiente.
+* `AWS S3` - Bucket que armazenará a camada de  .
+* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
+* `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
 
-Vamos ao código CDK!
+Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
 
-Você pode acessá-lo integralmente [AQUI](), mas explicarei parte por parte a seguir.
+Como dito anteriormente, para as etapas de inicialização do projeto e download de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
 
-Iniciamos declarando todas as dependencias (constructs) que serão utilizados em nossa infraestrutura.
+Iniciamos declarando todas as dependencias/constructs que serão utilizados em nossa infra estrutura.
 
 ```python
 from aws_cdk import (
@@ -158,8 +163,7 @@ db_password_secret = sm.Secret(
         )
 ```
 
-Provisionamos, então, as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
-
+Agora provisionaremos as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
 ```python
         #Criação do Bucket S3
         artifact_bucket = s3.Bucket(
@@ -202,7 +206,7 @@ Provisionamos, então, as camadas de *artifact store* e *backend store* represen
         )
 ```
 
-Como último componente de nossa arquitetura, vamos provisionar o **MLflow server** tendo como base a imagem `Docker` apresentada no início deste artigo
+Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no inicio deste artigo
 
 ```python
 #Criação do Cluster ECS
@@ -279,7 +283,7 @@ Finalizado o provisionamento de nossa infraestrutura, podemos acecssar o *front-
 
 ## Apresentando o MLflow
 
-Na stack criada pelo AWS CDK, colocamos como parâmetro de *output* o endereço DNS de nosso balanceador.  
+Em nossa stack do AWS CDK, colocamos como parâmetro de *output* o endereço DNS de nosso balanceador.  
 
 <p style="text-align: center"><img src="https://i.imgur.com/co9HjjV.jpg"></p>
 
@@ -304,15 +308,15 @@ Chega de falar, vamos para o código.
 
 ## Talk is Cheap, show me the code!
 
-Comecemos executando o comando responsável por criar um [container padrão do MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.sagemaker.html#mlflow.sagemaker.push_image_to_ecr) para uso pelo Sagemaker Endpoint.
-
+Para nosso artigo vamos utilizar o comando abaixo:
 ``` bash
 $ mlflow sagemaker build-and-push-container
 ```
+Este, é responsável por criar um container padrão do MLflow para o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
-Este container será armazenado em um repositório do ECR.
+Tal container será transmitido ao `AWS ECR` para ser utilizado posteriormente em nosso deploy.
 
-Em seguida, criaremos e armazenaremos um modelo *dummy* de Machine Learning, usando o MLflow, com o seguinte *script*.
+Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
 
 ```python
 import mlflow
@@ -322,13 +326,13 @@ import mlflow.sklearn
 from sklearn.datasets import load_iris
 from sklearn import tree
 
-# Definição da URL do MLflow server (output da stack CDK)
+#Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
 mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
 
-# Load da base de dados Iris
+# Load do dataset Iris
 dataset_iris = load_iris()
 
-# Região que nosso modelo será implantado
+# Region que nosso modelo será implantado
 region = sagemaker.Session().boto_region_name
 
 # Obtenção da role de execução das API do Sagemaker
@@ -338,7 +342,7 @@ role = sagemaker.get_execution_role()
 iris_model = tree.DecisionTreeClassifier()
 iris_model = iris_model.fit(dataset_iris.data, dataset_iris.target)
 
-# Com o método 'log_model' salvamos o objeto 'iris_model' como um MLflow Model
+#Chamando o metodo log_model para salvar um MLflow Model
 mlflow.sklearn.log_model(iris_model,"sk_models")  
 ```
 
@@ -361,33 +365,40 @@ mlflow.sagemaker.deploy(
     region_name=region
 )
 ```
+Como o nosso Sagemaker Endpoint entregue pela api do `MLflow server`, bora então para o nosso amado predict.
 
-Com o Sagemaker Endpoint criado pela api do MLflow server, podemos realizar uma chamada ao modelo pelo seguinte código.
+## Predict
 
 ```python
-# Runtime do Sagemaker
+#Runtime do Sagemaker
 runtime= boto3.client('runtime.sagemaker')
 
-# Ajuste dos dados para predição
-raw_data =  {data:[[0,0,0,0]]}
+#Obtendo dados para o predico
+raw_data =  "data:[[0,0,0,0]]"
 payload  = json.dumps(raw_data)
 
-# Envio da Requisição ao Sagemaker Endpoint
-response = runtime.invoke_endpoint(EndpointName=endpoint_name, 
-                        ContentType='application/json',
-                        Body=payload)
+#Enviando Requisição ao nosso Endpoint
+runtime_response = runtime.invoke_endpoint(EndpointName=endpoint_name, ContentType='application/json', Body=payload)
 
-# Convertendo resultado para json
-result = json.loads(response['Body'].read().decode())
+#Convertendo resultado para json
+result = json.loads(runtime_response['Body'].read().decode())
 
-print(result) # [Iris-setosa]
+#Obtendo Predição e Payload enviado no request
+print(f'Payload: {payload}')
+print(f'Predicao: {result}')
 ```
+
+Exbindo o resultado: 
+
+```bash
+Payload: "data:[[0,0,0,0]]"
+Predicao: "[Iris-setosa]
+
+
 
 ## Não esqueça do *Cleanup*
 
-Por fim, podemos limpar todos os recursos instânciados por nós.
-
-Deletamos o Sagemaker Endpoint pelo próprio *client* do MLflow.
+Por ultimo, porém nao menos importante, vamos deletar o Endpoint que criamos e logo em seguida a stack do CDK, respectivamente.
 
 ```
 mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
