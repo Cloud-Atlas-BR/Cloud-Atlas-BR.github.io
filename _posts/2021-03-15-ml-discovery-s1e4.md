@@ -401,11 +401,11 @@ cdk destroy
 
 ## Pensamentos Finais
 
-Bom pessoal, foi uma longa jornada até aqui, porém muito enriquecedora.
+Bom pessoal, foi uma longa jornada até aqui, porém, muito enriquecedora.
 
 Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning, utilizando o MLflow e o Sagemaker Endpoint.
 
- Por utilizarmos serviços também disponíveis em outras *clouds* (Azure, GCP), esta mesma arquitetura pode ser replicada em abordagens *multi-cloud*.
+Por utilizarmos serviços também disponíveis em outras *clouds* (Azure, GCP), esta mesma arquitetura pode ser replicada em abordagens *multi-cloud*.
 
 Até o próximo episódio!
 
