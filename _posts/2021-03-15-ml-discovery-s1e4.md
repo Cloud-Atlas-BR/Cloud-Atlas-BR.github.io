@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MLflow e Sagemaker, juntos somos mais fortes.
+title: MLflow e Sagemaker - Juntos, somos mais fortes.
 subtitle:  Machine Learning Discovery - S01E04
 tags: [aws, mlops, cloudformation, iaac, iac]
 comments: true
