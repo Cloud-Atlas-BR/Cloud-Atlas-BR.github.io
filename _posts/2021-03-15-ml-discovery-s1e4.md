@@ -411,9 +411,9 @@ Até o próximo episódio!
 
 <p style="text-align: center"><img src="https://64.media.tumblr.com/7151274239517b2d595ea04b17da4b0b/tumblr_mmzgqw26UY1qafzsyo1_r1_500.gifv"></p>
 
-## Repositório Github
+## Códigos deste post
 
-[Github Repo](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E03)
+- [MLflow-ML-Discovery-S01E03](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E03)
 
 ## Referências
 * [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
