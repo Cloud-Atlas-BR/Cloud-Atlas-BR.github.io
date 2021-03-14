@@ -84,13 +84,13 @@ CMD mlflow server \
     --backend-store-uri mysql+pymysql://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}
 ```
 
-Por padrão, o [MLflow](https://https://mlflow.org/) utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o [MLflow](https://https://mlflow.org/), [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
+Por padrão, o MLflow utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o MLflow, [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
 O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, de forma nativa, ele já suporta o [AWS S3](https://aws.amazon.com/pt/s3/). 
 
-A segunda forma de armazenamento de informações do [MLflow](https://https://mlflow.org/) chama-se *database-backed*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos.
+A segunda forma de armazenamento de informações do MLflow chama-se *database-backed*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
 
-Para esta segunda forma de armazenamento, estamos adicionando uma conexão com o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/)  em nosso Dockerfile.
+Para esta segunda forma de armazenamento, estamos adicionando uma conexão com o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) em nosso Dockerfile.
 
 ## Provisionando com AWS CDK
 
@@ -143,7 +143,8 @@ class MLflowStack(core.Stack):
         service_name = 'mlflow'
 ```
 
-Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo `IAM Roles` e segredos no AWS Secrets Manager:
+Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo `IAM Roles` e segredos no AWS Secrets Manager.
+
 ```python
 #Associação das policys gerenciadas a role que sera atribuida a task ECS.
         role_mlflow = iam.Role(scope=self, id='TASKROLE', assumed_by=iam.       ServicePrincipal(service='ecs-tasks.amazonaws.com'))
