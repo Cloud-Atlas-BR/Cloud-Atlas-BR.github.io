@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MLflow e Sagemaker - Juntos, somos mais fortes.
+title: MLflow e Sagemaker - Juntos somos mais fortes.
 subtitle:  Machine Learning Discovery - S01E04
 tags: [aws, mlops, cloudformation, iaac, iac]
 comments: true
@@ -12,9 +12,9 @@ draft: true
 
 Fala Galera!
 
-No Drops de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e *Deploy* dos nossos modelos de Machine Learning.
+No Drops de hoje, vamos falar sobre um assunto interessantíssimo: aprenderemos como utilizar o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e *Deploy* dos nossos modelos de Machine Learning.
 
-Aqui, o protagonismo fica a cargo do [MLflow](https://mlflow.org/) cuja a responsabilidade é servir como *registry* de nossos modelos, armazenando e catalogando-os. O [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) ficará responsável por gerenciar a infraestrutura do endpoint de consumo do modelo através do serviço [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+Aqui, o protagonismo fica a cargo do **MLflow**, cuja  responsabilidade é servir como *registry* de nossos modelos, armazenando e catalogando-os. O **AWS Sagemaker** ficará responsável por gerenciar a infraestrutura do endpoint de consumo do modelo através do serviço [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
 Para isso, vamos realizar a implementação real de um modelo de Machine Learning utilizando esses dois serviços.
 
@@ -22,41 +22,39 @@ Let's Bora !
 
 ## Conhecendo o MLFlow
 
-O [MLflow](https://mlflow.org/) é definido como uma plataforma open source para gerenciamento do ciclo de vida de um Modelo de Machine Learning.
+O **MLflow** é definido como uma plataforma **open source** para gerenciamento do ciclo de vida de um Modelo de Machine Learning.
 
 <p style="text-align: center"><img src="https://i.imgur.com/uzFL2bN.png"></p>
 
-O [MLflow](https://mlflow.org/) concentra suas funcionalidades em quatro principais componentes para englobar as etapas deste ciclo.
+O **MLflow** concentra suas funcionalidades em quatro principais componentes para englobar as etapas deste ciclo.
 
 * [MLflow Tracking](https://mlflow.org/docs/latest/tracking.html) - Monitoração de Modelos
 * [MLflow Projects](https://mlflow.org/docs/latest/projects.html) - Garantia de reprodutibilidade e idempotência do Modelo
 * [MLflow Models](https://mlflow.org/docs/latest/models.html) - Produtização e Deploy
-* [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório/Catalogo centralizado dos Modelos
+* [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório e Catálogo centralizado dos Modelos
+
+Todos esses componentes pode ser acessados via APIs ou através do **MLflow server**, servidor web instanciado pelo **MLflow Tracking**.
 
 Para o Drops de hoje, iremos demonstrar a funcionalidade do quarto componente: o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
-A partir deste componente, será possível centralizarmos nosso catalogo de modelos, bem como gerenciá-los através de APIs, interfaces gráficas etc.
-
-Com nosso *registry* disponibilizado pelo [MLflow](https://mlflow.org/), partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/)
+A partir deste componente, será possível centralizarmos nosso catálogo de modelos, bem como gerenciá-los através de APIs e  pela interface gráfica do MLflow server.
 
 ## Conhecendo o AWS Sagemaker Endpoint
 
-Com o nosso modelo podendo ser catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo.
+Com o nosso modelo podendo ser catalogado e armazenado pelo **MLflow**, iniciamos a caminhada de disponibilizar o modelo para consumo. Para isso, utilizaremos o Sagemaker Endpoint. 
 
-Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html). 
+Vale ressaltarmos que o **AWS Sagemaker** possui uma *stack* de serviços muito extensa, que por si só seria conteúdo de uma série inteira.
 
-Vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma *stack* de serviços muito extensa, que por si só teria conteúdo para uma série inteira pra ele.
-
-De uma forma simples e direta, o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) disponibiliza máquinas virtuais gerenciadas, com o propósito de expor um endpoint com rotas de API especificas para consumo de modelos de Machine Learning:
+De uma forma simples, o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) disponibiliza máquinas virtuais gerenciadas, com o propósito de expor um endpoint com rotas de API especificas para consumo de modelos de Machine Learning:
 
 * `/invocation` - Rota em que enviamos dados para processamento pelo modelo.
 * `/ping` - Rota de *health check*.
 
-Tais rotas terão como destino um container Docker, no qual encapsulamos o código de predição e artefatos do nosso modelo.
+Tais rotas terão como destino um container Docker executado nessa máquina virtual, no qual encapsulamos o código de predição e artefatos do nosso modelo.
 
 ## Arquitetura 
 
-Para termos um registro visual do que explicamos até agora, apresento-lhes o desenho da arquitetura deste episódio.
+Para termos um registro visual do que construiremos nesse artigo, apresento-lhes o desenho de arquitetura proposto.
 
 <p style="text-align: center"><img src="https://i.imgur.com/l3iMrUJ.jpg"></p>
 
