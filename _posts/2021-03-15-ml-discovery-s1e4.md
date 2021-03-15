@@ -60,7 +60,7 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Como apresentado no desenho acima, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate como objetivo fornecer um servidor remoto para o MLflow com interface gráfica para gerenciamento: o **Mlflow server**. Este será instanciado através de um container Docker em uma infraestrutura totalmente *serverless*.
+Como apresentado no desenho acima, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate) como objetivo fornecer um servidor remoto para o MLflow com interface gráfica para gerenciamento: o **Mlflow server**. Este será instanciado através de um container Docker em uma infraestrutura totalmente *serverless*.
 
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
