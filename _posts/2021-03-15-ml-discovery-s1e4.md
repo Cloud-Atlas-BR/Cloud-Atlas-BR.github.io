@@ -98,7 +98,7 @@ Para ganharmos produtividade e fluidez nesse artigo, utilizaremos o AWS CDK como
 
 Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
 
-Agora, vamos listar todos os componentes necessários para nosso projeto :
+Agora, vamos listar todos os componentes necessários para nosso projeto:
 
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
 * `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
