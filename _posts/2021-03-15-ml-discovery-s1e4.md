@@ -4,11 +4,8 @@ title: MLflow e Sagemaker - Juntos somos mais fortes.
 subtitle:  Machine Learning Discovery - S01E04
 tags: [aws, mlops, mlflow, sagemaker]
 comments: true
-draft: true
+draft: false
 ---
-
-{: .box-note}
-**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
 Fala Galera!
 
