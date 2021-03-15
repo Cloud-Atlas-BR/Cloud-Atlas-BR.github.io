@@ -309,7 +309,7 @@ Primeiramente, executamos o código a seguir, responsável por criar um containe
 $ mlflow sagemaker build-and-push-container
 ```
 
-Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
+Agora, vamos criar um modelo e registrá-lo no MLflow.
 
 ```python
 import mlflow
@@ -319,13 +319,13 @@ import mlflow.sklearn
 from sklearn.datasets import load_iris
 from sklearn import tree
 
-#Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
+# Iniciamos atribuindo a URL do MLflow server, a mesma do output de nossa stack CDK.
 mlflow.set_tracking_uri('<Loadbalancer DNS Name>')
 
 # Load do dataset Iris
 dataset_iris = load_iris()
 
-# Region que nosso modelo será implantado
+# Região que nosso modelo será implantado
 region = sagemaker.Session().boto_region_name
 
 # Obtenção da role de execução das API do Sagemaker
@@ -335,7 +335,7 @@ role = sagemaker.get_execution_role()
 iris_model = tree.DecisionTreeClassifier()
 iris_model = iris_model.fit(dataset_iris.data, dataset_iris.target)
 
-#Chamando o metodo log_model para salvar um MLflow Model
+# Chamando o método log_model para salvar um MLflow Model
 mlflow.sklearn.log_model(iris_model,"sk_models")  
 ```
 
@@ -358,42 +358,35 @@ mlflow.sagemaker.deploy(
     region_name=region
 )
 ```
+
 Como o nosso Sagemaker Endpoint entregue pela api do `MLflow server`, bora então para o nosso amado predict.
 
 ## Predict
 
 ```python
-#Runtime do Sagemaker
+# Runtime do Sagemaker
 runtime= boto3.client('runtime.sagemaker')
 
-#Obtendo dados para o predico
+# Obtendo dados para o predição
 raw_data =  "data:[[0,0,0,0]]"
 payload  = json.dumps(raw_data)
 
-#Enviando Requisição ao nosso Endpoint
+# Enviando Requisição ao nosso Endpoint
 runtime_response = runtime.invoke_endpoint(EndpointName=endpoint_name, ContentType='application/json', Body=payload)
 
-#Convertendo resultado para json
+# Convertendo resultado para json
 result = json.loads(runtime_response['Body'].read().decode())
 
-#Obtendo Predição e Payload enviado no request
-print(f'Payload: {payload}')
-print(f'Predicao: {result}')
+# Obtendo Predição e Payload enviado no request
+print(f'Payload: {payload}') # data:[[0,0,0,0]]
+print(f'Predicao: {result}') # [Iris-setosa]
 ```
-
-Exbindo o resultado: 
-
-```bash
-Payload: "data:[[0,0,0,0]]"
-Predicao: "[Iris-setosa]
-
-
 
 ## Não esqueça do *Cleanup*
 
-Por ultimo, porém nao menos importante, vamos deletar o Endpoint que criamos e logo em seguida a stack do CDK, respectivamente.
+Por último, porém, não menos importante, vamos deletar o Endpoint que criamos e logo em seguida a *stack* do CDK.
 
-```
+```python
 mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
 ```
 
@@ -407,7 +400,7 @@ cdk destroy
 
 Bom pessoal, foi uma longa jornada até aqui, porém, muito enriquecedora.
 
-Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning, utilizando o MLflow e o Sagemaker Endpoint.
+Conseguimos montar uma solução de catalogação e deploy de nossos modelos de Machine Learning utilizando o MLflow e o Sagemaker Endpoint.
 
 Por utilizarmos serviços também disponíveis em outras *clouds* (Azure, GCP), esta mesma arquitetura pode ser replicada em abordagens *multi-cloud*.
 
