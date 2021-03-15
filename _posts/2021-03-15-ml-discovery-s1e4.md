@@ -301,19 +301,13 @@ O primeiro será responsável por armazenar a imagem do nosso modelo, enquanto q
 
 Por debaixo dos panos, no momento em que realizamos o deploy do nosso modelo, a imagem em nosso repositório ECR junta-se com o código fonte do nosso modelo e transformam-se em uma nova imagem.
 
-Tal imagem será entregue em um `AWS Sagemaker Endpoint` expondo as rotas `/invocations` e `/ping`, conforme explicado no início do artigo.
-
-Chega de falar, vamos para o código.
-
 ## Talk is Cheap, show me the code!
 
-Para nosso artigo vamos utilizar o comando abaixo:
+Primeiramente, executamos o código a seguir, responsável por criar um container seguindo o padrão do MLflow para uso pelo Sagemaker Endpoint. Tal container será armazenado em um repositório ECR para ser utilizado posteriormente em nosso deploy.
+
 ``` bash
 $ mlflow sagemaker build-and-push-container
 ```
-Este, é responsável por criar um container padrão do MLflow para o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
-
-Tal container será transmitido ao `AWS ECR` para ser utilizado posteriormente em nosso deploy.
 
 Agora, vamos criar um modelo no [MLflow](https://https://mlflow.org/)
 
