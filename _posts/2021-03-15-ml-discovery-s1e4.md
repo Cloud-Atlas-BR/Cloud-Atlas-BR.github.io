@@ -88,9 +88,9 @@ CMD mlflow server \
 
 Por padrão, o **MLflow server** utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o MLflow e o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
-O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, e de forma nativa já suporta o S3. 
+O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *File Store*, e de forma nativa já suporta o S3. 
 
-A segunda forma de armazenamento de informações do MLflow chama-se *backend-store*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
+A segunda forma de armazenamento de informações do MLflow chama-se *Backend Store*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
 
 Para o *backend-store* utilizaremos o **AWS RDS MySQL**.
 
@@ -104,16 +104,16 @@ Agora, vamos listar todos os componentes necessários para nosso projeto:
 
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
 * `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
-* `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
-* `AWS S3` - Bucket que armazenará a camada de  .
-* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
+* `AWS Elastic Load Balancer` - Balanceador responsável por receber as requisções e direcionar ao MLflow server.
+* `AWS S3` - Bucket que armazenará a camada de *File Store*.
+* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dados RDS MySQL.
 * `Roles e Parâmetros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
 
-Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
+Agora, vamos ao código CDK. Você pode acessá-lo por completo [AQUI](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E04/blob/main/mlflow/mlflow_stack.py), mas  explicarei parte por parte do código utilizado para o provisionamento abaixo.
 
 Como dito anteriormente, para as etapas de inicialização do projeto e download de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
 
-Iniciamos declarando todas as dependencias/constructs que serão utilizados em nossa infra estrutura.
+Iniciamos declarando todas as dependências (*constructs*) que serão utilizados em nossa infraestrutura.
 
 ```python
 from aws_cdk import (
@@ -145,15 +145,17 @@ class MLflowStack(core.Stack):
         service_name = 'mlflow'
 ```
 
-Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo `IAM Roles` e segredos no AWS Secrets Manager.
+Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo **IAM Roles** e segredos no **AWS Secrets Manager**.
 
 ```python
-#Associação das policys gerenciadas a role que sera atribuida a task ECS.
-        role_mlflow = iam.Role(scope=self, id='TASKROLE', assumed_by=iam.       ServicePrincipal(service='ecs-tasks.amazonaws.com'))
+# Associação das policys gerenciadas à role que sera atribuida à task ECS.
+        role_mlflow = iam.Role(scope=self, 
+                               id='TASKROLE', 
+                               assumed_by=iam.ServicePrincipal(service='ecs-tasks.amazonaws.com'))
         role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonS3FullAccess'))
         role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonECS_FullAccess'))
 
-#Secrets Manager responsavel pelo armazenamento do password do nosso RDS MySQL
+# Secrets Manager responsável pelo armazenamento do password do nosso RDS MySQL
 db_password_secret = sm.Secret(
             scope=self,
             id='DBSECRET',
@@ -162,9 +164,10 @@ db_password_secret = sm.Secret(
         )
 ```
 
-Agora provisionaremos as camadas de *artifact store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+Agora, provisionaremos as camadas de *file store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+
 ```python
-        #Criação do Bucket S3
+        # Criação do Bucket S3
         artifact_bucket = s3.Bucket(
             scope=self,
             id='ARTIFACTBUCKET',
@@ -174,21 +177,21 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
             removal_policy=core.RemovalPolicy.DESTROY
         )
 
-        #Obtenção de VPC para atribuição ao RDS
+        # Obtenção de VPC para atribuição ao RDS
         dev_vpc = ec2.Vpc.from_vpc_attributes(
             self, '<VPC_NAME>',
             vpc_id = "<VPC_ID>",
             availability_zones = core.Fn.get_azs(),
             private_subnet_ids = ["PRIVATE_SUBNET_ID_1","PRIVATE_SUBNET_ID_2","PRIVATE_SUBNET_ID_3"]
        )
-
-        
+   
         # Criação de Security Group para acesso ao DB
         sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc_dev, security_group_name='sg_rds')
         
         # Adicionamos aqui efeito de testes 0.0.0.0/0
         sg_rds.add_ingress_rule(peer=ec2.Peer.ipv4('0.0.0.0/0'), connection=ec2.Port.tcp(port))
-        # Criação da instancia RDS
+
+        # Criação da instância RDS
         database = rds.DatabaseInstance(
             scope=self,
             id='MYSQL',
@@ -198,32 +201,31 @@ Agora provisionaremos as camadas de *artifact store* e *backend store* represent
             engine=rds.DatabaseInstanceEngine.mysql(version=rds.MysqlEngineVersion.VER_8_0_19),
             instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
             security_groups=[sg_rds],           
-            # multi_az=True,
             vpc=vpc_dev,
             removal_policy=core.RemovalPolicy.DESTROY,
             deletion_protection=False
         )
 ```
 
-Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no inicio deste artigo
+Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no início deste artigo
 
 ```python
-#Criação do Cluster ECS
+# Criação do Cluster ECS
 cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
-        #Task Definition para Fargate
+        # Task Definition para Fargate
         task_definition = ecs.FargateTaskDefinition(
             scope=self,
             id='MLflow',
             task_role=role,
         )
-        #Criando nosso container com base no Dockerfile do MLflow
+        # Criando nosso container com base no Dockerfile do MLflow
         container = task_definition.add_container(
             id='Container',
             image=ecs.ContainerImage.from_asset(
                 directory='../../container',
                 repository_name=container_repo_name
             ),
-            #Atribuição Variaves ambiente
+            # Atribuição de variaveis de ambiente
             environment={
                 'BUCKET': f's3://{artifact_bucket.bucket_name}',
                 'HOST': database.db_instance_endpoint_address,
@@ -231,16 +233,16 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
                 'DATABASE': db_name,
                 'USERNAME': username
             },
-            #Secres contendo o password do RDS MySQL
+            # Secrets contendo o password do RDS MySQL
             secrets={
                 'PASSWORD': ecs.Secret.from_secrets_manager(db_password_secret)
             }
         )
-        #Port Mapping para exposição do Container MLflow
+        # Port Mapping para exposição do Container MLflow
         port_mapping = ecs.PortMapping(container_port=5000, host_port=5000, protocol=ecs.Protocol.TCP)
         container.add_port_mappings(port_mapping)
 
-        #Atribuição de Load Balancer
+        # Atribuição de Load Balancer
         fargate_service = ecs_patterns.NetworkLoadBalancedFargateService(
             scope=self,
             id='MLFLOW',
@@ -264,11 +266,11 @@ cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
             scale_in_cooldown=core.Duration.seconds(60),
             scale_out_cooldown=core.Duration.seconds(60)
         )
- ```
+```
 
  Apenas para enriquecer nossa *stack*, vamos adicionar um `output` contendo o *DNS Name* do balanceador provisionado no código acima.
 
- ``` python
+``` python
   core.CfnOutput(scope=self, id='LoadBalancerDNS', value=fargate_service.load_balancer.load_balancer_dns_name)
 ```
 
@@ -290,9 +292,9 @@ Com este endereço, podemos acessar o **MLflow server** via navegador:
 
 <p style="text-align: center"><img src="https://i.imgur.com/ovFX54h.jpg"></p>
 
-Agora, partimos para o upload do nosso container em nosso repositório do [MLflow](https://https://mlflow.org/).
+Agora, partimos para o upload do nosso container em nosso repositório do **MLflow**.
 
-Durante os proximos passos utilizaremos dois *registries* diferentes:
+Durante os próximos passos utilizaremos dois *registries* diferentes:
 
 * [AWS ECR](https://aws.amazon.com/pt/ecr/)
 * MLflow Registry
