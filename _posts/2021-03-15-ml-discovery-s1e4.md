@@ -62,6 +62,8 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 Como explicado anteriormente, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/) instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
 
+Por padrão o MLflow disponibiliza uma interface gráfica de gerenciamento chamada **Mlflow server**.
+
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
 ```Dockerfile
@@ -84,13 +86,13 @@ CMD mlflow server \
     --backend-store-uri mysql+pymysql://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DATABASE}
 ```
 
-Por padrão, o MLflow utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o MLflow e o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
+Por padrão, o **MLflow server** utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o MLflow e o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
 O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, e de forma nativa já suporta o S3. 
 
-A segunda forma de armazenamento de informações do MLflow chama-se *database-backed*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
+A segunda forma de armazenamento de informações do MLflow chama-se *backend-store*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
 
-Para esta segunda forma de armazenamento, que adicionamos uma conexão com o AWS RDS MySQL em nosso Dockerfile.
+Para o *backend-store* utilizaremos o **AWS RDS MySQL**.
 
 ## Provisionando com AWS CDK
 
