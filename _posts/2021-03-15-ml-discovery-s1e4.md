@@ -35,7 +35,7 @@ O **MLflow** concentra suas funcionalidades em quatro principais componentes par
 
 Para o Episódio de hoje, iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
-A partir deste componente será possível centralizarmos nosso registry/catálogo de modelos, bem como gerencia-los através de API's, UI, etc.
+A partir deste componente será possível centralizarmos nosso registry/catálogo de modelos, bem como gerencia-los através de APIs, UI etc.
 
 Com nosso registry/catálogo disponibilizado pelo **MLflow**, partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o **AWS Sagemaker**.
 
@@ -50,7 +50,7 @@ De forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/s
 * `/invocation` - Rota que recebe o payload e transmite o mesmo ao modelo.
 * `/ping` - Rota de health check.
 
-Tais rotas terão como destino um container Docker, sendo que dentro deste container Docker o código do nosso modelo estará presente.
+Tais rotas terão como destino um container Docker, no qual o código do nosso modelo estará presente.
 
 ## Arquitetura 
 
@@ -60,9 +60,7 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Como explicado anteriormente, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/) instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
-
-Por padrão o MLflow disponibiliza uma interface gráfica de gerenciamento chamada **Mlflow server**.
+Como apresentado no desenho acima, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate como objetivo fornecer um servidor remoto para o MLflow com interface gráfica para gerenciamento: o **Mlflow server**. Este será instanciado através de um container Docker em uma infraestrutura totalmente *serverless*.
 
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
