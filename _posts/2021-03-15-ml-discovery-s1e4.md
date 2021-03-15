@@ -14,7 +14,7 @@ Fala Galera!
 
 No episódio de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar em conjunto o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e ***Deploy*** dos nossos Modelos de Machine Learning.
 
-Aqui, o protagonismo fica a cargo do **MLflow** cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o **AWS Sagemaker** ficará responsável por expor um Endpoint de consumo para o modelo. Este serviço é conhecido como [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+Aqui, o protagonismo fica a cargo do **MLflow** cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o **AWS Sagemaker** ficará responsável por expor um Endpoint de consumo para o modelo, através do [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
 O objetivo aqui é apresentar de forma didática e simples a parceria entre **MLflow** e **Sagemaker**. Mostraremos também os frutos dessa parceria através de uma implementação real de um modelo de Machine Learning utilizando esses dois serviços.
 
