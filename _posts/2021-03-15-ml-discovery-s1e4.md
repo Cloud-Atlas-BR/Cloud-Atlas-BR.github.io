@@ -144,127 +144,126 @@ class MLflowStack(core.Stack):
 Iniciaremos efetivamente o provisionamento de nossa infraestrutura, definindo **IAM Roles** e segredos no **AWS Secrets Manager**.
 
 ```python
-# Associação das policys gerenciadas à role que sera atribuida à task ECS.
-        role_mlflow = iam.Role(scope=self, 
-                               id='TASKROLE', 
-                               assumed_by=iam.ServicePrincipal(service='ecs-tasks.amazonaws.com'))
-        role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonS3FullAccess'))
-        role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonECS_FullAccess'))
+    # Associação das policys gerenciadas à role que sera atribuida à task ECS.
+    role_mlflow = iam.Role(scope=self, 
+                            id='TASKROLE', 
+                            assumed_by=iam.ServicePrincipal(service='ecs-tasks.amazonaws.com'))
+    role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonS3FullAccess'))
+    role_mlflow.add_managed_policy(iam.ManagedPolicy.from_aws_managed_policy_name('AmazonECS_FullAccess'))
 
-# Secrets Manager responsável pelo armazenamento do password do nosso RDS MySQL
-db_password_secret = sm.Secret(
-            scope=self,
-            id='DBSECRET',
-            secret_name='dbPassword',
-            generate_secret_string=sm.SecretStringGenerator(password_length=20, exclude_punctuation=True)
-        )
+    # Secrets Manager responsável pelo armazenamento do password do nosso RDS MySQL
+    db_password_secret = sm.Secret(
+                scope=self,
+                id='DBSECRET',
+                secret_name='dbPassword',
+                generate_secret_string=sm.SecretStringGenerator(password_length=20, exclude_punctuation=True))
 ```
 
-Agora, provisionaremos as camadas de *file store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL respectivamente.
+Agora, provisionaremos as camadas de *file store* e *backend store* representados pelo nosso bucket S3 e RDS MySQL, respectivamente.
 
 ```python
-        # Criação do Bucket S3
-        artifact_bucket = s3.Bucket(
-            scope=self,
-            id='ARTIFACTBUCKET',
-            bucket_name=bucket_name,
-            public_read_access=False,
-            block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
-            removal_policy=core.RemovalPolicy.DESTROY
-        )
+    # Criação do Bucket S3
+    artifact_bucket = s3.Bucket(
+        scope=self,
+        id='ARTIFACTBUCKET',
+        bucket_name=bucket_name,
+        public_read_access=False,
+        block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+        removal_policy=core.RemovalPolicy.DESTROY
+    )
 
-        # Obtenção de VPC para atribuição ao RDS
-        dev_vpc = ec2.Vpc.from_vpc_attributes(
-            self, '<VPC_NAME>',
-            vpc_id = "<VPC_ID>",
-            availability_zones = core.Fn.get_azs(),
-            private_subnet_ids = ["PRIVATE_SUBNET_ID_1","PRIVATE_SUBNET_ID_2","PRIVATE_SUBNET_ID_3"]
-       )
-   
-        # Criação de Security Group para acesso ao DB
-        sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc_dev, security_group_name='sg_rds')
-        
-        # Adicionamos aqui efeito de testes 0.0.0.0/0
-        sg_rds.add_ingress_rule(peer=ec2.Peer.ipv4('0.0.0.0/0'), connection=ec2.Port.tcp(port))
+    # Obtenção de VPC para atribuição ao RDS
+    dev_vpc = ec2.Vpc.from_vpc_attributes(
+        self, '<VPC_NAME>',
+        vpc_id = "<VPC_ID>",
+        availability_zones = core.Fn.get_azs(),
+        private_subnet_ids = ["PRIVATE_SUBNET_ID_1","PRIVATE_SUBNET_ID_2","PRIVATE_SUBNET_ID_3"]
+    )
 
-        # Criação da instância RDS
-        database = rds.DatabaseInstance(
-            scope=self,
-            id='MYSQL',
-            database_name=db_name,
-            port=port,
-            credentials=rds.Credentials.from_username(username=username, password=db_password_secret.secret_value),
-            engine=rds.DatabaseInstanceEngine.mysql(version=rds.MysqlEngineVersion.VER_8_0_19),
-            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
-            security_groups=[sg_rds],           
-            vpc=vpc_dev,
-            removal_policy=core.RemovalPolicy.DESTROY,
-            deletion_protection=False
-        )
+    # Criação de Security Group para acesso ao DB
+    sg_rds = ec2.SecurityGroup(scope=self, id='SGRDS', vpc=vpc_dev, security_group_name='sg_rds')
+
+    # Adicionamos aqui efeito de testes 0.0.0.0/0
+    sg_rds.add_ingress_rule(peer=ec2.Peer.ipv4('0.0.0.0/0'), connection=ec2.Port.tcp(port))
+
+    # Criação da instância RDS
+    database = rds.DatabaseInstance(
+        scope=self,
+        id='MYSQL',
+        database_name=db_name,
+        port=port,
+        credentials=rds.Credentials.from_username(username=username, password=db_password_secret.secret_value),
+        engine=rds.DatabaseInstanceEngine.mysql(version=rds.MysqlEngineVersion.VER_8_0_19),
+        instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),            
+        security_groups=[sg_rds],           
+        vpc=vpc_dev,
+        removal_policy=core.RemovalPolicy.DESTROY,
+        deletion_protection=False
+    )
 ```
 
-Agora, como ultimo componente restante de nossa arquitetura, vamos provisionar nosso servidor `MLflow` tendo como base a imagem `Docker` apresentada no início deste artigo
+Agora, como último componente de nossa arquitetura, vamos provisionar nosso servidor **MLflow** tendo como base a imagem `Docker` apresentada no início deste artigo.
 
 ```python
 # Criação do Cluster ECS
-cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
-        # Task Definition para Fargate
-        task_definition = ecs.FargateTaskDefinition(
-            scope=self,
-            id='MLflow',
-            task_role=role,
-        )
-        # Criando nosso container com base no Dockerfile do MLflow
-        container = task_definition.add_container(
-            id='Container',
-            image=ecs.ContainerImage.from_asset(
-                directory='../../container',
-                repository_name=container_repo_name
-            ),
-            # Atribuição de variaveis de ambiente
-            environment={
-                'BUCKET': f's3://{artifact_bucket.bucket_name}',
-                'HOST': database.db_instance_endpoint_address,
-                'PORT': str(port),
-                'DATABASE': db_name,
-                'USERNAME': username
-            },
-            # Secrets contendo o password do RDS MySQL
-            secrets={
-                'PASSWORD': ecs.Secret.from_secrets_manager(db_password_secret)
-            }
-        )
-        # Port Mapping para exposição do Container MLflow
-        port_mapping = ecs.PortMapping(container_port=5000, host_port=5000, protocol=ecs.Protocol.TCP)
-        container.add_port_mappings(port_mapping)
+    cluster = ecs.Cluster(scope=self, id='CLUSTER', cluster_name=cluster_name)
+    # Task Definition para Fargate
+    task_definition = ecs.FargateTaskDefinition(
+        scope=self,
+        id='MLflow',
+        task_role=role,
+    )
+    # Criando nosso container com base no Dockerfile do MLflow
+    container = task_definition.add_container(
+        id='Container',
+        image=ecs.ContainerImage.from_asset(
+            directory='../../container',
+            repository_name=container_repo_name
+        ),
+        # Atribuição de variaveis de ambiente
+        environment={
+            'BUCKET': f's3://{artifact_bucket.bucket_name}',
+            'HOST': database.db_instance_endpoint_address,
+            'PORT': str(port),
+            'DATABASE': db_name,
+            'USERNAME': username
+        },
+        # Secrets contendo o password do RDS MySQL
+        secrets={
+            'PASSWORD': ecs.Secret.from_secrets_manager(db_password_secret)
+        }
+    )
+    # Port Mapping para exposição do Container MLflow
+    port_mapping = ecs.PortMapping(container_port=5000, host_port=5000, protocol=ecs.Protocol.TCP)
+    container.add_port_mappings(port_mapping)
 
-        # Atribuição de Load Balancer
-        fargate_service = ecs_patterns.NetworkLoadBalancedFargateService(
-            scope=self,
-            id='MLFLOW',
-            service_name=service_name,
-            cluster=cluster,
-            task_definition=task_definition
-        )
+    # Atribuição de Load Balancer
+    fargate_service = ecs_patterns.NetworkLoadBalancedFargateService(
+        scope=self,
+        id='MLFLOW',
+        service_name=service_name,
+        cluster=cluster,
+        task_definition=task_definition
+    )
 
-        # Security group para ingress
-        fargate_service.service.connections.security_groups[0].add_ingress_rule(
-            peer=ec2.Peer.ipv4('0.0.0.0/0'),
-            connection=ec2.Port.tcp(5000),
-            description='Allow inbound from VPC for mlflow'
-        )
+    # Security group para ingress
+    fargate_service.service.connections.security_groups[0].add_ingress_rule(
+        peer=ec2.Peer.ipv4('0.0.0.0/0'),
+        connection=ec2.Port.tcp(5000),
+        description='Allow inbound from VPC for mlflow'
+    )
 
-        # Auto Scaling Policy para nosso balanceador
-        scaling = fargate_service.service.auto_scale_task_count(max_capacity=2)
-        scaling.scale_on_cpu_utilization(
-            id='AUTOSCALING',
-            target_utilization_percent=70,
-            scale_in_cooldown=core.Duration.seconds(60),
-            scale_out_cooldown=core.Duration.seconds(60)
-        )
+    # Auto Scaling Policy para nosso balanceador
+    scaling = fargate_service.service.auto_scale_task_count(max_capacity=2)
+    scaling.scale_on_cpu_utilization(
+        id='AUTOSCALING',
+        target_utilization_percent=70,
+        scale_in_cooldown=core.Duration.seconds(60),
+        scale_out_cooldown=core.Duration.seconds(60)
+    )
 ```
 
- Apenas para enriquecer nossa *stack*, vamos adicionar um `output` contendo o *DNS Name* do balanceador provisionado no código acima.
+Apenas para enriquecer nossa *stack*, vamos adicionar um `output` contendo o *DNS Name* do balanceador provisionado no código acima.
 
 ``` python
   core.CfnOutput(scope=self, id='LoadBalancerDNS', value=fargate_service.load_balancer.load_balancer_dns_name)
