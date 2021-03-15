@@ -2,7 +2,7 @@
 layout: post
 title: MLflow e Sagemaker - Juntos somos mais fortes.
 subtitle:  Machine Learning Discovery - S01E04
-tags: [aws, mlops, cloudformation, iaac, iac]
+tags: [aws, mlops, mlflow, sagemaker]
 comments: true
 draft: true
 ---
@@ -14,16 +14,15 @@ Fala Galera!
 
 No episódio de hoje, vamos falar sobre um assunto interessantíssimo, aprenderemos como utilizar em conjunto o [MLflow](https://mlflow.org/) e o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) para catalogação e ***Deploy*** dos nossos Modelos de Machine Learning.
 
-Aqui, o protagonismo fica a cargo do [MLflow](https://mlflow.org/) cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) ficará responsável por expor um Endpoint de consumo para o modelo. Este serviço é conhecido como [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
+Aqui, o protagonismo fica a cargo do **MLflow** cuja a responsabilidade é servir de registry central para nossos modelos, enquanto que o **AWS Sagemaker** ficará responsável por expor um Endpoint de consumo para o modelo. Este serviço é conhecido como [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 
+O objetivo aqui é apresentar de forma didática e simples a parceria entre **MLflow** e **Sagemaker**. Mostraremos também os frutos dessa parceria através de uma implementação real de um modelo de Machine Learning utilizando esses dois serviços.
 
-O objetivo aqui é apresentar de forma didática e simples a parceria entre  [MLflow](https://mlflow.org/) e [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/). Mostraremos também os frutos dessa parceria através de uma implementação real de um modelo de Machine Learning utilizando esses dois serviços.
-
-Let's Bora !
+Let's Bora!
 
 ## Conhecendo o MLFlow
 
-O **MLflow** é definido como uma plataforma **open source** para gerenciamento do ciclo de vida de um Modelo de Machine Learning.
+O **MLflow** é definido como uma plataforma *open source* para gerenciamento do ciclo de vida de um Modelo de Machine Learning.
 
 <p style="text-align: center"><img src="https://i.imgur.com/uzFL2bN.png"></p>
 
@@ -34,21 +33,19 @@ O **MLflow** concentra suas funcionalidades em quatro principais componentes par
 * [MLflow Models](https://mlflow.org/docs/latest/models.html) - Produtização e Deploy
 * [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório e Catálogo centralizado dos Modelos
 
-Para o Episódio de hoje iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
+Para o Episódio de hoje, iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
-A partir deste componente será possível centralizarmos nosso registry/catalogo de modelos, bem como gerencia-los através de API's, UI, etc.
+A partir deste componente será possível centralizarmos nosso registry/catálogo de modelos, bem como gerencia-los através de API's, UI, etc.
 
-Com nosso catalog/registry disponibilizado pelo [MLflow](https://mlflow.org/), partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/)
+Com nosso registry/catálogo disponibilizado pelo **MLflow**, partimos agora para a produtização dos nossos modelos previamente catalogados, para esta tarefa utilizaremos o **AWS Sagemaker**.
 
 ## Conhecendo o AWS Sagemaker Endpoint
 
-Com o nosso modelo devidamente catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo.
+Com o nosso modelo devidamente catalogado e armazenado em nosso registry, iniciamos a caminhada de disponibilizar o mesmo para consumo. Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html). 
 
-Para isso, utilizaremos o [AWS Sagemaker Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html). 
+Antes de continuarmos pessoal, vale ressaltarmos que o AWS Sagemaker possui uma stack de serviços muito extensa, que por si só teria conteúdo para uma série inteira, todinha para ele.
 
-Antes de continuarmos pessoal, vale ressaltarmos que o [AWS Sagemaker](https://aws.amazon.com/pt/sagemaker/) possui uma stack de serviços muito extensa, que por si só teria conteúdo para uma série inteira, todinha pra ele.
-
-De uma forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) nos disponibiliza uma lista de instâncias genreciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
+De forma simples e direta o [AWS Sagemaker Endpoint](https://aws.amazon.com/pt/sagemaker/) nos disponibiliza uma lista de instâncias gerenciadas cujo o propósito será expor um endpoint com rotas de API especificas para consumo.
 
 * `/invocation` - Rota que recebe o payload e transmite o mesmo ao modelo.
 * `/ping` - Rota de health check.
@@ -63,7 +60,7 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Como explicado anteriormente utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/)  instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente serverless.
+Como explicado anteriormente, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate), o mesmo tem como objetivo fornecer nosso [MLflow](https://https://mlflow.org/) instanciado através de um container [Docker](https://www.docker.com/) em uma infraestrutura totalmente *serverless*.
 
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
@@ -89,15 +86,15 @@ CMD mlflow server \
 
 Por padrão, o MLflow utiliza a porta `5000` para comunicação. Instalamos e configuramos a dependências `pymysql` e `boto3` com o objetivo de fornecer conectividade entre o MLflow e o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) e [AWS S3](https://aws.amazon.com/pt/s3/). 
 
-O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, e de forma nativa já suporta o [AWS S3](https://aws.amazon.com/pt/s3/). 
+O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *file-store*, e de forma nativa já suporta o S3. 
 
 A segunda forma de armazenamento de informações do MLflow chama-se *database-backed*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
 
-Para esta segunda forma de armazenamento, que adicionamos uma conexão com o [AWS RDS MySQL](https://aws.amazon.com/pt/rds/mysql/) em nosso Dockerfile.
+Para esta segunda forma de armazenamento, que adicionamos uma conexão com o AWS RDS MySQL em nosso Dockerfile.
 
 ## Provisionando com AWS CDK
 
-Para ganharmos produtividade e fluidez nesse artigo, utilizaremos  o AWS CDK como serviço de provisionamento de nossa infraestrutura.
+Para ganharmos produtividade e fluidez nesse artigo, utilizaremos o AWS CDK como serviço de provisionamento de nossa infraestrutura.
 
 Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
 
@@ -108,7 +105,7 @@ Agora, vamos listar todos os componentes necessários para nosso projeto :
 * `AWS Elastic Load Balancer` - Balanceador responsavel por receber as requisções e direcionar ao MLflow server.
 * `AWS S3` - Bucket que armazenará a camada de  .
 * `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dadosRDS MySQL.
-* `Roles e Parametros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
+* `Roles e Parâmetros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
 
 Agora, vamos ao código CDK. Explicarei parte por parte do código utilizado para o provisionamento.
 
