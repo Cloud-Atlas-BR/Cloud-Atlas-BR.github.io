@@ -33,7 +33,7 @@ O **MLflow** concentra suas funcionalidades em quatro principais componentes par
 * [MLflow Models](https://mlflow.org/docs/latest/models.html) - Produtização e Deploy
 * [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) - Repositório e Catálogo centralizado dos Modelos
 
-Para o Episódio de hoje, iremos demonstrar a funcionalidade do quarto componente, o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
+Para o Episódio de hoje, iremos demonstrar a funcionalidade do quarto componente: o [MLflow Model Registry](https://mlflow.org/docs/latest/model-registry.html) 
 
 A partir deste componente será possível centralizarmos nosso registry/catálogo de modelos, bem como gerencia-los através de APIs, UI etc.
 
@@ -60,7 +60,7 @@ Para termos um registro visual do que construiremos nesse artigo, apresento-lhes
 
 ## Let's Get Started
 
-Como apresentado no desenho acima, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate) como objetivo fornecer um servidor remoto para o MLflow com interface gráfica para gerenciamento: o **Mlflow server**. Este será instanciado através de um container Docker em uma infraestrutura totalmente *serverless*.
+Como apresentado no desenho acima, utilizaremos o [AWS Fargate](https://aws.amazon.com/pt/fargate) com o objetivo de fornecer um servidor remoto para o MLflow com interface gráfica: o **Mlflow server**. Este será instanciado através de um container Docker em uma infraestrutura totalmente *serverless*.
 
 Abaixo, temos o Dockerfile referente ao **MLflow server**:
 
@@ -76,7 +76,7 @@ WORKDIR /mlflow
 
 EXPOSE 5000
 
-## As variaveis de ambiente serão preenchidas pelo fargate
+## As variáveis de ambiente serão preenchidas pelo fargate
 CMD mlflow server \
     --host 0.0.0.0 \
     --port 5000 \
@@ -88,28 +88,26 @@ Por padrão, o **MLflow server** utiliza a porta `5000` para comunicação. Inst
 
 O objetivo do bucket S3 é guardar os artefatos gerados pelo modelo de Machine Learning, o MLflow entende isso como *File Store*, e de forma nativa já suporta o S3. 
 
-A segunda forma de armazenamento de informações do MLflow chama-se *Backend Store*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. 
-
-Para o *backend-store* utilizaremos o **AWS RDS MySQL**.
+A segunda forma de armazenamento de informações do MLflow chama-se *Backend Store*, e é utilizado para guardar metadados, parâmetros dos modelos, métricas, tags e experimentos. Para o *Backend Store*, utilizaremos o **AWS RDS MySQL**.
 
 ## Provisionando com AWS CDK
 
 Para ganharmos produtividade e fluidez nesse artigo, utilizaremos o AWS CDK como serviço de provisionamento de nossa infraestrutura.
 
-Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço nossa infraestrutura será provisionada de ponta a ponta como código.
+Aqui no blog temos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) inteiro dedicado ao AWS CDK. Através desse serviço, nossa infraestrutura será provisionada de ponta a ponta como código.
 
 Agora, vamos listar todos os componentes necessários para nosso projeto:
 
 * `AWS RDS MySQL` - Servir a camada de *Backend Store* do MLflow.
-* `AWS ECS FARGATE` - Container serverless com nosso MLflow server.
-* `AWS Elastic Load Balancer` - Balanceador responsável por receber as requisções e direcionar ao MLflow server.
+* `AWS ECS FARGATE` - Container serverless com o MLflow server.
+* `AWS Elastic Load Balancer` - Balanceador responsável por receber as requisições e direcionar ao MLflow server.
 * `AWS S3` - Bucket que armazenará a camada de *File Store*.
-* `AWS Secrets Manager` - Armazenamento de nossa senha do banco de dados RDS MySQL.
-* `Roles e Parâmetros` - Associação de Roles para a Task de nosso ECS Fargate e paranmetrização de variáveis de ambiente.
+* `AWS Secrets Manager` - Armazenamento de senha do banco de dados RDS MySQL.
+* `Roles e Parâmetros` - Associação de Roles para a Task do ECS Fargate e parametrização de variáveis de ambiente.
 
-Agora, vamos ao código CDK. Você pode acessá-lo por completo [AQUI](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E04/blob/main/mlflow/mlflow_stack.py), mas  explicarei parte por parte do código utilizado para o provisionamento abaixo.
+Agora, vamos ao código CDK. Você pode acessá-lo por completo [AQUI](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E04/blob/main/mlflow/mlflow_stack.py), mas, explicarei o código parte por parte abaixo.
 
-Como dito anteriormente, para as etapas de inicialização do projeto e download de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
+Como dito anteriormente, para as etapas de inicialização do projeto e *download* de dependências possuímos um [episódio](https://cloudatlas.tech/2021-03-01-ml-discovery-s1e2/) aqui no blog que explica detalhadamente estes passos.
 
 Iniciamos declarando todas as dependências (*constructs*) que serão utilizados em nossa infraestrutura.
 
@@ -290,7 +288,7 @@ Com este endereço, podemos acessar o **MLflow server** via navegador:
 
 <p style="text-align: center"><img src="https://i.imgur.com/ovFX54h.jpg"></p>
 
-Durante os próximos passos utilizaremos dois *registries* diferentes:
+Durante os próximos passos, utilizaremos dois *registries* diferentes:
 
 * [AWS ECR](https://aws.amazon.com/pt/ecr/)
 * MLflow Registry
@@ -357,13 +355,15 @@ mlflow.sagemaker.deploy(
 )
 ```
 
-Como o nosso Sagemaker Endpoint entregue pela api do `MLflow server`, bora então para o nosso amado predict.
+Como o nosso Sagemaker Endpoint entregue pela api do **MLflow server**, bora então para o nosso amado *predict*.
 
 ## Predict
 
+No código abaixo, fazemos uma chamada ao Sagemaker Endpoint utilizando o `boto3`, SDK Python da AWS.
+
 ```python
 # Runtime do Sagemaker
-runtime= boto3.client('runtime.sagemaker')
+runtime = boto3.client('runtime.sagemaker')
 
 # Obtendo dados para o predição
 raw_data =  "data:[[0,0,0,0]]"
@@ -382,7 +382,7 @@ print(f'Predicao: {result}') # [Iris-setosa]
 
 ## Não esqueça do *Cleanup*
 
-Por último, porém, não menos importante, vamos deletar o Endpoint que criamos e logo em seguida a *stack* do CDK.
+Por último, porém, não menos importante, vamos deletar o Endpoint que criamos.
 
 ```python
 mlflow.sagemaker.delete(app_name=endpoint_name, region_name=region)
@@ -408,7 +408,7 @@ Até o próximo episódio!
 
 ## Códigos deste post
 
-- [MLflow-ML-Discovery-S01E03](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E03)
+- [MLflow-ML-Discovery-S01E04](https://github.com/Cloud-Atlas-BR/MLflow-ML-Discovery-S01E04)
 
 ## Referências
 * [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/home.html)
