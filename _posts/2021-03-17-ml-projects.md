@@ -200,8 +200,19 @@ Uma vez realizado um *push* ao repositório, a esteira inicia criando e subindo 
 <blockquote class="twitter-tweet"><p lang="pt" dir="ltr">Quer saber mais sobre deploy de machine learning na <a href="https://twitter.com/awscloud?ref_src=twsrc%5Etfw">@awscloud</a>?<br><br>O <a href="https://twitter.com/AdelmoFilho42?ref_src=twsrc%5Etfw">@AdelmoFilho42</a> e <a href="https://twitter.com/Rjeks2?ref_src=twsrc%5Etfw">@rjeks2</a> acabaram de lançar o primeiro post da serie. <br><br>AWS Lambda Containers + Machine Learning<a href="https://t.co/r9VW23YERk">https://t.co/r9VW23YERk</a><a href="https://twitter.com/hashtag/MLOps?src=hash&amp;ref_src=twsrc%5Etfw">#MLOps</a> <a href="https://twitter.com/hashtag/MachineLearning?src=hash&amp;ref_src=twsrc%5Etfw">#MachineLearning</a> <a href="https://twitter.com/hashtag/AWS?src=hash&amp;ref_src=twsrc%5Etfw">#AWS</a> <a href="https://twitter.com/hashtag/lambda?src=hash&amp;ref_src=twsrc%5Etfw">#lambda</a> <a href="https://twitter.com/hashtag/containers?src=hash&amp;ref_src=twsrc%5Etfw">#containers</a></p>&mdash; AWS User Group São Paulo (@awsusergroupsp) <a href="https://twitter.com/awsusergroupsp/status/1364187566086492161?ref_src=twsrc%5Etfw">February 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
 </center>
 
-Em seguida, executamos um arquivo cloudformation contendo todos os recursos e conexões entre eles 
+Em seguida, executamos um arquivo cloudformation contendo todos os recursos e conexões que precisamos para nossa arquitetura. 
+
+
+Todos os arquivos e código deste projeto estão disponíveis ao público em nosso repositório no Github.
 
 <center>
 <a href="https://github.com/Cloud-Atlas-BR/MLOpsBot"><img align="center" src="https://github-readme-stats.vercel.app/api/pin?username=Cloud-Atlas-BR&repo=MLOpsBot&show_owner=true"></a>
 </center>
+
+## Como queremos evoluir o MLOps Bot
+
+Como está hoje, o [@MLOpsBot](https://twitter.com/MLOpsBot) já entrega valor aos seus seguidores retweetando tudo aquilo marcado como 
+
+## Referências
+
+- [About the Twitter API](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api)
