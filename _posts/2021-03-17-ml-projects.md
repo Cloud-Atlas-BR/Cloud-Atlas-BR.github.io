@@ -211,7 +211,13 @@ Todos os arquivos e código deste projeto estão disponíveis ao público em nos
 
 ## Como queremos evoluir o MLOps Bot
 
-Como está hoje, o [@MLOpsBot](https://twitter.com/MLOpsBot) já entrega valor aos seus seguidores retweetando tudo aquilo marcado como 
+Como está hoje, o [@MLOpsBot](https://twitter.com/MLOpsBot) já entrega valor aos seus seguidores retweetando tudo aquilo marcado como do tema MLOps. Com pouco mais de 7 dias de existência, nosso *bot* já publicou mais de 300 tweets do assunto.
+
+Mas, podemos fazer muito mais unindo *Machine Learning* à nossa arquitetura.
+
+E é isso que quero convidar vocês a acompanhar os próximos posts desta série: **ML Projects**
+
+Aprenderemos como utilizar o [Sagemaker Ground Truth](https://aws.amazon.com/sagemaker/groundtruth/) para anotar os tweets mais relevantes e em seguida treinaremos um modelo de Machine Learning utilizando o [Sagemaker](https://aws.amazon.com/sagemaker/) para que nosso *bot* faça o retweet de apenas tweets **informativos** sobre MLOps.
 
 ## Referências
 
