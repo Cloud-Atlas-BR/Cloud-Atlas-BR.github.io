@@ -7,10 +7,9 @@ comments: true
 draft: false
 ---
 
-{: .box-note}
-**Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
+Diversas plataformas sociais permitem que seus usuários interajam através de APIs. 
 
-Diversas plataformas sociais permitem que seus usuários interajam através de APIs. Bastando que você tenha as credenciais da conta, Twitter, Telegram, ou mesmo Discord, permitem que você publique textos e curta comentários a partir de uma linguagem de programação (e.g. Python, R, Go).
+Bastando que você tenha as credenciais da conta, Twitter, Telegram, ou mesmo Discord, permitem que você publique textos e curta comentários a partir de uma linguagem de programação (e.g. Python, R, Go).
 
 Os chamados ***bots*** são utilizados com diferentes propósitos: empresas utilizam *bots* para melhor direcionar seus clientes num atendimento de dúvidas ou problemas; orgãos públicos e instituções desenvolvem *bots* para facilitar a comunicação com os cidadãos e MUITOS cientistas de dados utilizam *bots* para coleta de dados.
 
