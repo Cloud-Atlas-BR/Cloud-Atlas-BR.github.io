@@ -67,24 +67,15 @@ Abaixo, você pode verificar a anatomia de um tweet obtido pela API do Twitter. 
         "hashtags": [
             {
                 "text": "MLOps",
-                "indices": [
-                    9,
-                    15
-                ]
+                "indices": [9, 15]
             },
             {
                 "text": "Microsoft",
-                "indices": [
-                    21,
-                    31
-                ]
+                "indices": [21, 31]
             },
             {
                 "text": "Kainos",
-                "indices": [
-                    42,
-                    49
-                ]
+                "indices": [42, 49]
             }
         ],
         "symbols": [],
@@ -94,10 +85,7 @@ Abaixo, você pode verificar a anatomia de um tweet obtido pela API do Twitter. 
                 "url": "https://t.co/x7Q3zoqm8N",
                 "expanded_url": "https://twitter.com/i/web/status/1369385237197766664",
                 "display_url": "twitter.com/i/web/status/1\u2026",
-                "indices": [
-                    117,
-                    140
-                ]
+                "indices": [117, 140]
             }
         ]
     },
@@ -126,10 +114,7 @@ Abaixo, você pode verificar a anatomia de um tweet obtido pela API do Twitter. 
                         "url": "https://t.co/wFjYCZDIwx",
                         "expanded_url": "https://developer.microsoft.com/en-ie/",
                         "display_url": "developer.microsoft.com/en-ie/",
-                        "indices": [
-                            0,
-                            23
-                        ]
+                        "indices": [0, 23]
                     }
                 ]
             },
@@ -201,7 +186,6 @@ Uma vez realizado um *push* ao repositório, a esteira inicia criando e subindo 
 </center>
 
 Em seguida, executamos um arquivo cloudformation contendo todos os recursos e conexões que precisamos para nossa arquitetura. 
-
 
 Todos os arquivos e código deste projeto estão disponíveis ao público em nosso repositório no Github.
 
