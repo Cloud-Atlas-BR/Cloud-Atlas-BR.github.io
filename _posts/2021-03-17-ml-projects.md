@@ -4,7 +4,7 @@ title: Montando um bot serverless para Twitter
 subtitle:  Machine Learning Projects - 1
 tags: [aws, mlops, project, bot, twitter]
 comments: true
-draft: true
+draft: false
 ---
 
 {: .box-note}
@@ -12,13 +12,13 @@ draft: true
 
 Diversas plataformas sociais permitem que seus usuários interajam através de APIs. Bastando que você tenha as credenciais da conta, Twitter, Telegram, ou mesmo Discord, permitem que você publique textos e curta comentários a partir de uma linguagem de programação (e.g. Python, R, Go).
 
-Os chamados ***bots*** são utilizados com diferentes propósitos: empresas utilizam *bots* para melhor direcionar seus clientes num atendimento de dúvidas ou problemas; orgãos públicos e instituções desenvolvem *bots* para facilitar a comunicação com os cidadãos e MUITOS cientistas de dados dados utilizam *bots* para coleta de dados.
+Os chamados ***bots*** são utilizados com diferentes propósitos: empresas utilizam *bots* para melhor direcionar seus clientes num atendimento de dúvidas ou problemas; orgãos públicos e instituções desenvolvem *bots* para facilitar a comunicação com os cidadãos e MUITOS cientistas de dados utilizam *bots* para coleta de dados.
 
 Então pensamos... Por que não criar um *bot* que nos ajude a informar a comunidade sobre os últimos temas de [#MLOPs]() no Twitter?
 
 Assim, nasceu o [@MLOpsBot](https://twitter.com/MLOpsBot)!
 
-<p style="text-align: center"><img src="https://i.imgur.com/3a0WjfB.png"></p>
+<p style="text-align: center"><a href="https://twitter.com/MLOpsBot"><img src="https://i.imgur.com/3a0WjfB.png"></a></p>
 
 Continuamente, o [@MLOpsBot](https://twitter.com/MLOpsBot) busca por novos tweets usando a hashtag [#MLOps](), e os retweeta.
 
@@ -28,9 +28,9 @@ Neste *post*, vamos entender a arquitetura implantada para o [@MLOpsBot](https:/
 
 ## MLOps Bot
 
-Dois requisitos guiaram o desenvolvimento deste *bot*: Possuir uma arquitetura (1) orientada a eventos, e (2) *serverless*. Para além das boas práticas que este desenho nos garante, também estamos pensando em **custos**
+Dois requisitos guiaram o desenvolvimento deste *bot*: Possuir uma arquitetura (1) orientada a eventos, e (2) *serverless*. Para além das boas práticas que este desenho nos garante, também estamos pensando em **custos**.    
 
-Utilizar buckets S3 e funções Lambda implica em um *billing* associado ao uso desses recursos, enquanto que ao utilizar um banco de dados (RDS) e máquinas virtuais (EC2), seriamos cobrados por hora do serviço existindo em nossas contas.
+Utilizar buckets S3 e funções Lambda implica em um *billing* associado ao uso pontual desses recursos, enquanto que ao utilizar um banco de dados (RDS) e máquinas virtuais (EC2), seriamos cobrados por hora do serviço existindo em nossas contas.
 
 Desta forma, chegamos no seguinte desenho.
 
@@ -42,11 +42,11 @@ Abaixo, detalhamos cada etapa do funcionamento do MLOps Bot:
 
 **(2)** A partir do evento, a função Lambda busca as credenciais da API do Twitter no [Secrets Manager](https://aws.amazon.com/secrets-manager/).
 
-**(3)** Com as credenciais, a função Lambda faz uma chamada à API do Twitter buscando os últimos 50 tweets com a hashtag #MLOps.
+**(3)** Com as credenciais, a função Lambda faz uma chamada à API do Twitter buscando os últimos 50 tweets com a hashtag [#MLOps]().
 
 **(4)** A função Lambda salva os metadados de cada tweet individualmente em um bucket S3.
 
-**(5)** Quando um novo tweet pousa no bucket, é acionando um evento do S3 que adiciona em uma fila do [SQS](https://aws.amazon.com/sqs/) a informação de um novo tweet para ser retweetado.
+**(5)** Quando um novo tweet pousa no bucket, é acionando um evento do S3 que adiciona, em uma fila do [SQS](https://aws.amazon.com/sqs/), a informação de um novo tweet para ser retweetado.
 
 **(6)** O serviço Lambda faz o *polling* das mensagens na fila SQS e as envia para a função Lambda de retweet.
 
@@ -54,7 +54,7 @@ Abaixo, detalhamos cada etapa do funcionamento do MLOps Bot:
 
 **(8)** Validado, a função lambda obtém as credenciais da API e faz o retweet.
 
-Abaixo, você pode verificar a anatomia de um tweet extraído obtido pela API do Twitter. Temos informações do usuário, estatísticas do tweet e o tweet em si.
+Abaixo, você pode verificar a anatomia de um tweet obtido pela API do Twitter. Temos informações do usuário, estatísticas do tweet e o tweet em si.
 
 ```json
 {
@@ -217,7 +217,7 @@ Mas, podemos fazer muito mais unindo *Machine Learning* à nossa arquitetura.
 
 E é isso que quero convidar vocês a acompanhar os próximos posts desta série: **ML Projects**
 
-Aprenderemos como utilizar o [Sagemaker Ground Truth](https://aws.amazon.com/sagemaker/groundtruth/) para anotar os tweets mais relevantes e em seguida treinaremos um modelo de Machine Learning utilizando o [Sagemaker](https://aws.amazon.com/sagemaker/) para que nosso *bot* faça o retweet de apenas tweets **informativos** sobre MLOps.
+Aprenderemos como utilizar o [Sagemaker Ground Truth](https://aws.amazon.com/sagemaker/groundtruth/) para anotar os tweets mais relevantes e, em seguida, treinaremos um modelo de Machine Learning utilizando o [Sagemaker](https://aws.amazon.com/sagemaker/) para que nosso *bot* apenas faça o retweet de tweets **informativos** sobre MLOps.
 
 ## Referências
 
