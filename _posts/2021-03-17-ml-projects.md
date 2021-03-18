@@ -10,7 +10,7 @@ draft: true
 {: .box-note}
 **Este é um texto em desenvolvimento**: Ainda estamos escrevendo e/ou revisando seu conteúdo. Até o dia de sua publicação, ele não estará listado na página inicial do blog.
 
-Diversas plataformas sociais permitem que seu usuário possa ser manipulado através de chamadas de API. Bastando que você tenha as credenciais da conta, Twitter, Telegram, ou mesmo Discord, permitem que você publique textos e favorite comentários a partir de uma linguagem de programação (e.g. Python, R, Go).
+Diversas plataformas sociais permitem que seus usuários interajam através de APIs. Bastando que você tenha as credenciais da conta, Twitter, Telegram, ou mesmo Discord, permitem que você publique textos e curta comentários a partir de uma linguagem de programação (e.g. Python, R, Go).
 
 Os chamados ***bots*** são utilizados com diferentes propósitos: empresas utilizam *bots* para melhor direcionar seus clientes num atendimento de dúvidas ou problemas; orgãos públicos e instituções desenvolvem *bots* para facilitar a comunicação com os cidadãos e MUITOS cientistas de dados dados utilizam *bots* para coleta de dados.
 
@@ -20,7 +20,7 @@ Assim, nasceu o [@MLOpsBot](https://twitter.com/MLOpsBot)!
 
 <p style="text-align: center"><img src="https://i.imgur.com/3a0WjfB.png"></p>
 
-Continuamente, o [@MLOpsBot](https://twitter.com/MLOpsBot) busca por novos tweets usando a hashtag [#MLOps](), e os retweeta para que seus seguidores.
+Continuamente, o [@MLOpsBot](https://twitter.com/MLOpsBot) busca por novos tweets usando a hashtag [#MLOps](), e os retweeta.
 
 ## Claro que isso não é só uma propaganda!
 
@@ -180,4 +180,19 @@ Abaixo, você pode verificar a anatomia de um tweet extraído obtido pela API do
 }
 ```
 
-## 
+## Como criamos e atualizamos o MLOps Bot?
+
+Para garantir o provisionamento de todos os recursos de forma automatizada, implementamos uma esteira de CI/CD utilizando o [Github Actions](https://github.com/features/actions). Inclusive, temos um episódio inteiro sobre esse tema aqui no blog.
+
+<center>
+<blockquote class="twitter-tweet"><p lang="pt" dir="ltr">A cultura <a href="https://twitter.com/hashtag/MLOps?src=hash&amp;ref_src=twsrc%5Etfw">#MLOps</a> tem como um dos seus pilares a automatização dos processos de <a href="https://twitter.com/hashtag/ML?src=hash&amp;ref_src=twsrc%5Etfw">#ML</a>.<br><br>Entregamos sempre, para entregar bem. Assim, processos podem evoluir a partir da experiência de erros e acertos.<br><br>Mais um post em parceira com <a href="https://twitter.com/Rjeks2?ref_src=twsrc%5Etfw">@Rjeks2</a>.<a href="https://twitter.com/hashtag/AWS?src=hash&amp;ref_src=twsrc%5Etfw">#AWS</a> <a href="https://twitter.com/hashtag/DevOps?src=hash&amp;ref_src=twsrc%5Etfw">#DevOps</a> <a href="https://t.co/NcD5hTc9kd">https://t.co/NcD5hTc9kd</a></p>&mdash; Son of Cydonia (@AdelmoFilho42) <a href="https://twitter.com/AdelmoFilho42/status/1368883619666747392?ref_src=twsrc%5Etfw">March 8, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+</center>
+
+A esteira que construimos tem a estrutura apresentada abaixo.
+
+<p style="text-align: center"><img src="https://i.imgur.com/42ttrJe.png"></p>
+
+Uma vez realizado um *push* ao repositório
+
+
+
