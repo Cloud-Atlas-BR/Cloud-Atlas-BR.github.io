@@ -4,7 +4,7 @@ title: Projeto Hardin
 subtitle: Cloud Atlas Projects - S02E01
 tags: [aws, mlops, project]
 comments: true
-draft: true
+draft: false
 ---
 
 Chegamos na segunda temporada do Cloud Atlas, e com ela queremos continuar informando e democratizando o uso da cloud para projetos de machine learning, mas, de uma maneira diferente nesta nova etapa.
