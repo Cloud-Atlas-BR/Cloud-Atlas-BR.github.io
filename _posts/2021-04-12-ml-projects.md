@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 
-subtitle: Cloud Atlas Projects - 
+title: Projeto Hardin
+subtitle: Cloud Atlas Projects - S02E01
 tags: [aws, mlops, project]
 comments: true
 draft: true
