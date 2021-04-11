@@ -9,7 +9,7 @@ draft: true
 
 Chegamos na segunda temporada do Cloud Atlas, e com ela queremos continuar informando e democratizando o uso da cloud para projetos de machine learning, mas, de uma maneira diferente nesta nova etapa.
 
-Durante esta temporada exploraremos novas ferramentas e serviços de forma orientada ao nosso projeto **Hardin - Aprendizado de máquina com dados da política brasileira**.
+Durante esta temporada, exploraremos novas ferramentas e serviços de forma orientada ao nosso projeto **Hardin - Aprendizado de máquina com dados da política brasileira**.
 
 Neste primeiro episódio, vamos dedicar um tempo explicando nossos objetivos, arquitetura alvo, bem como a utilidade de cada componente representado em nosso desenho de solução.
 
@@ -19,7 +19,7 @@ Queremos construir um fluxo de ponta a ponta para a execução de modelos de mac
 
 **Que modelos são esses?** Não sabemos! (ainda)
 
-Iremos explorar esses dados com serviços da AWS, e identificar oportunidades de desenvolvimento de modelos que colaborem com a sociedade no entendimento da esfera política e em suas decisões como eleitores.
+Iremos explorar esses dados com serviços da AWS, e identificar oportunidades de desenvolvimento de modelos que colaborem com a sociedade no entendimento da esfera política e em nossas decisões como eleitores.
 
 Aprenderemos muito nesse processo, e queremos que vocês sejam parte disso!
 
@@ -33,7 +33,7 @@ Conforme a necessidade, novas fontes de dados serão exploradas e sua captura e 
 
 Inclusive, a engenharia de dados será um dos grande tema dessa temporada. É a partir de uma sólida fundação em dados que a engenharia de machine learning obtém seu potencial máximo.
 
-## Qual nossa arquitetura?
+## Qual a nossa arquitetura?
 
 O desenho abaixo apresenta a nossa arquitetura de referência para este projeto. 
 
@@ -50,3 +50,5 @@ Nos próximos posts, iremos trabalhar mais sobre cada componente em nossa arquit
 - **Cloud Atlas Drops**: Tópicos rápidos de AWS e Machine Learning de forma prática e aplicada
 
 - **Cloud Atlas Projects**: Divulgação do resultados e evolução do projeto Hardin
+
+Nos vemos no próximo episódio!
