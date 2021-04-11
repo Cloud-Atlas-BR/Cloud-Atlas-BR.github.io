@@ -27,7 +27,7 @@ Aprenderemos muito nesse processo, e queremos que vocês sejam parte disso!
 
 No Brasil, as diretrizes de transparência e acesso à informação permitiram a criação de plataformas de dados abertos. Nelas, é possível acessar informações sobre políticos e candidatos, gastos e projetos votados, e até mesmo o texto dos discursos realizados por um senador ou deputado em plenário.
 
-<p style="text-align: center"><a href="https://dadosabertos.camara.leg.br/"><img src=https://i.imgur.com/pmPl00h.png></a></p>
+<p style="text-align: center"><a href="https://dadosabertos.camara.leg.br/"><img src="https://i.imgur.com/pmPl00h.png"></a></p>
 <p style="text-align: center; margin-top:0">Portal Dados Abertos da Câmara dos Deputados</p>
 
 Partiremos dos portais de dados abertos da Câmara Federal e Senado. Em ambos, os dados são disponibilizados por meio de APIs ou arquivos *.csv*.
